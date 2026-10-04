@@ -1,0 +1,49 @@
+merged_id,canonical_flower_form,turkish_display_name,turkey_priority,florist_availability,cultural_familiarity,assessment_note
+S1F-010,Amaryllis,Amarillis,İkinci sıra,Orta,Orta,Mevsimsel saksı veya soğanlı süs bitkisi olarak bilinir; sıradan buket stokunda sürekli değildir.
+S1F-014,Anemone,Anemon,Öncelikli,Orta,Orta,Türkiye’de ticarete konu olan kesme çiçekler arasında yer alır; üretimi ve bulunurluğu mevsimseldir.
+S1F-025,Bindweed,Tarla sarmaşığı,Merak / çeşitlilik,Düşük,Orta,Yaygın bir yabani/tarla bitkisi olabilir; çiçekçi ürünü veya hediye çiçeği değildir.
+S1F-028,Blue Periwinkle,Mavi Cezayir menekşesi,İkinci sıra,Düşük,Orta,Bahçe ve yer örtücü bitki olarak tanınabilir; kesme çiçekçi ürünü değildir.
+S1F-030,Blue Violet,Mavi menekşe,Öncelikli,Düşük,Yüksek,"Menekşe adı çok bilinir; fakat bu kayıt, çiçekçilerde yaygın Afrika menekşesiyle aynı form değildir ve görsel eşleşmesi de kesin değildir."
+S1F-031,Borage,Hodan,Merak / çeşitlilik,Düşük,Düşük,Daha çok yenilebilir/şifalı ot veya bahçe bitkisi olarak bilinir; normal çiçekçi ürün grubunda değildir.
+S1F-041,Cardinal S Flower,Kardinal çiçeği,Merak / çeşitlilik,Düşük,Düşük,Türkiye’de günlük çiçek kültüründe ve sıradan çiçekçi stokunda çok niştir.
+S1F-048,China/Monthly Rose,Çin / aylık gül,Öncelikli,Orta,Yüksek,Gül ailesi çok yaygındır; bu özel formu ayrı kart yapmak yerine genel gül altında birleştirmek daha anlaşılır olabilir.
+S1F-053,Cistus Or Rock Rose,Laden / kaya gülü,Merak / çeşitlilik,Düşük,Orta,Türkiye doğasında tanınabilen bir maki bitkisidir; kesme çiçekçi ürünü değildir ve mevcut anlatısı zayıftır.
+S1F-055,Clove Gillyflower,Karanfil (clove gillyflower),Öncelikli,Yüksek,Yüksek,Karanfil Türkiye’nin en yüksek üretimli kesme çiçeğidir; tarihî ad ve mevcut görsel kimliği ayrıca düzeltilmelidir.
+S1F-060,Columbine,Hasekiküpesi,İkinci sıra,Düşük,Orta,Bahçe süs bitkisi olarak bilinir; sıradan çiçekçi buketinde yaygın değildir.
+S1F-065,Cornflower (Blue-Bottle Centaury),Peygamberçiçeği,İkinci sıra,Düşük,Orta,İsmen ve kır çiçeği olarak bilinir; düzenli çiçekçi stoku değildir.
+S1F-067,Cowslip,Çuha çiçeği (Primula veris),İkinci sıra,Düşük,Düşük,Türkiye’de kullanılan çuha adının altında kalabilir; bu tarihî form günlük çiçekçide belirgin bir ürün değildir.
+S1F-074,Daisy,Papatya,Öncelikli,Yüksek,Yüksek,Papatya ve papatya-gerbera aranjmanları güncel çiçekçi ürünlerinde çok yaygındır.
+S1F-090,Evergreen Clematis,Herdemyeşil akasma,Merak / çeşitlilik,Düşük,Düşük,Özel bir akasma formudur; mevcut görseli de dar ve kalabalıktır.
+S1F-092,Everlasting Pea,Çok yıllık bezelye,İkinci sıra,Düşük,Düşük,Bahçe sarmaşığıdır; kesme çiçek kültüründe kokulu bezelye kadar bile yaygın değildir.
+S1F-096,Fly Orchis,Sinek orkidesi,Merak / çeşitlilik,Düşük,Düşük,Yabani ve uzmanlık gerektiren bir orkide formudur; çiçekçide satılan orkideyi temsil etmez.
+S1F-097,Forget-me-not,Unutma beni,Öncelikli,Düşük,Yüksek,Çiçekçide sık görülmez; fakat adı ve hikâyesi genel kültürde güçlü ve kolay anlaşılırdır.
+S1F-098,Foxglove,Yüksükotu,İkinci sıra,Düşük,Orta,Gösterişli bir bahçe bitkisidir; zehirli oluşu ve düşük ticari yaygınlığı nedeniyle günlük buket çiçeği değildir.
+S1F-103,Fuchsia,Küpe çiçeği,Öncelikli,Orta,Yüksek,Türkiye’de saksı ve balkon çiçeği olarak iyi bilinir; kesme buketten çok canlı bitki bağlamındadır.
+S1F-105,Full Blown Rose,Tam açmış gül,Öncelikli,Yüksek,Yüksek,Gül çok yaygındır; bu kayıt ayrı bir çiçekten çok gülün gelişim evresidir ve anlatısı yalnız kısa şiirdir.
+S1F-111,Geranium,Sardunya,Öncelikli,Orta,Yüksek,Türkiye’de balkon ve saksı çiçeği olarak çok yaygın ve tanınırdır.
+S1F-132,Honeysuckle,Hanımeli,İkinci sıra,Düşük,Yüksek,Bahçe ve koku kültüründe tanınır; sıradan kesme çiçekçi ürünü değildir.
+S1F-140,Jasmine,Yasemin,Öncelikli,Orta,Yüksek,Kokusu ve bahçe/saksı kullanımıyla çok bilinir; her çiçekçide kesme çiçek olarak bulunmaz.
+S1F-141,Jonquil,Jonquil nergisi,Öncelikli,Orta,Yüksek,“Jonquil” adı yabancı kalır; “nergis” ailesi olarak sunulursa Türkiye’de çok daha tanıdık ve ticari olarak anlamlıdır.
+S1F-153,Lily Of The Valley,Müge,İkinci sıra,Düşük,Orta,Genel kültürde bilinir ve gelin çiçeği çağrışımı vardır; Türkiye’de her çiçekçide bulunan bir tür değildir.
+S1F-170,Mignonette,Muhabbet çiçeği,Merak / çeşitlilik,Düşük,Düşük,Mignonette tarihî çiçek dilinde önemlidir; Türkiye’de adı ve ticari kullanımı çok niştir.
+S1F-181,Pansy,Hercai menekşe,Öncelikli,Orta,Yüksek,"Mevsimlik saksı, park ve bahçe çiçeği olarak yaygın ve kolay tanınırdır."
+S1F-184,Passion Flower,Çarkıfelek,İkinci sıra,Düşük,Orta,Özellikle ılıman bölgelerde bahçe sarmaşığı olarak tanınır; normal çiçekçi buketi değildir.
+S1F-188,Peruvian Heliotrope,Peru heliotropu,Merak / çeşitlilik,Düşük,Düşük,"Türkiye’de günlük adı, bulunurluğu ve çiçekçi kullanımı çok sınırlıdır."
+S1F-191,Pink,Bahçe pembesi / karanfil grubu,İkinci sıra,Orta,Orta,Dianthus grubu tanıdıktır; fakat “Pink” tarihî adı Türk kullanıcı için belirsiz ve mevcut görsel eşleşmesi olasılıklıdır.
+S1F-198,Poppy,Gelincik,Öncelikli,Düşük,Yüksek,Türkiye’de herkesçe bilinen güçlü bir kır çiçeğidir; koparılıp satılan standart çiçekçi ürünü değildir.
+S1F-199,Primrose,Çuha çiçeği (Primula vulgaris),Öncelikli,Orta,Yüksek,Mevsimsel saksı ve bahçe çiçeği olarak tanıdıktır; buket stokundan çok canlı bitki olarak düşünülmelidir.
+S1F-216,Rhododendron,Ormangülü,İkinci sıra,Düşük,Orta,Karadeniz doğası ve bahçe bitkisi olarak bilinir; standart çiçekçi ürünü değildir ve mevcut anlatısı zayıftır.
+S1F-218,Rose,Gül,Öncelikli,Yüksek,Yüksek,Türkiye’de çiçekçi ve hediye kültürünün en temel çiçeğidir.
+S1F-253,Snowdrop,Kardelen,Öncelikli,Düşük,Yüksek,Çok tanınan kültürel bir çiçektir; sıradan çiçekçi ürünü değildir ve yabani örneklerin ticaretiyle karıştırılmamalıdır.
+S1F-255,Spanish Jasmine,İspanyol yasemini,İkinci sıra,Düşük,Orta,Yasemin ailesi bilinir; bu özel form ayrı bir günlük çiçekçi ürünü değildir ve genel yaseminle birleştirilebilir.
+S1F-265,Sunflower,Ayçiçeği,Öncelikli,Yüksek,Yüksek,Süs ayçiçeği Türkiye’de ticareti yapılan ve güncel aranjmanlarda kullanılan tanıdık bir kesme çiçektir.
+S1F-267,Sweet Pea,Kokulu bezelye,İkinci sıra,Düşük,Orta,Mevsimsel ve narin bir bahçe/kesme çiçeğidir; Türkiye’de her çiçekçide bulunmaz ve mevcut anlatısı yalnız kısa şiirdir.
+S1F-282,Thorn Apple,Diken elması,Merak / çeşitlilik,Düşük,Orta,Tanıdık bir yabani bitki olabilir; zehirli ve çiçekçi ürünü değildir.
+S1F-283,Thrift,Deniz karanfili,Merak / çeşitlilik,Düşük,Düşük,Kıyı ve kaya bahçesi bitkisidir; sıradan çiçekçi veya genel kültür çekirdeğinde değildir.
+S1F-285,Trumpet Flower (Virginian/Carolina Jasmine),Boru çiçeği,Merak / çeşitlilik,Düşük,Orta,Bahçe sarmaşığı olarak görülebilir; tarihî “Carolina/Virginian jasmine” adı günlük Türkçe kullanımla uyuşmaz.
+S1F-286,Tuberose,Sümbülteber,İkinci sıra,Düşük,Orta,"Türkiye’de yetiştirilen fakat üretimi düşük, kokusuyla bilinen niş bir kesme çiçektir."
+S1F-287,Tulip,Lale,Öncelikli,Yüksek,Yüksek,Türkiye’de hem kültürel hem ticari olarak en temel ve tanınan çiçeklerden biridir.
+S1F-306,White Lily,Beyaz zambak / lilyum,Öncelikli,Yüksek,Yüksek,"Lilyum güncel buket ve vazo aranjmanlarında yaygın, yüksek öncelikli bir kesme çiçektir."
+S1F-317,Wild/Dog Rose,Yabani gül / kuşburnu gülü,İkinci sıra,Düşük,Yüksek,Türkiye’de tanıdık bir yabani formdur; ticari gül kartından ayrı tutulması ancak hikâyesi gerçekten kullanılacaksa anlamlıdır.
+S1F-322,Yellow Day Lily,Sarı gün zambağı,İkinci sıra,Düşük,Orta,Bahçe bitkisi olarak tanınabilir; çiçekçide satılan lilyumun doğrudan karşılığı değildir.
+S1F-327,Yellow Rose,Sarı gül,Öncelikli,Yüksek,Yüksek,Ticari olarak yaygın bir gül rengidir; ayrı kart yerine gül altında renk anlamı olarak birleştirilebilir.

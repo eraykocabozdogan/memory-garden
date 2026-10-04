@@ -1,12 +1,12 @@
-import { requireMember } from "@/features/auth/member";
+import { getMemberNames, requireMember } from "@/features/auth/member";
 import { MemoriesApp } from "@/features/memories/memories-app";
 import { getMemoryArchive } from "@/features/memories/memory-repository";
 
 export const dynamic = "force-dynamic";
 
 export default async function MemoriesPage() {
-  await requireMember();
-  const archive = await getMemoryArchive();
+  const memberId = await requireMember();
+  const [archive, names] = await Promise.all([getMemoryArchive(), getMemberNames(memberId)]);
 
   return (
     <MemoriesApp
@@ -17,6 +17,8 @@ export default async function MemoriesPage() {
       canEdit
       canDelete
       canLogout
+      memberName={names.memberName}
+      memberNames={names.memberNames}
     />
   );
 }

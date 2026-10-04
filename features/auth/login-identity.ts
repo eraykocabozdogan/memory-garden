@@ -1,13 +1,10 @@
-const loginEmails = {
-  "uye-bir": "member-one@example.com",
-  "uye-iki": "member-two@example.com",
-} as const;
+const MAX_USERNAME_LENGTH = 64;
 
-export function resolveLoginEmail(username: unknown) {
+export function normalizeLoginUsername(username: unknown) {
   if (typeof username !== "string") return null;
 
   const normalizedUsername = username.trim();
-  if (!Object.hasOwn(loginEmails, normalizedUsername)) return null;
+  if (!normalizedUsername || normalizedUsername.length > MAX_USERNAME_LENGTH) return null;
 
-  return loginEmails[normalizedUsername as keyof typeof loginEmails];
+  return normalizedUsername;
 }

@@ -8,6 +8,8 @@ export default function MemoriesPrototypePage() {
       canCreate
       canEdit
       canDelete
+      memberName="Ada"
+      memberNames={["Ada", "Deniz"]}
     />
   );
 }

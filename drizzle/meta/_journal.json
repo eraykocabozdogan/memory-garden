@@ -36,6 +36,13 @@
       "when": 1788197167166,
       "tag": "20260831172607_persist_diary_garden_flowers",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791129479216,
+      "tag": "20261004155759_add_profile_username",
+      "breakpoints": true
     }
   ]
 }

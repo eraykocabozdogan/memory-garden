@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stage 1 — Çizimli 36 öğe incelemesi</title>
+  <style>
+    :root { --ink:#28251f; --paper:#f7f1e5; --card:#fffdf8; --line:#d8cbb8; --green:#356448; --amber:#9a661c; --red:#9d3f38; --blue:#345e76; }
+    * { box-sizing:border-box } body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.55 ui-serif,Georgia,serif }
+    main { max-width:1400px; margin:auto; padding:36px 24px 80px } h1 { font-size:clamp(2rem,5vw,4rem); line-height:1; margin:.2em 0 }
+    .lede { max-width:850px; font-size:1.12rem } .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin:28px 0 }
+    .stat { background:#fff8ea; border:1px solid var(--line); border-radius:12px; padding:16px } .stat b { display:block; font-size:1.8rem }
+    .panel { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; margin:22px 0 }
+    table { width:100%; border-collapse:collapse } th,td { text-align:left; vertical-align:top; border-bottom:1px solid #e8dece; padding:10px 8px } thead th { color:#61594c }
+    .recommendation { border-left:6px solid var(--green) } .core-list { columns:2; max-width:700px }
+    .toolbar { position:sticky; top:0; z-index:5; display:flex; flex-wrap:wrap; gap:8px; padding:12px; margin:28px 0; background:rgba(247,241,229,.96); border-block:1px solid var(--line) }
+    button { border:1px solid #aa9c88; border-radius:999px; background:#fffaf0; padding:8px 13px; cursor:pointer; color:var(--ink) } button.active { background:var(--ink); color:white }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:22px }
+    .card { background:var(--card); border:1px solid var(--line); border-top:6px solid var(--green); border-radius:14px; overflow:hidden; box-shadow:0 8px 25px #5c463011 }
+    .card.caution { border-top-color:var(--amber) } .card.review { border-top-color:var(--red) } .card>header { display:flex; justify-content:space-between; gap:12px; padding:16px 18px 10px }
+    h2 { margin:2px 0; font-size:1.45rem } .id { color:#766d60; font:12px ui-monospace,monospace } .badges { text-align:right }
+    .badge { display:inline-block; margin:2px; padding:3px 8px; border-radius:99px; font:12px/1.4 ui-sans-serif,sans-serif; background:#e1eee5; color:#214a32 }
+    .badge.caution { background:#f7e8c6; color:#754a0d } .badge.review { background:#f5d8d5; color:#7a2822 } .badge.core { background:#dbeaf2; color:#234f67 } .badge.thin { background:#eee5d9; color:#6b5d4c }
+    .gallery { display:flex; gap:8px; overflow-x:auto; padding:0 16px } figure { margin:0; min-width:min(100%,340px); flex:1 }
+    img { display:block; width:100%; height:320px; object-fit:contain; background:#eee6d9; border-radius:10px } figcaption { padding:7px 2px; color:#655d50; font:12px/1.35 ui-sans-serif,sans-serif } a { color:var(--blue) }
+    .body { padding:4px 18px 18px } h3 { margin:14px 0 4px; font-size:1rem } p,ul { margin:5px 0 10px } ul { padding-left:20px }
+    details { border-top:1px dashed var(--line); margin-top:13px; padding-top:10px } summary { cursor:pointer; color:var(--blue) } details p { font-size:.9rem }
+    .hidden { display:none } .footnote { color:#685f51; font-size:.9rem }
+    @media(max-width:650px) { main { padding:20px 12px 50px } .cards { grid-template-columns:1fr } table { font-size:.83rem } img { height:270px } .core-list { columns:1 } }
+    @media print { .toolbar { display:none } .cards { display:block } .card { break-inside:avoid; margin:0 0 18px } }
+  </style>
+</head>
+<body><main>
+  <p class="id">Stage 1 research review · 2026-08-30</p>
+  <h1>Çizimli 36 öğe</h1>
+  <p class="lede">Bu dosya, üç özgün kitaptaki çizimlerle güvenilir biçimde ilişkilendirilebilen 36 birleşik çiçek öğesini görsel, anlam ve kısa kaynak hikâyesiyle birlikte gösterir. Türkçe hikâyeler kaynak bağlamlarının kısa özetidir; açılır bölümde tam araştırma bağlamı korunur.</p>
+  <div class="summary">
+    <div class="stat"><b>36 / 331</b>özgün çizimi olan öğe</div>
+    <div class="stat"><b>40</b>toplam çizim kırpımı</div>
+    <div class="stat"><b>27</b>görsel olarak güçlü öğe</div>
+    <div class="stat"><b>6 + 3</b>kompozisyon uyarısı + kimlik kontrolü</div>
+  </div>
+
+  <section class="panel">
+    <h2>36 ile 331’in kapsam karşılaştırması</h2>
+    <table><thead><tr><th>Ölçü</th><th>331’lik tam küme</th><th>36’lık çizimli küme</th><th>Yorum</th></tr></thead><tbody><tr><th>Öğe sayısı</th><td>331</td><td>36</td><td>Tam kümenin %10,9’u</td></tr><tr><th>Birden fazla kaynakta bulunan</th><td>124 (37,5%)</td><td>27 (75,0%)</td><td>Çizimli küme ortak kültürel çekirdeğe eğilimli</td></tr><tr><th>Üç kaynakta da bulunan</th><td>41 (12,4%)</td><td>12 (33,3%)</td><td>Çizimli kümede yaklaşık 2,7 kat yoğun</td></tr><tr><th>Ingram’da bulunan</th><td>187</td><td>20</td><td></td></tr><tr><th>Phillips’te bulunan</th><td>181</td><td>29</td><td></td></tr><tr><th>Tyas’ta bulunan</th><td>128</td><td>26</td><td></td></tr><tr><th>Orta bağlam uzunluğu</th><td>251 karakter</td><td>393 karakter</td><td>Yalnızca nicel bir hikâye-zenginliği göstergesi</td></tr></tbody></table>
+    <p><b>36’nın güçlü tarafı:</b> Gül, lale, yasemin, kardelen, unutma beni, zambak, menekşe ve pansy gibi tanınan çiçekleri; aşk, hatırlama, umut, saflık, gurur, tehlike ve ayrılık gibi geniş bir mesaj aralığını içeriyor. Çok kaynaklı ve anlatısı daha dolu girdiler burada orantısız biçimde güçlü.</p>
+    <p><b>36’nın kaybı:</b> 295 öğelik uzun kuyruk tamamen dışarıda kalıyor. Akasya, anemon, kamelya, krizantem, papatya, nergis, şakayık, gelincik, ayçiçeği ve nilüfer gibi ayrı kimliklerin yanında; tomurcuk, yaprak, kurumuş/solmuş çiçek, tohum başı ve çok sayıdaki renk/kültivar ayrımı da kayboluyor.</p>
+    <p><b>Görsel bütünlük:</b> 36 çizimli öğe aynı tarih aralığından gelse de üç farklı kitabın levha ve renk dili karışıyor. Bu nedenle 36’nın tamamı içerik açısından seçkin, fakat tek başına tam bir görsel sistem değil.</p>
+  </section>
+
+  <section class="panel recommendation">
+    <h2>Önerilen başlangıç: aynı Tyas üslubunda 10 öğe</h2>
+    <p>İlk kullanım için aşağıdaki 10 öğe aynı kitabın çizim dilinden geliyor, eşleşmeleri kesin, hedef çiçekleri baskın ve üç belirsiz eşleşmeyi içermiyor. Üç farklı gül varyantını da tekrarlamayarak mesaj aralığını geniş tutuyor.</p>
+    <ol class="core-list"><li>Borage</li><li>Forget-me-not</li><li>Fuchsia</li><li>Mignonette</li><li>Peruvian Heliotrope</li><li>Rose</li><li>Thrift</li><li>Trumpet Flower (Virginian/Carolina Jasmine)</li><li>Tulip</li><li>White Lily</li></ol>
+    <p class="footnote">Alternatif: nicelik gerekiyorsa Tyas’ın kesin ve hedefi baskın 12 öğelik grubu genişletilebilir. Phillips’in 16 çizimi de üslup ve kimlik bakımından tutarlı, fakat kaynak hikâyelerinin bir bölümü yalnız kısa şiir alıntısıdır.</p>
+  </section>
+
+  <nav class="toolbar" aria-label="Filtreler">
+    <button class="active" data-filter="all">Tümü (36)</button>
+    <button data-filter="core">Önerilen 10</button>
+    <button data-filter="strong">Güçlü (27)</button>
+    <button data-filter="caution">Kompozisyon uyarısı (6)</button>
+    <button data-filter="review">Kimlik kontrolü (3)</button>
+    <button data-filter="I">Ingram</button><button data-filter="P">Phillips</button><button data-filter="T">Tyas</button>
+  </nav>
+  <section class="cards"><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-010</span><h2>Amaryllis</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-012_amaryllis.jpg" alt="Amaryllis — P-012" loading="lazy"><figcaption><b>P-012</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n326/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>PRIDE [P:218]</li><li>Haughtiness. Pride [T:015]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Amarillis, özenli bakıma rağmen bazen çiçek vermeyi reddettiği için bahçıvanlarca ‘gururlu’ sayılır; buradan kibir ve mağrurluk anlamı doğar.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:218 | PRIDE] In all the liveries deck&#x27;d of summer&#x27;s pride. || [T:015 | Haughtiness. Pride] Gardeners are said to call amaryllis proud because it may withhold its flowers despite attentive care (pp. 135–136).</p><p><b>Kayıtlar:</b> P:218; T:015</p></details>
+          </div>
+        </article><article class="card caution" data-grade="caution" data-source="T" data-core="no">
+          <header><div><span class="id">S1F-025</span><h2>Bindweed</h2></div><div class="badges"><span class="badge caution">Kullanılabilir; kompozisyon kalabalık</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-014_bindweed.jpg" alt="Bindweed — T-014" loading="lazy"><figcaption><b>T-014</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n306/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Humility [T:043]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Tarlalarda yere yakın ilerleyen, sade fakat inatçı bir sarmaşıktır. Gösterişsiz görünüşü tevazuya bağlanır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek aynı kırpımda başka bitkilerle birlikte; tek başına bir botanik portre değil.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[T:043 | Humility] Bindweed is described as a simple but troublesome perennial twiner in cornfields, its simplicity supplying the humility emblem (pp. 141–142).</p><p><b>Kayıtlar:</b> T:043</p></details>
+          </div>
+        </article><article class="card review" data-grade="review" data-source="T" data-core="no">
+          <header><div><span class="id">S1F-030</span><h2>Blue Violet</h2></div><div class="badges"><span class="badge review">Kimlik kontrolü gerekli</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-011_purple-violet.jpg" alt="Blue Violet — T-011" loading="lazy"><figcaption><b>T-011</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n210/mode/1up">kaynak sayfa</a> · güven: probable</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Faithfulness [I:750]</li><li>Modesty [T:334]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Menekşe, yapraklarının altında saklanırken kokusuyla varlığını belli eder; bu yüzden tevazuya, başka bir gelenekteyse sadakate dönüşür.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Levha ‘Purple Violet’, kayıt ‘Blue Violet’ diyor; kimlik/renk eşleşmesi yalnızca olası.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:750 | Faithfulness] Source-specific context: Ingram presents Violet chiefly as modesty while acknowledging faithfulness as a rival meaning and surveys the flower&#x27;s exceptional place in Greek identity, myth, and European poetry. (printed pp. 256–261). || [T:334 | Modesty] Blue violet hides its fragrant flower beneath low foliage, making modesty visible through scent without display (pp. 200–202).</p><p><b>Kayıtlar:</b> I:750; T:334</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-031</span><h2>Borage</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-002_borage.jpg" alt="Borage — T-002" loading="lazy"><figcaption><b>T-002</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n49/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>BLUNTNESS OR ROUGHNESS OF MANNERS [P:028]</li><li>Bluntness [T:048]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Hodanın dikenli, tüylü ve buruşuk dış yüzü kaba veya açık sözlü tavrı; faydalı oluşuysa bu sert kabuğun ardındaki değeri temsil eder.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:028 | BLUNTNESS OR ROUGHNESS OF MANNERS] This stimulating plant, has its stalks and leaves covered with a rough hairy substance, and is therefore chosen for this emblem. || [T:048 | Bluntness] Borage’s prickly, hairy, wrinkled leaves are contrasted with the usefulness that makes its rough exterior forgivable (pp. 56–57).</p><p><b>Kayıtlar:</b> P:028; T:048</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="no">
+          <header><div><span class="id">S1F-048</span><h2>China/Monthly Rose</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-008_china-monthly-rose.jpg" alt="China/Monthly Rose — T-008" loading="lazy"><figcaption><b>T-008</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n210/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Beauty always new [I:610; P:023]</li><li>Beauty ever new [T:076; T:209; T:281]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Çin ya da aylık gül, yıl boyunca tekrar tekrar çiçek açar. Sürekli yenilenen bu görünüş ‘daima yeni güzellik’ anlamını taşır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:610 | Beauty always new] Source-specific context: Ingram presents Rose as the universal emblem of love and builds an extensive literary, historical, religious, and mythological survey around its beauty, fragrance, colours, and varieties. (printed pp. 23–48). || [P:023 | BEAUTY ALWAYS NEW] The accompanying verse praises a rose that returns nature&#x27;s gifts as incense and blooms through the seasons. || [T:076; T:209; T:281 | Beauty ever new] The monthly rose is praised for renewing its bloom over much of the year, and Tyas records its late-eighteenth-century arrival in cultivation (pp. 51–52).</p><p><b>Kayıtlar:</b> I:610; P:023; T:076; T:209; T:281</p></details>
+          </div>
+        </article><article class="card caution" data-grade="caution" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-053</span><h2>Cistus Or Rock Rose</h2></div><div class="badges"><span class="badge caution">Kullanılabilir; kompozisyon kalabalık</span><span class="badge thin">bağlam çok kısa</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-007_cistus-rock-rose.jpg" alt="Cistus Or Rock Rose — P-007" loading="lazy"><figcaption><b>P-007</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n185/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>POPULAR FAVOUR [P:211]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Kaya gülü burada ‘halkın beğenisi’ anlamına bağlanır; ancak kaynakta bunu geliştiren bir hikâyeden çok kısa bir şiir alıntısı vardır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Kaya gülü belirgin, fakat kompozisyonda komşu çiçekler de bulunuyor.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:211 | POPULAR FAVOUR] Admire we then, Or popularity, or stars, or strings.</p><p><b>Kayıtlar:</b> P:211</p></details>
+          </div>
+        </article><article class="card review" data-grade="review" data-source="T" data-core="no">
+          <header><div><span class="id">S1F-055</span><h2>Clove Gillyflower</h2></div><div class="badges"><span class="badge review">Kimlik kontrolü gerekli</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-017_clove-pink.jpg" alt="Clove Gillyflower — T-017" loading="lazy"><figcaption><b>T-017</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n318/mode/1up">kaynak sayfa</a> · güven: possible</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Dignity [T:083]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Kaynak, Moluk Adaları’ndaki şeflerin rütbelerini farklı sayıda karanfil çiçeğiyle göstermesini anlatır; çiçek böylece vakar ve mevki simgesine dönüşür.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Levha ‘Clove Pink’, kayıt ‘Clove Gillyflower’; tarihî terminoloji tam örtüşmüyor.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[T:083 | Dignity] The article connects dignity with Moluccan chiefs wearing differing numbers of clove flowers as marks of rank, then discusses the garden carnation substitute (pp. 83–84).</p><p><b>Kayıtlar:</b> T:083</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-060</span><h2>Columbine</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-009_columbine.jpg" alt="Columbine — P-009" loading="lazy"><figcaption><b>P-009</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n196/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>FOLLY [P:107; T:087]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Hasekiküpesinin ‘budalalık’ anlamı için kaynaklar kesin değildir; çiçeğin tuhaf biçimi ve eski kırsal çağrışımları olası açıklamalar olarak aktarılır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:107 | FOLLY] And entwine The white, the blue, the flesh-like columbine. || [T:087 | Folly] Tyas admits uncertainty over columbine’s folly emblem and records competing explanations based on its form and long-standing rustic popularity (pp. 114–115).</p><p><b>Kayıtlar:</b> P:107; T:087</p></details>
+          </div>
+        </article><article class="card caution" data-grade="caution" data-source="I" data-core="no">
+          <header><div><span class="id">S1F-065</span><h2>Cornflower (Blue-Bottle Centaury)</h2></div><div class="badges"><span class="badge caution">Kullanılabilir; kompozisyon kalabalık</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/ingram-1869/i-004_cornflower.jpg" alt="Cornflower (Blue-Bottle Centaury) — I-004" loading="lazy"><figcaption><b>I-004</b> · John H. Ingram, Flora Symbolica (1869) · <a href="https://archive.org/details/florasymbolica00ingr/page/n236/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Delicacy [I:196; P:070; T:046]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Peygamber çiçeğinin narin mavi görünüşü inceliğe bağlanır. Cycinus’un çelenkleri, aşk falında kullanılması ve boya elde edilmesi de anlatılır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Peygamber çiçeği belirgin; üst kenarda gelincikten bir parça kalıyor.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:196 | Delicacy] Source-specific context: Ingram links Cornflower with delicacy, recounts the Cycinus garland-maker tradition, and describes its blue bloom as a flower used in love divination and pigment making. (printed pp. 298–299). || [P:070 | DELICACY] There is a flower, a purple flower Sown by the wind, nursed by the shower. || [T:046 | Delicacy] The flower’s sky-blue colour supports delicacy, while a fable derives Cyanus from a youth devoted to gathering cornflowers (pp. 77–78).</p><p><b>Kayıtlar:</b> I:196; P:070; T:046</p></details>
+          </div>
+        </article><article class="card caution" data-grade="caution" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-067</span><h2>Cowslip</h2></div><div class="badges"><span class="badge caution">Kullanılabilir; kompozisyon kalabalık</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-013_cowslip.jpg" alt="Cowslip — P-013" loading="lazy"><figcaption><b>P-013</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n367/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Pensiveness. Winning grace. Youthful beauty [I:200]</li><li>PENSIVENESS [P:202]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Eğik başı ve kırılgan görünüşü düşünceli bir gence benzetilir; erken açması genç güzelliği, çabuk solmasıysa genç yaşta kaybı çağrıştırır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Çuha çiçeği seçilebiliyor, fakat çevresindeki fundalar kompozisyonun parçası.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:200 | Pensiveness. Winning grace. Youthful beauty] Source-specific context: Ingram links the fragile, drooping Cowslip with youthful beauty and traces that association through older English poetry, especially imagery of youth, frailty, and early death. (printed pp. 158–160). || [P:202 | PENSIVENESS] Poetic descriptions of the cowslip&#x27;s drooping, pensive head and melancholy love underlie the emblem.</p><p><b>Kayıtlar:</b> I:200; P:202</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-092</span><h2>Everlasting Pea</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-011_everlasting-pea.jpg" alt="Everlasting Pea — P-011" loading="lazy"><figcaption><b>P-011</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n264/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>LASTING PLEASURE [P:164]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Her yıl yeniden çiçeklenen çok yıllık bezelye, güzelliğin tekrar tekrar geri gelmesi nedeniyle ‘kalıcı haz’ simgesidir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:164 | LASTING PLEASURE] The perennial everlasting pea represents lasting pleasure because its beautiful flower clusters are renewed every year.</p><p><b>Kayıtlar:</b> P:164</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-096</span><h2>Fly Orchis</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-008_fly-orchis.jpg" alt="Fly Orchis — P-008" loading="lazy"><figcaption><b>P-008</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n196/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>ERROR [P:092]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Sinek orkidesi, Flora’nın sapın üzerine çiçek yerine yanlışlıkla sinekler serpiştirmiş gibi görünmesi nedeniyle ‘hata’ anlamını alır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:092 | ERROR] The fly orchis is treated as though Flora mistakenly sprinkled a stem with flies instead of flowers.</p><p><b>Kayıtlar:</b> P:092</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-097</span><h2>Forget-me-not</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-006_forget-me-not.jpg" alt="Forget-me-not — T-006" loading="lazy"><figcaption><b>T-006</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n139/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Forget-me-not [I:282; P:110; T:225]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Tuna kıyısındaki efsanede boğulmak üzere olan şövalye çiçeği sevgilisine atar ve son kez ‘beni unutma’ der. Çiçeğin adı ve anma anlamı bu sahneye bağlanır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:282 | Forget-me-not] Source-specific context: Ingram recounts the German Danube legend in which a drowning knight throws the flower to his beloved with a final plea not to forget him, grounding the flower&#x27;s memorial meaning. (printed pp. 172–176). || [P:110 | FORGET ME NOT] Its celebration in German love songs as Vergiss mich nicht led European sonnet writers to adopt the plant as the emblem &#x27;forget me not.&#x27; || [T:225 | Forget-me-not,] The forget-me-not treatment gives the botanical heading *Myosotis scorpioides* and recounts the lovers’ waterside legend used to explain its name (pp. 117–120).</p><p><b>Kayıtlar:</b> I:282; P:110; T:225</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-098</span><h2>Foxglove</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-004_foxglove.jpg" alt="Foxglove — P-004" loading="lazy"><figcaption><b>P-004</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n137/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Insincerity [I:283]</li><li>YOUTH [P:309]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Parlak çiçeğinin içinde zehir taşıması yüksükotunu samimiyetsizliğin simgesi yapar; başka bir kaynak tüylü sapını gençlikle ilişkilendirir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:283 | Insincerity] Source-specific context: Ingram links Foxglove with insincerity because poison lies within its bright blossom, while tracing finger-and-glove imagery in its names and English poetry. (printed pp. 231–232). || [P:309 | YOUTH] The light down covering the foxglove&#x27;s stalks led poets to make it an emblem of youth.</p><p><b>Kayıtlar:</b> I:283; P:309</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-103</span><h2>Fuchsia</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-005_fuchsia.jpg" alt="Fuchsia — T-005" loading="lazy"><figcaption><b>T-005</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n94/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Taste [T:131]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Küpe çiçeğinin sarkan kırmızı çiçekleri, mor ve açık yeşil tonları ile altın renkli ayrıntıları yetişmiş bir estetik zevkin örneği sayılır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[T:131 | Taste] The fuchsia’s hanging crimson flowers, purple or pale-green shading, and golden reproductive parts are praised as an example of cultivated taste (pp. 270–272).</p><p><b>Kayıtlar:</b> T:131</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-105</span><h2>Full Blown Rose</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge thin">bağlam çok kısa</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-002_full-blown-rose.jpg" alt="Full Blown Rose — P-002" loading="lazy"><figcaption><b>P-002</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n137/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>BEAUTY [P:022]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Tam açmış gül doğrudan güzelliğe bağlanır; kaynak bağlamı esas olarak kadın güzelliğini güle benzeten kısa bir şiirdir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:022 | BEAUTY] for to thee it is That passion likens woman&#x27;s loveliness.</p><p><b>Kayıtlar:</b> P:022</p></details>
+          </div>
+        </article><article class="card caution" data-grade="caution" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-132</span><h2>Honeysuckle</h2></div><div class="badges"><span class="badge caution">Kullanılabilir; kompozisyon kalabalık</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-003_honeysuckle.jpg" alt="Honeysuckle — P-003" loading="lazy"><figcaption><b>P-003</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n137/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>BOND OF LOVE [P:032]</li><li>Bonds of love [T:151]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Hanımelinin esnek dallarla yaşlı bir meşeye sarılması, zamanla güçlenen ve kolay kopmayan sevgi bağlarının görüntüsüne dönüşür.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hanımeli geniş ve çok çiçekli levhada; hedef tek başına izole edilemiyor.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:032 | BOND OF LOVE] So doth the woodbine, the sweet honeysuckle Gently entwine. || [T:151 | Bonds of love] Honeysuckle winding its flexible branches around an old oak becomes the article’s image for enduring bonds of love (pp. 57–59).</p><p><b>Kayıtlar:</b> P:032; T:151</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="I T" data-core="no">
+          <header><div><span class="id">S1F-140</span><h2>Jasmine</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/ingram-1869/i-003_jasmine.jpg" alt="Jasmine — I-003" loading="lazy"><figcaption><b>I-003</b> · John H. Ingram, Flora Symbolica (1869) · <a href="https://archive.org/details/florasymbolica00ingr/page/n88/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure><figure><img src="images/flower-crops/tyas-1869/t-010_white-jasmine.jpg" alt="Jasmine — T-010" loading="lazy"><figcaption><b>T-010</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n210/mode/1up">kaynak sayfa</a> · güven: probable</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Amiability [I:380; T:169]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Yasemin hoş kokusu ve farklı çeşitleriyle sevecenlik ve uyumluluğu temsil eder; kaynaklar yayılışını ve çelik ya da daldırmayla çoğaltılmasını da anlatır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:380 | Amiability] Source-specific context: Ingram favors amiability among Jasmine&#x27;s many meanings, then distinguishes several fragrant varieties and recounts the plant&#x27;s introduction and literary reputation. (printed pp. 68–71). || [T:169 | Amiability] Tyas notes jasmine’s inability to ripen seed locally and explains propagation by layering branches or taking cuttings (pp. 34–37).</p><p><b>Kayıtlar:</b> I:380; T:169</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="I" data-core="no">
+          <header><div><span class="id">S1F-153</span><h2>Lily Of The Valley</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/ingram-1869/i-006_lily-of-the-valley.jpg" alt="Lily Of The Valley — I-006" loading="lazy"><figcaption><b>I-006</b> · John H. Ingram, Flora Symbolica (1869) · <a href="https://archive.org/details/florasymbolica00ingr/page/n324/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Return of happiness. Unconscious sweetness [I:422]</li><li>RETURN OF HAPPINESS [P:240; T:184]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Gölgeli vadilerde baharla birlikte yeniden beliren ve kokusunu yayan müge, kıştan sonra mutluluğun geri dönmesini temsil eder.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:422 | Return of happiness. Unconscious sweetness] Source-specific context: Ingram links Lily of the Valley with the return of happiness through its spring appearance and records names such as May Lily and Ladder to Heaven. (printed pp. 286–287). || [P:240 | RETURN OF HAPPINESS] In sweet seclusion seems to shrink from view, — You of the valley nam&#x27;d, no longer hide Your blossoms meet to twine the brow of purest bride. || [T:184 | Return of happiness] The lily of the valley is placed in shaded valleys, oak woods, and cool stream banks; its early-May return and perfume are made signs of renewed happiness (pp. 241–243).</p><p><b>Kayıtlar:</b> I:422; P:240; T:184</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-170</span><h2>Mignonette</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-016_mignonette.jpg" alt="Mignonette — T-016" loading="lazy"><figcaption><b>T-016</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n318/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Your qualities surpass your charms [I:466; P:307; T:204]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Muhabbet çiçeği gösterişsizdir ama güçlü kokuludur; bu karşıtlık ‘niteliklerin güzelliğinden üstün’ fikrine ve Amelia–Charlotte anlatısına bağlanır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:466 | Your qualities surpass your charms] Source-specific context: Ingram interprets Mignonette as qualities surpassing charms, contrasting its modest appearance with a fragrance that carried garden pleasure into urban homes and workrooms. (printed p. 279). || [P:307 | YOUR QUALITIES SURPASS YOUR CHARMS] The unassuming yet fragrant mignonette of Egyptian sands inspired the motto that one&#x27;s qualities surpass one&#x27;s charms, through a story cited from Flora Historica. || [T:204 | Your qualities surpass your charms] Tyas follows the flower’s fragrance from princely parterre to cottage and London balcony, then develops the sentiment through the Amelia/Charlotte narrative (pp. 288–292).</p><p><b>Kayıtlar:</b> I:466; P:307; T:204</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-181</span><h2>Pansy</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-015_pansy.jpg" alt="Pansy — P-015" loading="lazy"><figcaption><b>P-015</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n390/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Thoughts [I:331; I:522]</li><li>THOUGHTS. YOU OCCUPY MY THOUGHTS ; OR, PENSEZ A MOI [P:276]</li><li>Think of me [T:142; T:240]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Pansy adı Fransızca pensée, yani ‘düşünce’ sözcüğüne bağlanır. Shakespeare ve çiçek dilinde hatırlama, düşünme ve ‘beni düşün’ mesajını taşır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:331; I:522 | Thoughts] Source-specific context: Ingram links Heart&#x27;s-ease or pansy with thought and remembrance through the French pensée and Shakespeare&#x27;s floral symbolism, while contrasting its rich colours with the violet&#x27;s fragrance. (printed pp. 165–169). || [P:276 | THOUGHTS. YOU OCCUPY MY THOUGHTS ; OR, PENSEZ A MOI] The entry connects pansy&#x27;s names—thought, heart&#x27;s ease, and forget-me-not—with remembrance and notes the flower&#x27;s many varied forms. || [T:142; T:240 | Think of me] The name pansy is traced to the French pensée, meaning thought (pp. 275–276).</p><p><b>Kayıtlar:</b> I:331; I:522; P:276; T:142; T:240</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="I" data-core="no">
+          <header><div><span class="id">S1F-184</span><h2>Passion Flower</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/ingram-1869/i-007_passion-flower.jpg" alt="Passion Flower — I-007" loading="lazy"><figcaption><b>I-007</b> · John H. Ingram, Flora Symbolica (1869) · <a href="https://archive.org/details/florasymbolica00ingr/page/n344/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Religious superstition, when the flower is reversed, or Faith if erect [I:525]</li><li>RELIGIOUS SUPERSTITION [P:233]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Çarkıfeleğin parçaları Hristiyan geleneğinde İsa’nın çilesinin araç ve işaretlerine benzetilir; dik durduğunda inanç, ters yorumlandığında batıl inanç anlamı verilir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:525 | Religious superstition, when the flower is reversed, or Faith if erect] Source-specific context: Ingram presents Passion Flower as faith through the Christian interpretation of its floral structures as instruments and signs of the Passion, first emphasized by Spanish observers in South America. (printed pp. 304–305). || [P:233 | RELIGIOUS SUPERSTITION] Some fair enthusiast views the sainted flower.</p><p><b>Kayıtlar:</b> I:525; P:233</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-188</span><h2>Peruvian Heliotrope</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-015_heliotrope.jpg" alt="Peruvian Heliotrope — T-015" loading="lazy"><figcaption><b>T-015</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n318/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Devotion [I:541]</li><li>INTOXICATED WITH PLEASURE [P:157]</li><li>I love you. Infatuation [T:246]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Güneşe döndüğüne inanılan heliotrop, Clytie’nin Apollo’ya değişmeyen aşkıyla özdeşleşir; bağlılık, aşk ve bazen tutkuya kapılma anlamlarını bir araya getirir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:541 | Devotion] Source-specific context: Ingram links Heliotrope with devoted attachment through the belief that it turns toward the sun and the myth of Clytie&#x27;s unchanging love for Apollo. (printed pp. 112–113). || [P:157 | INTOXICATED WITH PLEASURE] The botanist who found this fragrant flower in the Cordilleras is described as intoxicated with delight; its later value in France reinforces the emblem. || [T:246 | I love you. Infatuation] The article describes the Peruvian evergreen’s lilac flowers and intoxicating perfume, then relates the long narrative of Countess Eleanora of Denmark (pp. 151–154).</p><p><b>Kayıtlar:</b> I:541; P:157; T:246</p></details>
+          </div>
+        </article><article class="card review" data-grade="review" data-source="T" data-core="no">
+          <header><div><span class="id">S1F-191</span><h2>Pink</h2></div><div class="badges"><span class="badge review">Kimlik kontrolü gerekli</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-009_garden-pink.jpg" alt="Pink — T-009" loading="lazy"><figcaption><b>T-009</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n210/mode/1up">kaynak sayfa</a> · güven: probable</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Boldness [I:551]</li><li>Lively and pure affection [T:251]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Bahçe karanfilinin yetiştirildikçe katmerlenmesi ve çok sayıda renge bürünmesi canlı, saf sevgiyi; başka bir kaynakta cesareti çağrıştırır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Levhadaki ‘Garden Pink’ ile genel ‘Pink’ kaydının eşleşmesi olası, kesin değil.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:551 | Boldness] Source-specific context: Ingram links Pink with pure love, explains its classical names as the divine or Jove&#x27;s flower, and distinguishes smaller pinks and gillyflowers from larger carnations. (printed pp. 142–143). || [T:251 | Lively and pure affection] Cultivation is said to double the pink’s petals and create extensive colour variation from a simple red or white wild form (pp. 186–188).</p><p><b>Kayıtlar:</b> I:551; T:251</p></details>
+          </div>
+        </article><article class="card caution" data-grade="caution" data-source="I" data-core="no">
+          <header><div><span class="id">S1F-199</span><h2>Primrose</h2></div><div class="badges"><span class="badge caution">Kullanılabilir; kompozisyon kalabalık</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/ingram-1869/i-005_primrose.jpg" alt="Primrose — I-005" loading="lazy"><figcaption><b>I-005</b> · John H. Ingram, Flora Symbolica (1869) · <a href="https://archive.org/details/florasymbolica00ingr/page/n292/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Early youth and sadness [I:581]</li><li>EARLY YOUTH [P:085; T:265]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Kar çekilirken erken açan soluk ve kırılgan çuha çiçeği gençliği müjdeler; aynı kırılganlık genç yaşta ölüm ve hüzün çağrışımını da taşır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Çuha çiçeği fundalık ve menekşeyle aynı tarihî kompozisyonda.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:581 | Early youth and sadness] Source-specific context: Ingram presents Primrose as youth and supports the association with English poetry that treats the early, pale, fragile flower as an emblem of young life and early death. (printed pp. 262–265). || [P:085 | EARLY YOUTH] The primrose represents the age between childhood and womanhood: an early blossom whose delicate perfume and modest colour attend the path to summer. || [T:265 | Early youth] Primrose appears through retreating winter snow and announces spring, providing the transition into early youth (pp. 90–93).</p><p><b>Kayıtlar:</b> I:581; P:085; T:265</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-216</span><h2>Rhododendron</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge thin">bağlam çok kısa</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-006_rhododendron.jpg" alt="Rhododendron — P-006" loading="lazy"><figcaption><b>P-006</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n160/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>DANGER [P:060]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Ormangülü ‘tehlike’ anlamını taşır; fakat kaynak bunu açıklayan ayrıntılı bir hikâye yerine dağlarda hükmeden bitkiyi anlatan kısa bir dize verir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:060 | DANGER] O&#x27;er pine-clad hills, and dusky plains, In silent state rhododendron reigns.</p><p><b>Kayıtlar:</b> P:060</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="I T" data-core="yes">
+          <header><div><span class="id">S1F-218</span><h2>Rose</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/ingram-1869/i-001_rose.jpg" alt="Rose — I-001" loading="lazy"><figcaption><b>I-001</b> · John H. Ingram, Flora Symbolica (1869) · <a href="https://archive.org/details/florasymbolica00ingr/page/n38/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure><figure><img src="images/flower-crops/ingram-1869/i-002_rose-secondary.jpg" alt="Rose — I-002" loading="lazy"><figcaption><b>I-002</b> · John H. Ingram, Flora Symbolica (1869) · <a href="https://archive.org/details/florasymbolica00ingr/page/n58/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure><figure><img src="images/flower-crops/tyas-1869/t-001_rose.jpg" alt="Rose — T-001" loading="lazy"><figcaption><b>T-001</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n7/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Love [I:603]</li><li>GENTEEL, PRETTY [P:119]</li><li>Beauty [T:280]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Gül, aşkın evrensel simgesi olarak mitoloji, din, şiir, renk ve kokuyla birlikte uzun uzun ele alınır; kısa süreli kusursuzluğu ve her bahar yenilenmesi güzellik fikrini güçlendirir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:603 | Love] Source-specific context: Ingram presents Rose as the universal emblem of love and builds an extensive literary, historical, religious, and mythological survey around its beauty, fragrance, colours, and varieties. (printed pp. 23–48). || [P:119 | GENTEEL, PRETTY] This compact, pretty little offspring of the provins rose, comes about as near to its parent as the term genteel does to elegant, or pretty to beautiful. || [T:280 | Beauty] Tyas emphasizes the rose’s worldwide abundance and its brief perfection before fading, alongside its repeated renewal each spring (pp. 44–51).</p><p><b>Kayıtlar:</b> I:603; P:119; T:280</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-253</span><h2>Snowdrop</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-014_snowdrop.jpg" alt="Snowdrop — P-014" loading="lazy"><figcaption><b>P-014</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n390/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Hope [I:666]</li><li>CONSOLATION [P:050; T:302]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Kışın karı delerek diğer çiçeklerden önce çıkan kardelen, zor zamanda umut ve teselliyi görünür kılar.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:666 | Hope] Source-specific context: Ingram presents Snowdrop chiefly as hope and friendship in adversity because its fragile bloom rises through winter frost and snow before other wild flowers. (printed pp. 156–157). || [P:050 | CONSOLATION] Phillips explains the snow-drop as the first flower to awaken after winter and includes literary quotations. || [T:302 | Consolation] The French name perce-neige is explained by the flower piercing snow while the landscape remains wintry (pp. 68–70).</p><p><b>Kayıtlar:</b> I:666; P:050; T:302</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-267</span><h2>Sweet Pea</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge thin">bağlam çok kısa</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-010_sweet-pea.jpg" alt="Sweet Pea — P-010" loading="lazy"><figcaption><b>P-010</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n264/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>DELICATE PLEASURE [P:071]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Kokulu bezelyenin açık renkli, kanat benzeri narin taç yaprakları ‘ince haz’ anlamına bağlanır; kaynakta bağlam kısa bir şiirle sınırlıdır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:071 | DELICATE PLEASURE] The wings of gentle flush, o&#x27;er delicate white.</p><p><b>Kayıtlar:</b> P:071</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-283</span><h2>Thrift</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-013_thrift.jpg" alt="Thrift — T-013" loading="lazy"><figcaption><b>T-013</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n235/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>DAUNTLESSNESS [P:062]</li><li>Sympathy [T:321]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Deniz kıyısında sert koşullara direnen thrift yılmazlığı; güneşe dönen çok sayıdaki küçük çiçeği ve birleştirici adıysa sempatiyi temsil eder.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:062 | DAUNTLESSNESS] This plant, which seeks the sea shore, and Stems the bold torrent with a dauntless breast. || [T:321 | Sympathy] The Greek-derived name statice is associated with stopping or uniting, while the many small flowers turn toward the sun (pp. 269–270).</p><p><b>Kayıtlar:</b> P:062; T:321</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-285</span><h2>Trumpet Flower (Virginian/Carolina Jasmine)</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-007_trumpet-flower.jpg" alt="Trumpet Flower (Virginian/Carolina Jasmine) — T-007" loading="lazy"><figcaption><b>T-007</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n139/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Separation [I:382; P:249; T:168; T:327]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Boru çiçeğinin trompet biçimi ayrılık haberini duyuran bir sese benzetilir; kaynak bunu dedikodu ve kötü niyetin yeniden birleşmeyi engellemesiyle açıklar.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:382 | Separation] Source-specific context: Ingram favors amiability among Jasmine&#x27;s many meanings, then distinguishes several fragrant varieties and recounts the plant&#x27;s introduction and literary reputation. (printed pp. 68–71). || [P:249 | SEPARATION] Separations are eagerly announced by the trumpets of scandal and ill-nature, who by their discordant sounds, frequently prevent the possibility of a re-union. || [T:168 | Separation] The article identifies the trumpet flower as French “Jasmin de Virginie”/American Jasmine, notes orange flowers in July–August, and discusses hummingbirds using its leaves (pp. 253–254). || [T:327 | Separation] The climber is identified as French “Jasmin de Virginie”/American Jasmine, with orange July–August flowers and an associated hummingbird account (pp. 252–253).</p><p><b>Kayıtlar:</b> I:382; P:249; T:168; T:327</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-286</span><h2>Tuberose</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-016_tuberose.jpg" alt="Tuberose — P-016" loading="lazy"><figcaption><b>P-016</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n409/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Dangerous pleasures [I:730]</li><li>VOLUPTUOUSNESS [P:292]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Sümbülteberin gece yoğunlaşan baş döndürücü kokusu hazza kapılma ve tehlikeli zevklerle ilişkilendirilir; şiirde gecenin kokulu gelini gibi görünür.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:730 | Dangerous pleasures] Source-specific context: Ingram presents Tuberose as dangerous pleasures through the flower&#x27;s exceptionally strong perfume, while explaining that its name derives from Polianthes tuberosa rather than tubes or roses. (printed pp. 134–135). || [P:292 | VOLUPTUOUSNESS] A poem calls the tuberose the silver-bright mistress of the night in Malay gardens, appearing like a scented bride when the sun is away.</p><p><b>Kayıtlar:</b> I:730; P:292</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P T" data-core="yes">
+          <header><div><span class="id">S1F-287</span><h2>Tulip</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-001_tulip.jpg" alt="Tulip — P-001" loading="lazy"><figcaption><b>P-001</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n7/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure><figure><img src="images/flower-crops/tyas-1869/t-003_tulip.jpg" alt="Tulip — T-003" loading="lazy"><figcaption><b>T-003</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n94/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>DECLARATION OF LOVE [P:068; T:329]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Boğaziçi geleneğinde lale hem değişkenliği hem şiddetli aşkı taşıyabilir; renk çeşitliliği onu bir aşk ilanına dönüştürür.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:068 | DECLARATION OF LOVE] Then comes the tulip race, where beauty plays Her idle freaks. || [T:329 | Declaration of love] On the Bosphorus tulip signifies both inconstancy and violent love, while its colour variations support a declaration in floral language (pp. 74–77).</p><p><b>Kayıtlar:</b> P:068; T:329</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="yes">
+          <header><div><span class="id">S1F-306</span><h2>White Lily</h2></div><div class="badges"><span class="badge strong">Güçlü</span><span class="badge core">10’lu çekirdek</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-004_white-lily.jpg" alt="White Lily — T-004" loading="lazy"><figcaption><b>T-004</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n94/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Purity. Sweetness [I:420]</li><li>PURITY AND MODESTY [P:225; T:183]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Beyaz zambak, rengi nedeniyle saflık ve tevazuyla; Hristiyan imgeleri ve Juno’nun sütünden doğduğu anlatısıyla kutsallık ve asaletle ilişkilendirilir.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:420 | Purity. Sweetness] Source-specific context: Ingram presents Lily as majesty through its dedication to Juno, biblical esteem, and temple ornament, while noting that individual lily varieties carry separate meanings. (printed pp. 272–275). || [P:225 | PURITY AND MODESTY] All nations and ages agree in making this flower the symbol of purity and modesty ; and its beauty and delicacy has ever been the theme of admiration with the poets from the time of Solomon to the present day. || [T:183 | Purity and Modesty] Tyas combines the lily’s white form with Christian purity and the mythic account in which Juno’s milk produced lilies (pp. 231–236).</p><p><b>Kayıtlar:</b> I:420; P:225; T:183</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="T" data-core="no">
+          <header><div><span class="id">S1F-317</span><h2>Wild/Dog Rose</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/tyas-1869/t-012_dog-rose.jpg" alt="Wild/Dog Rose — T-012" loading="lazy"><figcaption><b>T-012</b> · Robert Tyas, The Sentiment of Flowers (1869) · <a href="https://archive.org/details/sentimentofflowe00tyas/page/n235/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>Pleasure and pain [I:615]</li><li>Simplicity [T:282; T:340]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Yabani gül kırsal buketin sade çiçeğidir; dikenleri haz ile acıyı birlikte taşırken, eski çiçek oyunlarında belagat ödülü olarak da kullanılır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[I:615 | Pleasure and pain] Source-specific context: Ingram presents Rose as the universal emblem of love and builds an extensive literary, historical, religious, and mythological survey around its beauty, fragrance, colours, and varieties. (printed pp. 23–48). || [T:282; T:340 | Simplicity] The dog rose belongs to the rustic bouquet, while Clemence Isaure’s floral games awarded a single rose for eloquence (pp. 256–257).</p><p><b>Kayıtlar:</b> I:615; T:282; T:340</p></details>
+          </div>
+        </article><article class="card strong" data-grade="strong" data-source="P" data-core="no">
+          <header><div><span class="id">S1F-322</span><h2>Yellow Day Lily</h2></div><div class="badges"><span class="badge strong">Güçlü</span></div></header>
+          <div class="gallery"><figure><img src="images/flower-crops/phillips-1825/p-005_yellow-day-lily.jpg" alt="Yellow Day Lily — P-005" loading="lazy"><figcaption><b>P-005</b> · Henry Phillips, Floral Emblems (1825) · <a href="https://archive.org/details/floralemblems00philrich/page/n160/mode/1up">kaynak sayfa</a> · güven: exact</figcaption></figure></div>
+          <div class="body">
+            <section><h3>Anlamlar</h3><ul><li>COQUETRY [P:053; T:346]</li></ul></section>
+            <section><h3>Kısa hikâye / gerekçe</h3><p>Sarı gündüz zambağının çiçeği çoğu zaman ikinci güne kalmaz. Bu kısa ömürlü güzellik cilve ve değişkenliğin simgesi yapılır.</p></section>
+            <section class="visual-note"><h3>Çizim değerlendirmesi</h3><p>Hedef çiçek net veya baskın; mevcut kırpım görsel kullanım için uygun.</p></section>
+            <details><summary>Tam kaynak bağlamını göster</summary><p>[P:053 | COQUETRY] This fragile beauty is made the emblem of coquetry, because its flowers seldom last a second day. || [T:346 | Coquetry] Yellow day-lily flowers rarely remain open for two days, giving rise to the French name belle d’un jour (pp. 71–72).</p><p><b>Kayıtlar:</b> P:053; T:346</p></details>
+          </div>
+        </article></section>
+  <p class="footnote">Görsel kalite sınıfları ürün kararı değil, owner review için araştırma değerlendirmesidir. Modern botanik fotoğrafı kullanılmamıştır.</p>
+</main>
+<script>
+  const buttons=[...document.querySelectorAll('button[data-filter]')], cards=[...document.querySelectorAll('.card')];
+  buttons.forEach(button=>button.addEventListener('click',()=>{
+    buttons.forEach(b=>b.classList.remove('active')); button.classList.add('active'); const f=button.dataset.filter;
+    cards.forEach(card=>card.classList.toggle('hidden', !(f==='all' || (f==='core' && card.dataset.core==='yes') || card.dataset.grade===f || card.dataset.source.split(' ').includes(f))));
+  }));
+</script></body></html>

@@ -55,6 +55,7 @@ export default function DiaryPrototypePage() {
     <DiaryApp
       initialEntries={entries}
       memberName="Ada"
+      memberNames={["Ada", "Deniz"]}
       initialNow={now.toISOString()}
       flowerResponsePersistence="local"
     />

@@ -46,6 +46,8 @@ type MemoriesAppProps = {
   canEdit?: boolean;
   canDelete?: boolean;
   canLogout?: boolean;
+  memberName?: string;
+  memberNames?: string[];
 };
 
 export function MemoriesApp({
@@ -56,6 +58,8 @@ export function MemoriesApp({
   canEdit = false,
   canDelete = false,
   canLogout = false,
+  memberName = "Üye",
+  memberNames = [],
 }: MemoriesAppProps = {}) {
   const router = useRouter();
   const [view, setView] = useState<ViewMode>("month");
@@ -162,7 +166,7 @@ export function MemoriesApp({
   return (
     <TooltipProvider>
       <div className="app-shell">
-        <DesktopSidebar section="memories" />
+        <DesktopSidebar section="memories" memberNames={memberNames} />
         <main className="min-w-0 flex-1 pb-24 lg:pb-0">
           <header className="page-header">
             <div className="flex items-center justify-between gap-5 lg:justify-end">
@@ -185,7 +189,9 @@ export function MemoriesApp({
                     </Button>
                   </form>
                 ) : null}
-                <div className="avatar" aria-label="Hesap">•</div>
+                <div className="avatar" aria-label={`${memberName} hesabı`}>
+                  {memberName.trim().charAt(0).toLocaleUpperCase("tr-TR")}
+                </div>
               </div>
             </div>
 

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { getDatabase, isDatabaseConfigured } from "@/db";
@@ -18,6 +18,31 @@ export async function isMember(userId: string) {
     .limit(1);
 
   return Boolean(profile);
+}
+
+// Usernames live in the database so member identities never appear in source code.
+export async function resolveLoginEmail(username: string) {
+  const [account] = await getDatabase().execute<{ email: string | null }>(sql`
+    select users.email
+    from ${profiles}
+    join auth.users as users on users.id = ${profiles.id}
+    where ${profiles.username} = ${username}
+    limit 1
+  `);
+
+  return account?.email ?? null;
+}
+
+export async function getMemberNames(memberId: string) {
+  const rows = await getDatabase()
+    .select({ id: profiles.id, displayName: profiles.displayName })
+    .from(profiles)
+    .orderBy(asc(profiles.createdAt));
+
+  return {
+    memberName: rows.find((row) => row.id === memberId)?.displayName ?? "Üye",
+    memberNames: rows.map((row) => row.displayName),
+  };
 }
 
 export async function getCurrentMemberId() {

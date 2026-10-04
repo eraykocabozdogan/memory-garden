@@ -81,7 +81,11 @@ type MemoryNavigationProps = {
   section: MemorySection;
 };
 
-export function DesktopSidebar({ section }: MemoryNavigationProps) {
+type DesktopSidebarProps = MemoryNavigationProps & {
+  memberNames?: string[];
+};
+
+export function DesktopSidebar({ section, memberNames = [] }: DesktopSidebarProps) {
   return (
     <aside className="desktop-sidebar">
       <Brand />
@@ -103,12 +107,13 @@ export function DesktopSidebar({ section }: MemoryNavigationProps) {
           <span>Günlük</span>
         </Link>
       </nav>
-      <div className="mt-auto border-t border-border/70 pt-5">
-        <p className="font-handwriting text-xl text-accent-ink">Her gün, biraz daha biz.</p>
-        <p className="mt-2 text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground">
-          İkimize
-        </p>
-      </div>
+      {memberNames.length > 0 ? (
+        <div className="mt-auto border-t border-border/70 pt-5">
+          <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground">
+            {memberNames.join(" & ")}
+          </p>
+        </div>
+      ) : null}
     </aside>
   );
 }

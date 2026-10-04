@@ -46,9 +46,18 @@ npm run db:migrate
 npm run dev
 ```
 
-Members sign in with a username that maps to a Supabase Auth email. Set your two
-usernames in `features/auth/login-identity.ts` and create matching users in Supabase.
-`/prototype` and `/prototype/diary` render the UI with mock data and need no backend.
+Members sign in with a username stored in `profiles.username`. The app looks up the
+matching Supabase Auth email on the server, so no member identity lives in the code.
+Display names also come from `profiles`. After creating the two Supabase users:
 
-> This is the public source of an app I use privately. Personal data, credentials and
-> research material are not part of this repository.
+```sql
+insert into profiles (id, display_name, username)
+values ('<auth-user-id>', '<display name>', '<login username>');
+```
+
+`/prototype` and `/prototype/diary` render the UI with mock data and need no backend.
+`research/` holds the flower-language source study (Ingram 1869, Phillips 1825,
+Tyas 1869) and the visual source comparison behind the catalog.
+
+> This is the public source of an app I use privately. Personal data and credentials
+> are not part of this repository.

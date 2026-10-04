@@ -18,6 +18,7 @@ type DiaryAppProps = {
   initialEntries: DiaryEntry[];
   initialGardenFlowers?: DiaryGardenFlower[];
   memberName: string;
+  memberNames?: string[];
   initialNow: string;
   flowerResponsePersistence?: "server" | "local";
 };
@@ -39,6 +40,7 @@ export function DiaryApp({
   initialEntries,
   initialGardenFlowers = [],
   memberName,
+  memberNames = [],
   initialNow,
   flowerResponsePersistence = "server",
 }: DiaryAppProps) {
@@ -250,7 +252,7 @@ export function DiaryApp({
 
   return (
     <div className="app-shell">
-      <DesktopSidebar section="diary" />
+      <DesktopSidebar section="diary" memberNames={memberNames} />
       <main className="min-w-0 flex-1 pb-24 lg:pb-0">
         <header className="page-header">
           <div className="flex items-center justify-between gap-5 lg:justify-end">
