@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1787977655662,
+      "tag": "20260829042735_furry_big_bertha",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787979831146,
+      "tag": "20260829050351_faulty_lila_cheney",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788073431635,
+      "tag": "20260830070351_flaky_dexter_bennett",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788118247743,
+      "tag": "20260830193047_add_diary",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788197167166,
+      "tag": "20260831172607_persist_diary_garden_flowers",
+      "breakpoints": true
+    }
+  ]
+}

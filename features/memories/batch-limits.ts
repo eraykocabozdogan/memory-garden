@@ -1,0 +1,3 @@
+export const MAX_MEMORY_BATCH_ITEMS = 20;
+export const MAX_MEMORY_BATCH_BYTES = 5_000_000_000;
+export const MAX_CONCURRENT_MEMORY_UPLOADS = 2;

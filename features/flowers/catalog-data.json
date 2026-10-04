@@ -1,0 +1,697 @@
+[
+  {
+    "id": "alcea-rosea",
+    "path": "Alcea › rosea",
+    "name": "Gülhatmi",
+    "meaning": "üretkenlik, doğurganlık, yükselme isteği, hırs",
+    "context": "Phillips, “Fecundity”, s. 141; Ingram, “Hollyhock”, s. 213–214.",
+    "narratives": [
+      "Phillips, bu uzun ve güzel Doğu bitkisinin çok bol tohum vermesi nedeniyle üretkenliğin simgesi yapıldığını söyler.",
+      "Ingram, uzun ve heybetli gülhatmiyi hırsın simgesi olarak verir. Yaz, öteki çiçeklerin çoğunu alıp götürdükten sonra gülhatminin gövdesi solan ve solmuş çiçeklerin üzerine yükselir; her renk ve tondaki gösterişli çiçeklerini açar."
+    ]
+  },
+  {
+    "id": "anemone",
+    "path": "Anemone",
+    "name": "Anemon",
+    "meaning": "terk edilmişlik, sönmüş umutlar, yas, kırılganlık, hastalık",
+    "context": "Ingram, “Anemone”, s. 82–85; anlatıların kaynak içinde Antik Yunan-Roma mitleri ve eski Mısır yorumu olarak aktarılması.",
+    "narratives": [
+      "Eskilerin anlattığına göre Anemone, Zephyros'un sevdiği bir su perisiydi. Flora onun güzelliğini kıskandı, onu sarayından sürdü ve sonunda bugün onun adını taşıyan çiçeğe dönüştürdü.",
+      "Başka bir anlatıda anemon, Adonis'in kanı ile Venus'un onun bedeni üzerine döktüğü gözyaşlarından doğar. Ovidius'un aktarımında Venus, sevgilisinin anısını ve kendi kederini kalıcılaştırmak için Adonis'in kanını bir çiçeğe dönüştürür.",
+      "Bazı yazarlar “rüzgâr çiçeği” adını, yüksek ve rüzgâra açık yerlerde yetişmesine; bazıları ise rüzgârda titreyip açılmasına bağlar.",
+      "Eski Mısırlıların anemonu hastalığın simgesi saydığı aktarılır. Ingram'ın alıntıladığı açıklamada yabani türlerin narin görünüşü, beyaz taç yapraklar üzerindeki soluk kızarıklıkla birlikte, veremli hastanın yanağındaki aldatıcı pembeliğe benzetilir.",
+      "Kırılgan bir anemon ve “Hükmü kısadır” sözü, güzelliğin geçici oluşunun simgesi olarak verilir."
+    ]
+  },
+  {
+    "id": "antirrhinum",
+    "path": "Antirrhinum",
+    "name": "Aslanağzı",
+    "meaning": "küstahlık, haddini aşma",
+    "context": "Phillips, “Presumption”, s. 245; çiçeğin görünüşüne dayalı İngiliz çiçek dili açıklaması.",
+    "narratives": [
+      "Phillips, tek parçalı tacın bir maske oluşturduğunu ve bu maskenin bir hayvanın yüzüne benzediğini söyler. Aslanağzı bu nedenle küstahlığın ve haddini aşmanın simgesi yapılmıştır."
+    ]
+  },
+  {
+    "id": "aquilegia",
+    "path": "Aquilegia",
+    "name": "Hasekiküpesi",
+    "meaning": "budalalık, maskaralık",
+    "context": "Phillips, “Folly”, s. 148; eski saray soytarısının giysisiyle kurulan görünüş benzetmesi.",
+    "narratives": [
+      "Phillips'e göre hasekiküpesi, ya alacalı tacı nedeniyle ya da geriye kıvrılan nektarlığının eski soytarıların başlığına benzemesi nedeniyle budalalığın simgesi yapılmıştır."
+    ]
+  },
+  {
+    "id": "bellis-perennis",
+    "path": "Bellis › perennis",
+    "name": "Papatya",
+    "meaning": "masumiyet, çocukluk, anma, sevginin karşılığını sorgulama, kabul, kararsızlık",
+    "context": "Phillips, “Innocence”, s. 188; Ingram, “Daisy”, s. 266–268; çocuk oyunları, Ossian aktarımı ve şövalyelik geleneği.",
+    "narratives": [
+      "Phillips, papatyanın çocukluğun ilk çiçek eğlencelerinden birini oluşturması nedeniyle masumiyetin simgesi yapıldığını söyler.",
+      "Ingram'ın Macpherson'ın Ossian yorumundan aktardığı anlatıda papatya ilk kez bir bebeğin mezarı üzerine, çocuk meleklerin gamzeli elleriyle ekilir.",
+      "Âşık, çiçeğin parçalarını sırayla koparıp “Beni seviyor mu? Biraz; çok; tutkuyla; hiç” der; son parça sonucu belirler.",
+      "Şövalyelik çağında kabul edilmiş bir âşığın armasına papatya işlemesine izin verilirdi. Kadın talibe evet ya da hayır demeyip beklemek istediğinde başına yabani papatyalardan bir taç takardı."
+    ]
+  },
+  {
+    "id": "bellis-perennis-katmerli",
+    "path": "Bellis › perennis › katmerli",
+    "name": "Katmerli papatya",
+    "meaning": "duygularına katılıyorum, paylaşım",
+    "context": "Phillips, “Participation, or, I Partake Your Sentiments”, s. 229; katmerli biçimin yapısına dayalı açıklama.",
+    "narratives": [
+      "Phillips, yetiştirilmiş katmerli papatyanın çoğalmış taç yapraklarının hepsinin tek bir çiçek tablasını paylaşması nedeniyle katılımın ve “duygularına katılıyorum” sözünün simgesi yapıldığını söyler."
+    ]
+  },
+  {
+    "id": "calendula-officinalis",
+    "path": "Calendula › officinalis",
+    "name": "Aynısefa",
+    "meaning": "çaresizlik, adanmışlık, bütün düşüncelerin tek yöne çevrilmesi",
+    "context": "Phillips, “Despair”, s. 117; Ingram, “Marygold”, s. 129–131; eski tıbbi kullanım ve Marguerite d'Orléans'ın arması.",
+    "narratives": [
+      "Phillips, aynısefanın taç yapraklarının eskiden ruhu yükselten ve kalbin aşırı çarpıntısını azaltan bir ilaç olarak değer gördüğünü söyler. Çaresizlik içindekilere verildiği için çiçek bu hâlin simgesi olmuştur.",
+      "Ingram'a göre çiçeğin altın yüzünü daima güneşe çevirmesi ona “güneşin takipçisi” ve “güneşin eşi” adlarını kazandırmıştır.",
+      "Fransa Kralı IV. Henri'nin anne tarafından büyükannesi Marguerite d'Orléans, bütün düşünce ve sevgisinin göğe yöneldiğini anlatmak için güneşe dönen bir aynısefayı, “Yalnız onu izlemek istiyorum” sözüyle birlikte arma işareti seçmiştir."
+    ]
+  },
+  {
+    "id": "campsis-radicans",
+    "path": "Campsis › radicans",
+    "name": "Acem borusu",
+    "meaning": "ayrılık, kolay kopuş",
+    "context": "Phillips, “Separation”, s. 276; kaynakta tarihsel `Bignonia radicans` adıyla verilen bitkinin çiçek davranışı.",
+    "narratives": [
+      "Phillips, Kuzey Amerika kökenli bitkinin parlak taçlarının dökülerek dişi organı korumasız bıraktığını söyler. Bağlılık bu kadar hafif olduğunda ayrılık kolaylaştığı için simgenin buradan çıkarıldığı varsayılır."
+    ]
+  },
+  {
+    "id": "celosia-argentea-ibik-bicimli",
+    "path": "Celosia › argentea › ibik biçimli",
+    "name": "Horozibiği",
+    "meaning": "benzersizlik, sıra dışılık",
+    "context": "Phillips, “Singularity”, s. 283; kaynakta `Celosia cristata` adıyla verilen ibik biçimli görünüş.",
+    "narratives": [
+      "Phillips, horozibiğini “ilahi ve tuhaf”, çiçekleri gün boyunca değişen ve sayısız güzel renk taşıyan sıra dışı bir amarant olarak sunar. Çin, Japonya ve İran'ın bazı kesimlerinde yaygın olduğunu söyler.",
+      "Kaynak, yalnız dikkat çekmek için sıra dışılığa başvurulabildiğini; fakat bilgece ve değerli bir şeyde sıra dışı olmanın ayıp değil övgü olduğunu ekler."
+    ]
+  },
+  {
+    "id": "cercis-siliquastrum",
+    "path": "Cercis › siliquastrum",
+    "name": "Erguvan",
+    "meaning": "inançsızlık, ihanet, sessiz ve karşılıksız sevgi, hatıra, yas",
+    "context": "Ingram, “Judas Flower”, s. 118–120; Hristiyan adlandırma inanışı ve “The Judas-tree” adlı edebî anlatı.",
+    "narratives": [
+      "Ingram, ağacın İngilizce, Almanca ve Fransızcadaki uğursuz adının Judas'ın kendisini bu ağaca astığı varsayımından geldiğini aktarır; bununla birlikte Gerarde ve başka eski yazarların aynı ilişkiyi mürver ağacına yüklediğini belirtir.",
+      "Ayrı anlatıda küçük Maurice, yol kenarındaki handa gördüğü genç kıza erguvan dalından en güzel çiçeği verir. Yıllar sonra onun gelin alayını görünce yine bir çiçek atar; çiçek tozda ezilir ve sevgisi karşılıksız kalır.",
+      "Kadın öldüğünde Maurice, tabutun üzerine bir erguvan çiçeği bırakır. Kalabalık yalnız güzel kokulu mor çiçeği görür; çocukluktan beri taşınan sessiz sevgiyi ve gerçek kederi yalnız Maurice bilir."
+    ]
+  },
+  {
+    "id": "citrus-cicek",
+    "path": "Citrus › çiçek",
+    "name": "Portakal çiçeği",
+    "meaning": "iffet, evlilik, cömertlik",
+    "context": "Ingram, “Orange-blossom”, s. 75–78; Avrupa düğün geleneği ve ağacın eşzamanlı görünüşü.",
+    "narratives": [
+      "Ingram, gelinlerin düğün günlerinde portakal çiçeğinden bir çelenk takmasının gelenek olması nedeniyle portakal çiçeğinin iffetin simgesi sayıldığını söyler.",
+      "Portakal ağacı aynı anda yaprak, çiçek ve meyve taşıyan ender doğa ürünlerinden biri olduğu için cömertliğin simgesi yapılmıştır."
+    ]
+  },
+  {
+    "id": "convallaria-majalis",
+    "path": "Convallaria › majalis",
+    "name": "Müge",
+    "meaning": "mutluluğun geri dönüşü",
+    "context": "Phillips, “Return of Happiness”, s. 268; mevsimsel çiçeklenmeye dayalı açıklama.",
+    "narratives": [
+      "Phillips, biçimi zarif ve kokusu hoş olan müge çiçeğinin mutlu mayıs mevsimini haber verdiğini söyler; bu mevsimde ova yeniden yeşerir ve yeryüzü geçici gençliğine yeniden bürünür."
+    ]
+  },
+  {
+    "id": "crocus-sativus",
+    "path": "Crocus › sativus",
+    "name": "Safran çiçeği",
+    "meaning": "ölçülülük uyarısı, neşe, kahkaha, aşırılığın tehlikesi",
+    "context": "Phillips, “Do Not Abuse”, s. 125; “Mirth, or Laughter”, s. 213; safranın kaynakta anlatılan uyarıcı etkisi.",
+    "narratives": [
+      "Phillips, iç açıcı ve uyarıcı safran çiçeğinin fazla kullanılmasının aklı yok ettiği ya da onu kullananın ölümüne neden olduğu söylendiği için “kötüye kullanma” uyarısını taşıdığını aktarır.",
+      "Ayrı maddede, çok miktarda alınan safranın ölçüsüz neşeye ve istemsiz kahkahaya, üstelik tehlikeli bir dereceye kadar yol açtığı söylenir."
+    ]
+  },
+  {
+    "id": "cyclamen",
+    "path": "Cyclamen",
+    "name": "Siklamen",
+    "meaning": "çekingenlik, mahcubiyet",
+    "context": "Phillips, “Diffidence”, s. 119–120; çiçeğin duruşuna dayalı açıklama.",
+    "narratives": [
+      "Phillips, mütevazı çekingenliğin güzelliğe çekicilik katması gibi siklamenin de iddiasız duruşuyla dikkat çektiğini söyler. Taç yapraklarını yukarı doğru açmasına rağmen başını hiçbir zaman güneşe kaldırmaz."
+    ]
+  },
+  {
+    "id": "dahlia",
+    "path": "Dahlia",
+    "name": "Yıldız çiçeği",
+    "meaning": "istikrarsızlık, değişkenlik",
+    "context": "Phillips, “Instability”, s. 190; Fransa'daki iki siyasal dönüm noktasıyla eşleştirilen yetiştiricilik tarihi.",
+    "narratives": [
+      "Phillips, Meksika kökenli yıldız çiçeğinin Fransa'ya ilk getirilişinin ülkenin devrimle değiştiği yıla rastladığını söyler. Bitkiler kaybolmuş, Napolyon'un Fransızların imparatoru yapıldığı yılda yeniden getirilmiştir; bu nedenle istikrarsızlığın simgesi yapılmıştır."
+    ]
+  },
+  {
+    "id": "digitalis-purpurea",
+    "path": "Digitalis › purpurea",
+    "name": "Yüksükotu",
+    "meaning": "içtensizlik, gizli tehlike",
+    "context": "Ingram, “Foxglove”, s. 231–232; zehir ile çekici görünüşün bir arada bulunması.",
+    "narratives": [
+      "Ingram, yüksükotunun parlak çiçeğinin içinde sinsi bir zehir saklandığı için içtensizliği temsil ettiğini söyler.",
+      "Uzun mor yüksükotu, benekli çanlarının güzelliği ve heybetiyle övülür; ardından bu kadar güzel bitkilerin zehirli olmasının üzücü olduğu belirtilir."
+    ]
+  },
+  {
+    "id": "erica",
+    "path": "Erica",
+    "name": "Funda",
+    "meaning": "yalnızlık",
+    "context": "Phillips, “Solitude”, s. 285; yaşam alanına dayalı açıklama.",
+    "narratives": [
+      "Phillips, mor çanlı güzel fundanın yalnız yoksul ve asitli toprakta, dolayısıyla kasvetli yerlerde yetişmesi nedeniyle yalnızlığın simgesi seçildiğini söyler."
+    ]
+  },
+  {
+    "id": "fritillaria-imperialis",
+    "path": "Fritillaria › imperialis",
+    "name": "Ters lale",
+    "meaning": "kudret, görkem, kahramanlık anısı",
+    "context": "Phillips, “Majesty and Power”, s. 206; Ingram, “The Crown Imperial”, s. 278; görünüş açıklaması ve 1634 tarihli “Julia'nın Çelengi”.",
+    "narratives": [
+      "Phillips, tarhın daha alçak bitkilerinin üzerine yükselen bu İran çiçeğinin çiçek simgeleri arasında yüksek bir yere sahip olduğunu söyler; uzunluğu buyruğu, görünüşü kudret asasını çağrıştırır.",
+      "Ingram, aşağı doğru çevrilmiş lale biçimli çiçeklerden oluşan halkanın üzerinde yapraklardan bir taç bulunduğunu ve bitkinin kudreti simgelediğini yazar.",
+      "Montausier Dükü, 1634 yılının yılbaşı günü evleneceği Mademoiselle de Rambouillet'nin masasına, çiçek resimleri ve şiirlerle hazırlanmış görkemli bir kitap koyar. Baş şiirde Chapelain, ters laleyi Lützen'de ölümcül yara alan Gustavus Adolphus'un kanından doğmuş gösterir. “Julia'nın Çelengi” denilen kitap, gelinin hayran olduğu İsveçli kahramanı anarak ona iltifat etmek için hazırlanmıştır."
+    ]
+  },
+  {
+    "id": "fuchsia",
+    "path": "Fuchsia",
+    "name": "Küpe çiçeği",
+    "meaning": "zevk, zarafet, seçicilik",
+    "context": "Phillips, “Taste”, s. 299; Ingram, “Fuchsia”, s. 148–149; görünüş açıklaması ve İngiltere'deki yetiştiricilik anlatısı.",
+    "narratives": [
+      "Phillips, zengin renkli çiçeklerin iddiasız görünüşünde özel bir uyum ve güzellik bulunduğunu, yaprakların arasında büyük bir zarafetle sarktıklarını söyler; fuşyayı bu nedenle zevkin simgesi yapar.",
+      "Ingram'ın aktardığına göre fidancı Bay Lee, bir denizcinin karısında gördüğü tek bitkiyi satın alır; çiçek ve tomurcukları kesip bitkiyi tekrar tekrar çeliklere ayırır. Sonraki çiçeklenme mevsiminin başında üç yüz fuşyası olur.",
+      "İlk açan bitkiler birer gineye satılır; aynı sahne yeni alıcılarla yinelenir. Mevsim bitmeden tek bitkiden üç yüz gine kazanır. Ingram bunu Lee'nin zevkinin, kararının, becerisinin ve sebatının ödülü olarak adlandırır."
+    ]
+  },
+  {
+    "id": "galanthus",
+    "path": "Galanthus",
+    "name": "Kardelen",
+    "meaning": "umut, teselli, zor günde dostluk",
+    "context": "Ingram, “Snowdrop”, s. 156–157; kış sonundaki erken çiçeklenmeye dayalı açıklama.",
+    "narratives": [
+      "Ingram, bahar çiçeklerinin ilk doğanının genellikle umudun; ayrıca tevazunun, minnetin, tesellinin, masumiyetin ve sıkıntıdaki dostluğun simgesi sayıldığını söyler.",
+      "Yılın ilk günlerinde ağaçlar yapraksız, toprak çiçeksiz ve donla beyazken; keskin rüzgârlar eser ve dünya ölü görünürken kardelen üstündeki karı nazikçe iter, küçük çanlarıyla yeşil yapraklarını kaldırır. Üşümüş yüreklere cesaret vermiş ve umudun kalıcı olduğunu hatırlatmış gibi görünür."
+    ]
+  },
+  {
+    "id": "helianthus",
+    "path": "Helianthus",
+    "name": "Ayçiçeği",
+    "meaning": "inanç, bağlılık, kararlılık, kıskançlık, terk edilmiş aşk",
+    "context": "Ingram, “Sunflower”, s. 320–323; İspanyol çiçek dili ve kaynağın ayçiçeğine bağladığı Klytie miti.",
+    "narratives": [
+      "Ayçiçeğinin çiçeklerini daima güneşe çevirdiğine ilişkin yaygın inanış aktarılır. Ingram, İspanyolların çiçek dilinde ayçiçeğini inancın simgesi yaptığını söyler: bulutlara, rüzgâra ve gökyüzündeki değişikliklere rağmen başını kaldırıp kararlılıkla Tanrı'ya bakar.",
+      "Klytie bir zamanlar Helios tarafından sevilmiştir; Helios daha sonra Kral Orchamus'un kızı Leukothoe'ye yönelir. Sevgilisini geri kazanamayan Klytie ilişkiyi krala bildirir ve Leukothoe diri diri gömülür.",
+      "Kıskançlığının yol açtığı ölüm nedeniyle Helios Klytie'yi bütünüyle terk eder. Klytie dokuz gün ve gece yemeden yerde yatar, gözlerini gökte ilerleyen güneşten ayırmaz; sonunda tanrılar onu ayçiçeğine dönüştürür."
+    ]
+  },
+  {
+    "id": "hyacinthus",
+    "path": "Hyacinthus",
+    "name": "Sümbül",
+    "meaning": "oyun, kıskançlık, yas, anma",
+    "context": "Ingram, “Hyacinth”, s. 126–128; Yunan miti ve Lakonia'daki Hyakinthia töreni. Ingram, antik çiçeğin modern sümbülle özdeşliğinin tartışmalı olduğunu ayrıca belirtir.",
+    "narratives": [
+      "Hyakinthos, Apollon'un çok sevdiği güzel bir Lakonialı gençtir. Zephyros, Güneş Tanrısı'nın Hyakinthos'u tercih etmesini kıskanır ve onu öldürmeye karar verir.",
+      "Hyakinthos Apollon'la disk oynarken Zephyros, Apollon'un attığı demire öyle güçlü üfler ki disk gencin şakağına çarpar ve onu öldürür. Apollon onu diriltemeyince zarafetini ve güzelliğini anmak için kanından adını taşıyan çiçeği çıkarır.",
+      "Lakonia'da Hyakinthos onuruna her yıl üç günlük Hyakinthia düzenlenir. İlk gün halk yas tutar; ikinci gün gençler lir ve flüt çalar, korolar söyler, danslar ve araba yarışları yapılır, Apollon'a kurbanlar sunulur."
+    ]
+  },
+  {
+    "id": "hydrangea-macrophylla",
+    "path": "Hydrangea › macrophylla",
+    "name": "Ortanca",
+    "meaning": "övüngenlik, boş vaat",
+    "context": "Phillips, “Boaster”, s. 81; tarihsel `Hydrangea hortensis` adının çiçek-meyve karşılaştırması.",
+    "narratives": [
+      "Phillips, bu Çin kartopunun görkemli çiçeklerinin ardından hiçbir zaman meyve gelmediğini söyler. Sonuçla izlenmeyen büyük laflara benzediği için övüngenin simgesidir."
+    ]
+  },
+  {
+    "id": "impatiens-balsamina",
+    "path": "Impatiens › balsamina",
+    "name": "Kına çiçeği",
+    "meaning": "sabırsızlık",
+    "context": "Phillips, “Impatience”, s. 177; olgun meyve kapsülünün davranışı.",
+    "narratives": [
+      "Phillips, olgun kapsülün esnekliği nedeniyle en küçük dokunuşta tohumlarını fırlattığını söyler. Cins adı da aynı davranıştan gelir ve çiçek sabırsızlığın simgesi yapılır."
+    ]
+  },
+  {
+    "id": "ipomoea-purpurea",
+    "path": "Ipomoea › purpurea",
+    "name": "Kahkaha çiçeği",
+    "meaning": "sönmüş umutlar",
+    "context": "Phillips, “Extinguished Hopes”, s. 136; kaynakta `Convolvulus purpureus` adıyla verilen flört kullanımı.",
+    "narratives": [
+      "Phillips, bir kadın mutlu seçimini yaptıktan sonra bu çiçeği umutsuz talibine verebilsin ve güzelliğinin onda yaktığı alevi söndürebilsin diye çiçeğin uygun görüldüğünü söyler."
+    ]
+  },
+  {
+    "id": "iris",
+    "path": "Iris",
+    "name": "Süsen",
+    "meaning": "mesaj, iyi haber",
+    "context": "Phillips, “Message, or Messenger”, s. 212; Ingram, “Iris”, s. 254–255; Yunan tanrıların habercisi ve gökkuşağı benzetmesi.",
+    "narratives": [
+      "Phillips, şairlerin süseni tanrıların habercisinin simgesi seçtiğini; çeşitli renkleri nedeniyle adını göksel yaydan aldığını söyler.",
+      "Ingram, parlak ve çeşitlenmiş renklerin gökkuşağına benzemesi nedeniyle çiçeğin tanrıların habercisi Iris'in adını aldığını aktarır. Iris'in yalnız iyi haber taşıdığı bilindiğinden çiçek “mesaj”ı temsil eder."
+    ]
+  },
+  {
+    "id": "lavandula-angustifolia",
+    "path": "Lavandula › angustifolia",
+    "name": "Lavanta",
+    "meaning": "güvensizlik, ayrılık",
+    "context": "Phillips, “Assiduity”, s. 67; Türk ve kıta Avrupası çiçek dillerindeki farklı anlamlar.",
+    "narratives": [
+      "Phillips, Türklerin çiçek simgelerinde lavantanın çalışkanlığı temsil ettiğini söyler.",
+      "Kıta Avrupası simgecileri ise lavantayı, hoş olmayan kokuları örtmekte sık kullanıldığı için güvensizlik ve ayrılığın simgesi yapar."
+    ]
+  },
+  {
+    "id": "lilium",
+    "path": "Lilium",
+    "name": "Zambak",
+    "meaning": "haşmet, sadelik, inanç, masumiyet, korunma, anma",
+    "context": "Ingram, “The Lily”, s. 272–275; Kitab-ı Mukaddes göndermeleri, Harz Dağları anlatısı ve Sevilla mezarlığı anlatısı.",
+    "narratives": [
+      "Ingram, göğün kraliçesi Juno'ya adanan zambağın genellikle haşmetin simgesi sayıldığını söyler.",
+      "Yahudiler zambağın zarif biçimine hayran kalmış ve ilk görkemli Tapınaklarının süslerinde onu taklit etmiştir. İsa ise dinleyenlerine kır zambaklarını düşünmelerini söylemiş; süssüz sadelikleri içinde, bütün görkemiyle giyinmiş Süleyman'dan daha görkemli olduklarını belirtmiştir.",
+      "Harz Dağları anlatısında Lauenberg baronu genç Alice'i zorla şatosuna götürür. Gece bahçeye ulaştığında koruyucu ruhlar kızı kollarından alır; ayaklarının bastığı yerde Lauenberg zambağı çıkar. Halk, her yıl gece yarısı görünen ve vadiye ışık saçtığı söylenen zambağı görmeye gider.",
+      "Sevilla yakınındaki bir mezarlıkta, yalnız “Tanrı'ya inanıyorum; Tanrı'dan umutluyum; Tanrı'yı seviyorum” sözlerini öğrenebilen iyi ve sade bir yetim çocuğun mezarına zambak ekilir. Mezar açıldığında çiçeğin kökünün çocuğun kalbinde bulunduğu söylenir; kaynak zambağı masumiyetin simgesi diye niteler."
+    ]
+  },
+  {
+    "id": "lilium-beyaz",
+    "path": "Lilium › beyaz",
+    "name": "Beyaz zambak",
+    "meaning": "saflık, kutsallık",
+    "context": "Ingram, “The Lily”, s. 272–275; Juno-Hercules miti ile İspanya ve İtalya'daki Meryem adaması.",
+    "narratives": [
+      "Jove, bebek Hercules'i ölümsüz yapmak için Juno'ya uyku içirir ve bebeği tanrısal sütü emmesi için onun göğsüne koyar. Hercules sütü çok hızlı çekince yere birkaç damla düşer ve saflığı simgeleyen beyaz zambak hemen orada doğar.",
+      "İspanya ve İtalya'da beyaz zambak Meryem'in saflığını temsil eder ve mabetlerini süslemek için kullanılır; Katolik ülkelerin çoğunda ona özellikle adanmıştır.",
+      "Ingram'ın aktardığı Fransız arma kitabı zambağı tanrısallığın, saflığın, bolluğun ve sevginin simgesi sayar; Fransa armasındaki üç yaprağı dindarlık, adalet ve hayırseverlik olarak açıklar."
+    ]
+  },
+  {
+    "id": "lonicera",
+    "path": "Lonicera",
+    "name": "Hanımeli",
+    "meaning": "sevgi bağı, tatlı huyluluk",
+    "context": "Phillips, “Bond of Love”, s. 83; sarılma biçimi ve koku üzerinden kurulan açıklama.",
+    "narratives": [
+      "Phillips hanımelinin nazikçe sarıldığını aktarır ve bu mutlu simgenin, huy tatlılığının göz kamaştırıcı güzellikten daha sağlam bir bağ olduğunu hatırlattığını söyler.",
+      "Soluk görünüşünün, erken ve geç mevsimde bıktırmayan kokusuyla karşılandığını belirten şiiri açıklamasına ekler."
+    ]
+  },
+  {
+    "id": "magnolia-grandiflora",
+    "path": "Magnolia › grandiflora",
+    "name": "Büyük çiçekli manolya",
+    "meaning": "vakar, ihtişam, onur",
+    "context": "Phillips, “Dignity”, s. 120; Ingram, “Magnolia”, s. 116–117; Florida ormanları, Fransa sarayı ve Çin imparatorluk bahçeleri.",
+    "narratives": [
+      "Phillips, çiçeğin görkeminin bitkiler dünyasındaki yüksek yerine uygun olduğunu söyler. Doğal toprağında orman ağaçlarının üzerine yükselir, vakarını sergiler ve Florida ormanlarına kokusunu dağıtır.",
+      "Ingram, uygun rüzgârda çiçeklerin kokusunun yaklaşık üç çeyrek mil uzaktan fark edilebildiğini ve yaz boyunca ormanı kokulandırdığını aktarır.",
+      "Nantes yakınındaki eski bir ağaç 1750'lerde botanikçi Bonami tarafından yeniden fark edilir. 1760'ta çiçekli bir dalı Prenses de Rohan-Chabot'ya sunulur; ağaç toplantının ilgi ve konuşma konusu olur. XV. Louis görkemini duyunca ağacı Paris'e taşıtır.",
+      "Çin'de manolyalar imparatorun bahçelerinde özenle yetiştirilir. Çiçekli bir manolya, bir eyalet valisinden gelse bile imparator için değerli bir armağan sayılır."
+    ]
+  },
+  {
+    "id": "malus-cicek",
+    "path": "Malus › çiçek",
+    "name": "Elma çiçeği",
+    "meaning": "tercih, seni seçiyorum",
+    "context": "Ingram, “Apple-blossom”, s. 177–180; çiçeğin görünüşü ve ardından gelen meyve arasındaki karşılaştırma.",
+    "narratives": [
+      "Ingram'ın aktardığı deneyimli bir çiçek dili yazarı, elma çiçeğini tercihin simgesi sayar: yalnızca çok güzel bir çiçek değildir; güzel ve yararlı bir meyvenin öncüsüdür, bu nedenle gülün kendisine bile tercih edilebilir."
+    ]
+  },
+  {
+    "id": "mirabilis-jalapa",
+    "path": "Mirabilis › jalapa",
+    "name": "Akşamsefası",
+    "meaning": "çekingenlik, gizli sevgi, karanlıkta umut",
+    "context": "Phillips, “Timidity”, s. 304; Ingram, “Marvel of Peru”, s. 197–199; gündüz kapanıp gece açma davranışı.",
+    "narratives": [
+      "Phillips, çoğu çiçeği canlandırıp açan güneşin bakışına dayanamadığı için akşamsefasının çekingenliğin simgesi yapıldığını söyler.",
+      "Ingram çiçeği “utangaç sevginin tatlı simgesi” diye adlandırır. Başkaları uyurken uyanır; görünmeden ve yalnızken, genç kız mahcubiyetiyle, duygularını serbest bırakıp kokusunu yaymak için gecenin örtüsünü bekler gibidir.",
+      "Sıcak havada çiçekler akşama kadar açılmaz; daha serin ve güneşin kapalı olduğu günlerde bütün gün açık kalır. Amerika'da saat dörtte açtığı için “saat dört çiçeği” denir.",
+      "Ingram'ın aktardığı şiirde gece kokulu çiçekler, en karanlık saatlerin içinden çıkıp yalnız göğe bakan ve kedere verilen umutların simgeleri olarak sunulur."
+    ]
+  },
+  {
+    "id": "myosotis",
+    "path": "Myosotis",
+    "name": "Unutma beni",
+    "meaning": "unutulmama, anma, uzakta bağlılık, yas",
+    "context": "Ingram, “Forget-me-not”, s. 172–176; Waterloo hatırası, Alman mezar geleneği ve Henry of Lancaster'ın sürgün simgesi. Dar `Myosotis palustris` şövalye anlatısı bu cins düğümüne aktarılmamıştır.",
+    "narratives": [
+      "Miss Pratt'ın aktardığına göre Waterloo Savaşı'ndan sonra kahramanların kanıyla zenginleşen toprağın çeşitli yerlerinde çok sayıda unutma beni çıkmıştır. Çiçeğin bu unutulmaz yerde görünüşü, orada ölenleri kısa zamanda unutmamamızı ister gibidir.",
+      "Almanların çiçeği çok sevdiği ve ölen sevdiklerinin mezarlarında yetiştirdiği aktarılır.",
+      "Agnes Strickland, Lancasterlı Henry'nin sürgünü sırasında çiçeği “Beni hatırla” sözüyle birlikte kendi simgesi seçtiğini aktarır."
+    ]
+  },
+  {
+    "id": "narcissus",
+    "path": "Narcissus",
+    "name": "Nergis",
+    "meaning": "kendine hayranlık, özsevgi",
+    "context": "Phillips, “Egotism and Self-love”, s. 129; Ingram, “Narcissus”, s. 251; Ovidius'tan gelen Narcissus miti.",
+    "narratives": [
+      "Narcissus'a kendi yüzünü gördüğü ana kadar mutlu yaşayacağı söylenmiştir. Avdan sonra susuzluğunu gidermek için bir dereye eğilir, kendi güzel yüzünün yansımasını görür ve ona âşık olur.",
+      "Echo'nun sevgisini küçümsemesinin karşılığı olarak bulunduğu yere bağlanır, eriyip ölür ve tanrılar tarafından bugün adını taşıyan çiçeğe dönüştürülür. Naiadlar cenaze yığınını hazırladığında bedeni yoktur; yerinde bir çiçek bulunur."
+    ]
+  },
+  {
+    "id": "narcissus-pseudonarcissus",
+    "path": "Narcissus › pseudonarcissus",
+    "name": "Sarı nergis",
+    "meaning": "aldatıcı umut, aldatıcılık",
+    "context": "Phillips, “Deceitful Hope”, s. 111; Ingram, “Daffodil”, s. 252–253; Proserpina'nın kaçırılması ve bitkinin uyuşturucu niteliği.",
+    "narratives": [
+      "Phillips, Proserpina'nın Pluto tarafından ele geçirildiği sırada nergis topladığını aktarır; maddeyi “aldatıcı umut” başlığı altında verir.",
+      "Ingram'ın aktardığı antik anlatıda nergis, Pluto Proserpina'yı yeraltına götürürken arabasından düşen çiçektir. Başka aktarımda Pluto, Venus'un öğüdüyle Proserpina'yı yeraltına çekmek için onu kullanır.",
+      "Eski yazarlar nergisi, güzel kokusu ve görünüşü göğü ve yeri sevindirirken aynı zamanda sersemlik ve hatta ölüm yaratabildiği için aldatıcılığın simgesi sayar."
+    ]
+  },
+  {
+    "id": "nelumbo-nucifera",
+    "path": "Nelumbo › nucifera",
+    "name": "Hint lotusu",
+    "meaning": "sessiz aşk, yaratıcı güç",
+    "context": "Phillips, “Silence”, s. 279–280; kaynakta tarihsel `Nymphaea Nelumbo` adıyla geçen Hint lotusu.",
+    "narratives": [
+      "Phillips, sevginin sessizce üzerimize süzüldüğünü söyler; Hintliler Cupid'in ilk kez Ganj üzerinde bir lotus çelenginin üstünde süzülürken görüldüğünü anlatır.",
+      "Lotusun Doğu'nun, özellikle Hindu mitolojisinin sistemlerinde büyük saygı gördüğü aktarılır. Kutsal adı Padma'dır; Brahma dünyayı yaratırken bir lotustan doğduğu için çiçek yaratıcı gücün simgesi sayılır.",
+      "Phillips'in alıntıladığı açıklamaya göre kendi maddesinden üreyip toprağın beslemesine ihtiyaç duymadan geliştiğine inanılması, lotusun suların üretici gücünün simgesi seçilmesine yol açmıştır."
+    ]
+  },
+  {
+    "id": "nymphaea",
+    "path": "Nymphaea",
+    "name": "Su zambağı",
+    "meaning": "sessizlik",
+    "context": "Phillips, “Silence”, s. 279–280; Harpokrates'in eski tasvirleri.",
+    "narratives": [
+      "Phillips, antikacıların sessizlik tanrısı Harpokrates'in başında bu çiçeği tanıdıklarını söylediğini aktarır; su zambağını bu nedenle sessizliğin simgesi olarak sunar."
+    ]
+  },
+  {
+    "id": "papaver",
+    "path": "Papaver",
+    "name": "Haşhaş",
+    "meaning": "teselli, acının dinmesi, uyku, unutma, yas",
+    "context": "Phillips, “Consolation to the Sick”, s. 98; Ingram, “Poppy”, s. 140–141; Ceres miti, uyku özelliği ve Roma cenaze kullanımı.",
+    "narratives": [
+      "Phillips, huzursuz hastaya rahatlık ve uyku sağladığı için haşhaşın hastaya tesellinin simgesi yapıldığını söyler.",
+      "Yunan mitologlarına göre Ceres, kızı Proserpina'yı ararken kederini yatıştırmak için haşhaşı yaratır. Tohumları yiyince uyuyabilir ve uzun süredir çektiği acıdan bir süre kurtulur.",
+      "Ingram, uyku verici özelliğinin haşhaşın hem teselli hem unutmanın simgesi sayılmasının başka bir nedeni olduğunu söyler; uyku sıkıntıların hafifleticisi olarak görülür.",
+      "Romalıların, özellikle ruhlarını yatıştırmak istedikleri ölülere haşhaş sunduğu; Vergilius'un onu Orpheus için cenaze sunusu olarak önerdiği aktarılır.",
+      "Antik Yunanlılar, dünyanın büyük tesellicisi saydıkları Uyku'ya tek süs olarak haşhaş çelengi vermiştir."
+    ]
+  },
+  {
+    "id": "papaver-somniferum-beyaz",
+    "path": "Papaver › somniferum › beyaz",
+    "name": "Beyaz haşhaş",
+    "meaning": "kalbin uykusu, duygusal hissizlik",
+    "context": "Phillips, “Sleep of the Heart”, s. 277; beyaz uyku haşhaşının kaynakta belirtilen etkisi.",
+    "narratives": [
+      "Phillips, bu uyku verici bitkinin acıyı hafifletirken zihnin enerjisini de bastırdığını ve kalbin bütün sıcak duygularını uyuşturduğunu söyler."
+    ]
+  },
+  {
+    "id": "passiflora",
+    "path": "Passiflora",
+    "name": "Çarkıfelek",
+    "meaning": "inanç, kutsal acı, kefaret, dinî batıl inanç ve taassup",
+    "context": "Phillips, “Religious Superstition”, s. 262; Ingram, “Passion Flower”, s. 304–305; Katolik çile simgeciliği ve İspanyol istilası anlatısı.",
+    "narratives": [
+      "Phillips, Batı dünyasının *Murucuia* denen çiçeği İtalya'da görülür görülmez, batıl inancın ya da hilenin onun içinde İsa'nın Çilesi'nin gizemli bir tasvirini bulduğunu söyler. Çiçek bu nedenle “Çile Çiçeği” ve “İsa'nın Çilesinin Tasviri” adlarını almıştır.",
+      "Çiçeğin dikenli taç, kamçı, bağlayan ipler ve acı veren çiviler gibi görülen parçaları Calvary sahnesini temsil eder.",
+      "Ingram, Güney Amerika'yı ateş ve kılıçla harap eden İspanyol istilacıların çiçeğin biçiminde dikenli tacı, kamçıyı, haçı, süngeri, çivileri ve İsa'nın beş yarasını gördüklerini aktarır.",
+      "Bu simgenin görülmesinin istilacıları fetih planlarının ilahî güççe onaylandığı inancında pekiştirdiği; böylece bu inanç çiçeğinden esinlenerek yağma ve öldürmeye devam ettikleri söylenir.",
+      "Katolik ülkelerde çiçeğin büyük saygı gördüğü ve kefaret öğretisinin olağanüstü bir doğrulaması sayıldığı aktarılır."
+    ]
+  },
+  {
+    "id": "primula-vulgaris",
+    "path": "Primula › vulgaris",
+    "name": "Çuha çiçeği",
+    "meaning": "gençlik, erken kayıp",
+    "context": "Ingram, “Primrose”, s. 262–265; erken ilkbahar çiçeği, Shakespeare ve Paralisos anlatısı.",
+    "narratives": [
+      "Ingram çuha çiçeğini gençliğin simgesi olarak verir ve onu “yılın ilk doğanı” diye tanımlayan şiiri aktarır.",
+      "Shakespeare çiçeği genç ölülerin simgesi olarak kullanır; soluk çuha çiçeklerinin güçlü güneşi görmeden “evlenmemiş olarak öldüğünü” söyler.",
+      "Klasik adı Paralisos olarak verilir. Nişanlısı Melicerta'nın kaybının kederiyle eriyip giden Paralisos adlı gencin anısına bu adın konduğu ve gencin erken açıp terk edilmiş hâlde ölen çuha çiçeğine dönüştüğü anlatılır.",
+      "Uzak ülkelere göç eden Britanyalıların gösterişli yabancı çiçekler arasında kendi ülkelerinin çuha çiçeklerini özledikleri; Avustralya'ya getirilen ilk örneğin geçmiş gençlik ve uzak yurt anılarını canlandırdığı aktarılır."
+    ]
+  },
+  {
+    "id": "ranunculus",
+    "path": "Ranunculus",
+    "name": "Düğün çiçeği",
+    "meaning": "zenginlik, çocukluk anıları",
+    "context": "Ingram, “Buttercups”, s. 105–106; altın görünüşlü kırlar ve çocukluk oyunları.",
+    "narratives": [
+      "Ingram, Browning'in zenginlik simgesi düğün çiçeklerini “çocukların çeyizi” diye adlandırdığını aktarır. Çiçeklerin çevreye yaydığı altın tarlaların ortasında çocuk, mücevher yığınlarının önündeki biri gibi kendisini sınırsız servetin sahibi hisseder.",
+      "Çiçekler, düğün çiçeklerinin bulunduğu yerde oyalanmayı, kuşları ve böcekleri aramayı, kahkaha ve şarkıyla geçen çocukluğu geri çağırır.",
+      "Daha sonraki yıllarda servet ve güç kararsa bile insanın çocuklukta kuşa ve çiçeğe yönelen bağlılığının sunağına geri dönmek isteyeceği anlatılır."
+    ]
+  },
+  {
+    "id": "rhododendron",
+    "path": "Rhododendron",
+    "name": "Ormangülü",
+    "meaning": "tehlike",
+    "context": "Phillips, “Danger”, s. 106; mor çiçeklerin balındaki zehir.",
+    "narratives": [
+      "Phillips, mor ormangüllerinin zehirli bal bakımından zengin olduğunu söyler. Bu nedenle imparatorluk morunun çevresinde gizlenen tehlikelerin simgesi yapılmıştır."
+    ]
+  },
+  {
+    "id": "rosa",
+    "path": "Rosa",
+    "name": "Gül",
+    "meaning": "aşk, sevinç, gizlilik, fanilik, yas, kaybedilmiş aşk, geçicilik, tehlike",
+    "context": "Ingram, “The Rose”, s. 23–48; Phillips, “Secrecy”, s. 274. İran şiir geleneği, Yunan-Roma simgeciliği ve Avrupa mezar âdetleri.",
+    "narratives": [
+      "İranlı şair Attar'ın “Bülbülün Kitabı”nda bütün kuşlar, acılı ötüşüyle uykularını bozduğu için bülbülü Süleyman'a şikâyet eder. Bülbül, çılgın ezgilerinin güle duyduğu aklı dağıtan aşktan kaynaklandığını söyleyince Süleyman onu bağışlar.",
+      "Romalılar gülleri bütün çiçeklerden daha değerli sayar ve onları sevincin simgesi kabul ederdi. Şölen Tanrısı Comus'u, yaprakları çiy damlalarıyla parlayan gül çelengi takmış güzel bir genç olarak tasvir ederlerdi.",
+      "Eskiler gülü sevgi ve sevincin yanında sessizliğin de simgesi sayardı. Cupid'in Sessizlik Tanrısı Harpokrates'e gül sunduğu gösterilir; şölenlerde masanın üzerine gül asılması, konuşulanların “gülün altında” kalacağını bildirirdi.",
+      "Yunanlılar gülü sevgi ve güzellik için Venus'a, gençlik için Aurora'ya, çekiciliğinin geçiciliği ve dikenlerinin açtığı yaralar nedeniyle geçicilik ile tehlike için Cupid'e adardı.",
+      "Yunanlılar ve Romalılar mezarları gül ağaçlarıyla süsler, mezarlarını örtecek çiçekleri sağlamak amacıyla gül bahçeleri bırakırlardı.",
+      "İngiliz kırsal cenaze geleneğinde güller özellikle âşıkların mezarlarına ayrılırdı. Genç erkek ve kadınların ölmüş sevgililerinin mezarlarına her yıl gül fidanları diktiği ve onları süslediği aktarılır.",
+      "Gül ile zambak birlikte kırılgan ölümlülüğün işareti sayılır: kısa süre güzel görünürler, fakat yaşam gibi dikenlerden ve çilelerden yoksun değildirler."
+    ]
+  },
+  {
+    "id": "rosa-beyaz",
+    "path": "Rosa › beyaz",
+    "name": "Beyaz gül",
+    "meaning": "saflık, yas, anma",
+    "context": "Ingram, “The Rose”, s. 27–29; İngiliz kırsal cenaze geleneği.",
+    "narratives": [
+      "Washington Irving'in aktardığı kırsal cenaze geleneğinde genç bir kadının mezarına beyaz gül dikilir. Çelengi lekesiz masumiyetinin işareti olarak beyaz kurdelelerle bağlanır; hayatta kalanların kederini bildirmek için bazen siyah kurdeleler de eklenir."
+    ]
+  },
+  {
+    "id": "rosa-beyaz-tomurcuk",
+    "path": "Rosa › beyaz › tomurcuk",
+    "name": "Beyaz gül tomurcuğu",
+    "meaning": "aşktan habersiz kalp",
+    "context": "Phillips, “A Heart Ignorant of Love”, s. 166; Venus miti.",
+    "narratives": [
+      "Mitoloji yazarları gülün başlangıçta beyaz olduğunu, sıcak rengini ilk kez Venus'un kanından aldığını söyler. Venus sevgili oğlunu korumak için koşarken dikenli güle basar; yarasından akan kan kar beyazı çiçeğe değip onu kızartır. Henüz beyaz kalan tomurcuk bu nedenle aşkı tanımayan kalbi temsil eder."
+    ]
+  },
+  {
+    "id": "rosa-kirmizi",
+    "path": "Rosa › kırmızı",
+    "name": "Kırmızı gül",
+    "meaning": "aşk, tutku",
+    "context": "Ingram, “The Rose”, s. 31–32; İran gül-bülbül anlatısı.",
+    "narratives": [
+      "İran anlatısında güllerin yeni hükümdarı başlangıçta kar beyazıdır ve dikenlerden bir korumayla çevrilidir. Bülbül güzelliğine öyle büyük bir aşkla kapılır ki kalbini dikenlere bastırır; kanının ulaştığı yerler kıpkırmızı olur, ulaşamadığı taç yaprak uçları beyaz kalır."
+    ]
+  },
+  {
+    "id": "rosa-kurumus",
+    "path": "Rosa › kurumuş",
+    "name": "Kurumuş gül",
+    "meaning": "tatlı hatıralar",
+    "context": "Ingram, “The Rose”, s. 45–46; solduktan sonra kalan koku.",
+    "narratives": [
+      "Ingram, solan gülün geçici güzelliğin uygun bir simgesi olduğunu, fakat ölümünden sonra da kaydedilecek bir özelliği bulunduğunu söyler: güzelliğin rengi solmuş taç yapraklardan çekilebilir, ancak gülün kokusu hâlâ ona bağlı kalır.",
+      "Yaşam sona erdikten sonra da gülün kokusunun kalması, görünüş geçtikten sonra kalan hatıraya bağlanır."
+    ]
+  },
+  {
+    "id": "rosa-tam-acmis",
+    "path": "Rosa › tam açmış",
+    "name": "Tam açmış gül",
+    "meaning": "nişan, bağlanma",
+    "context": "Ingram, “The Rose”, s. 43–44; Berkeley'in *Utopia*'sında aktarılan gülle flört dizisi.",
+    "narratives": [
+      "Âşığın duygusu güçlendikçe önceki armağanlarını tam açmış bir gülle tamamlar; bu gül nişanın simgesidir. Kadın onu takarsa yaşam boyu nişanlanmış sayılır."
+    ]
+  },
+  {
+    "id": "rosa-tek-katli",
+    "path": "Rosa › tek katlı",
+    "name": "Tek katlı gül",
+    "meaning": "sadelik",
+    "context": "Phillips, “Simplicity”, s. 281; doğal ve katmerli yetiştirilmiş biçimlerin karşılaştırılması.",
+    "narratives": [
+      "Phillips, tek katlı gülün botanikçiye çiçeğin bütün doğal güzelliklerini sunduğunu; bu güzelliklerin yoğun biçimde yetiştirilmiş katmerli durumda kaybolduğunu söyler. Gerçek ayırt etme gücü için sadeliğin her zaman çekici olacağı sonucunu verir."
+    ]
+  },
+  {
+    "id": "rosa-tomurcuk",
+    "path": "Rosa › tomurcuk",
+    "name": "Gül tomurcuğu",
+    "meaning": "aşk itirafı",
+    "context": "Ingram, “The Rose”, s. 43–44; Berkeley'in *Utopia*'sında aktarılan gülle flört dizisi.",
+    "narratives": [
+      "Âşık, tutkusunu yeni açılmaya başlayan bir gül tomurcuğu sunarak ilan eder; bu, aşk itirafının simgesidir. Kadın tomurcuğu kabul edip takarsa talibin isteğine olumlu baktığı varsayılır."
+    ]
+  },
+  {
+    "id": "rosa-yari-acmis",
+    "path": "Rosa › yarı açmış",
+    "name": "Yarı açmış gül",
+    "meaning": "aşk",
+    "context": "Ingram, “The Rose”, s. 43–44; Berkeley'in *Utopia*'sında aktarılan gülle flört dizisi.",
+    "narratives": [
+      "Zaman âşığın duygusunu güçlendirdikçe ilk gül tomurcuğunu, aşkı ifade eden yarı açmış bir gül izler."
+    ]
+  },
+  {
+    "id": "spartium",
+    "path": "Spartium",
+    "name": "Süpürgeotu",
+    "meaning": "tevazu, pişmanlık, alçakgönüllülüğün yüceltilmesi",
+    "context": "Phillips, “Humility”, s. 172; Ingram, “Broom”, s. 136–139; Anjou hanedanı ve Plantagenet adının tarihsel açıklamaları.",
+    "narratives": [
+      "Phillips'in aktardığına göre Anjou Kontu Foulques işlediği bir suç nedeniyle kefaret olarak Kutsal Topraklar'a gitmeye ve kırbaçlanmaya mahkûm edilir. Alçakgönüllü giysiler giyer ve tevazusunun işareti olarak başlığında bir süpürgeotu dalı taşır.",
+      "Kefaret bitince Foulques, çalının Latince adından Plantagenet adını alır. Soyundan gelen Anjou soyluları miğferlerini bu bitkiyle süslemeyi sürdürür; I. Richard'ın büyük mühründe tahtının iki yanında birer süpürgeotu dalı bulunur.",
+      "Ingram başka bir aktarım verir: Anjou hanedanından bir prens kardeşini öldürdükten sonra pişman olur, suçunun kefareti için Kutsal Topraklar'a gider ve her gece kendisini *genêt* dallarından yapılmış bir değnekle kırbaçlar.",
+      "Ayrı Plantagenet anlatısında Anjou Kontu Geoffrey savaş günü başlığına bir süpürgeotu dalı takar; adı ve işaret soyundan gelen hükümdarlara geçer.",
+      "Fransa Kralı IX. Louis'nin 1234'te kurduğu şövalyelik düzeninde süpürgeotu çiçekleri ve zambaklardan oluşan zincirde “Alçakgönüllüleri yüceltir” sözü yer alır; muhafızların giysilerinde de “Tanrı alçakgönüllüleri yüceltir” yazılıdır."
+    ]
+  },
+  {
+    "id": "syringa",
+    "path": "Syringa",
+    "name": "Leylak",
+    "meaning": "ilk aşk, terk ediliş",
+    "context": "Phillips, “Forsaken”, s. 152; Ingram, “Lilac”, s. 114–115; Doğu geleneği ve ilkbaharda çiçeklenme.",
+    "narratives": [
+      "Phillips, bitkinin getirildiği Doğu ülkelerinde leylakların terk edilmiş kişiyi temsil ettiğini söyler; âşıklar sevgililerini bıraktıklarında onlara bu çiçeği sunar.",
+      "Ingram, leylakların doğa uzun kış uykusundan uyanıp gülümseme ve pembeliklere büründüğü mevsimde kokulu demetler hâlinde açtığını söyler. Bu nedenle ilk aşk düşünü çekingenlikle gösteren ilk sevinç duygularının simgesi seçilmiştir."
+    ]
+  },
+  {
+    "id": "syringa-beyaz",
+    "path": "Syringa › beyaz",
+    "name": "Beyaz leylak",
+    "meaning": "gençlik, geçici gençlik",
+    "context": "Ingram, “Lilac”, s. 114–115; rengin saflığı ve çiçek salkımlarının kısa ömrü.",
+    "narratives": [
+      "Ingram, renginin saflığı ve güzel çiçek kümelerinin kısa sürmesi nedeniyle beyaz leylağın gençliğin simgesi yapıldığını söyler."
+    ]
+  },
+  {
+    "id": "tulipa",
+    "path": "Tulipa",
+    "name": "Lale",
+    "meaning": "aşk ilanı, yakıcı tutku, saplantı, aşırılık",
+    "context": "Phillips, “Declaration of Love”, s. 112; Ingram, “Tulip”, s. 208–210; İran çiçek dili ve 1634'te başlayan Hollanda lale çılgınlığı.",
+    "narratives": [
+      "Phillips, çok eski zamanlardan beri İranlı bir gencin lale aracılığıyla aşkını ilan ettiğini aktarır. Chardin'e göre erkek laleyi sevgilisine verirken yüzünün çiçek gibi ateş içinde, kalbinin ise kömüre dönmüş olduğunu anlatmak ister.",
+      "Ingram, 1634'te Hollanda'da her sınıftan insanın ender lalelere sahip olma isteğine kapıldığını; çoğunun bunu çiçeğe sevgiden değil, para spekülasyonuna katılmak için yaptığını aktarır. Tek soğanlar için çok büyük meblağlar ödenir.",
+      "Yıllık geliri üç bin sterlini aşan bir kişi birkaç ay içinde lale spekülasyonuyla yoksullaşır. Başka bir koleksiyoncu, kendi örneğinin benzeri Haarlem'de bulunduğunu öğrenir; rakip laleyi büyük para vererek satın alır ve “Artık benim lalem eşsiz” diyerek ayağıyla ezer.",
+      "Balon patladığında servetler çöker, yüzlerce suçsuz kişi mahvolur ve ülkenin itibarı temellerine kadar sarsılır."
+    ]
+  },
+  {
+    "id": "vinca",
+    "path": "Vinca",
+    "name": "Cezayir menekşesi",
+    "meaning": "nazik hatıralar, içten dostluk, yas, ölümsüzlük, eş sevgisi",
+    "context": "Ingram, “Periwinkle”, s. 86–87; Fransa, İtalya ve Almanya'daki kullanımlar ile Rousseau'nun anısı. Aynı Rousseau anlatısını kısaca tekrarlayan Phillips yerine yalnız Ingram gösterilmiştir.",
+    "narratives": [
+      "Fransa'da Cezayir menekşesi içten dostluğun simgesi sayılır. İngilizler herdem yeşil bitkiyi nazik hatıraların temsilcisi olarak kabul eder.",
+      "Rousseau, Madame de Warens ile yürürken onun “Bak, Cezayir menekşesi hâlâ çiçekte” dediğini aktarır. Bitkiye yalnız geçerken bakar ve onu otuz yıl boyunca bir daha görmez. Otuz yıl sonra bir arkadaşıyla yürürken yeniden gördüğünde ilk karşılaşmanın bütün anısını canlı biçimde geri çağırır.",
+      "İtalya'da köylüler ölen çocukların tabutlarına koymak için bitkiden çelenk yapar; bu nedenle ona “ölüm çiçeği” derler.",
+      "Almanya'da parlak yeşil yaprakları bütün kış canlı kaldığı için ölümsüzlüğün simgesidir ve “kış yeşilliği” diye adlandırılır.",
+      "Culpeper, Cezayir menekşesinin Venus'a ait olduğunu ve yapraklarının karı koca tarafından birlikte yenmesinin aralarında sevgi doğurduğunu söyler."
+    ]
+  },
+  {
+    "id": "viola",
+    "path": "Viola",
+    "name": "Menekşe",
+    "meaning": "sadakat, bağlılık",
+    "context": "Ingram, “Violet”, s. 256–261; Toulouse Çiçek Oyunları ve Napolyon'un sürgünü.",
+    "narratives": [
+      "Ingram bazı kişilerin menekşeyi tevazunun, bazılarının ise sadakatin simgesi saydığını aktarır; Shakespeare'in çağdaşı bir şair “Menekşe sadakat içindir; bende kalacaktır” der.",
+      "Toulouse'da 1323'te Clemence Isaure tarafından kurulan Çiçek Oyunları'nda en iyi şiirin yazarına her yıl altın bir menekşe verilirdi. Kurucunun uzun hapisliği sırasında seçtiği çiçeği, bağlılığının simgesi olarak takması için şövalyesine gönderdiği anlatılır.",
+      "Napolyon sürgündeyken takipçileri menekşeyi işaretleri olarak benimser. Napolyon'a “Menekşe Baba” denir; evde asılan ya da bir Fransızın üzerinde taşıdığı küçük menekşe demeti, düşmüş önderinin davasına bağlılığını gösterir."
+    ]
+  },
+  {
+    "id": "viola-odorata",
+    "path": "Viola › odorata",
+    "name": "Kokulu menekşe",
+    "meaning": "tevazu, sadakat",
+    "context": "Phillips, “Modesty”, s. 215–216; çimen altında saklanan görünüş ve on altıncı yüzyıl şiir geleneği.",
+    "narratives": [
+      "Phillips'in aktardığı şiirde kokulu menekşe hırstan uzaktır; çimenin altında saklanır, rengi ve bulunduğu yer mütevazıdır. Ancak sevilen kişinin alnında yer bulursa çiçeklerin en alçakgönüllüsü en gururlusu olacaktır.",
+      "Phillips, on altıncı yüzyıl şairlerinin bu çiçeği sadakatin simgesi yaptığını söyler; aktardığı dizelerde menekşe, “Bende kalacak sadakat içindir” der ve aynı bağlılığın karşıdakinin kalbinden kaymamasını umar."
+    ]
+  },
+  {
+    "id": "viola-tricolor",
+    "path": "Viola › tricolor",
+    "name": "Hercai menekşe",
+    "meaning": "düşünceler, beni düşün, hatırlama, aşk yarası, kalıcı aşk",
+    "context": "Phillips, “Thoughts”, s. 302; Ingram, “Heart's-ease”, s. 165–169; Fransızca *pensée* adı, Cupid anlatısı ve Aziz Valentine ilişkisi.",
+    "narratives": [
+      "Phillips çiçeği “Düşüncelerimi sen dolduruyorsun” ya da “Beni düşün” sözleriyle verir. Düşüncelerin, iki örneği birbirine benzemeyen bu küçük çiçeğin çeşitleri kadar çok olduğunu söyler.",
+      "Ingram, Fransızca *pansy/pensée* adının gösterdiği üzere çiçeğin hatırlamayı ve düşünceleri simgelediğini söyler.",
+      "Shakespeare'in anlatısında hercai menekşe başlangıçta süt beyazıdır. Cupid'in Diana'ya attığı ok ona çarpar ve çiçek “aşk yarasıyla mor” olur.",
+      "Çiçeğin Aziz Valentine'a adandığı söylenir; aşk gibi parlak renklidir, tatlı adlarla doludur ve hem yoksul hem zengin toprakta yetişir.",
+      "Bir kez kök saldığında kendisini öylesine inatla sürdürür ki onu ortadan kaldırmak neredeyse imkânsızdır; kaynak bunu aşkla arasındaki başka bir benzerlik olarak verir."
+    ]
+  }
+]

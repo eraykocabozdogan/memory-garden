@@ -1,0 +1,502 @@
+{
+  "id": "8c58d3a1-6a4e-442a-ae55-3a6869f7b303",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.memory_day_locations": {
+      "name": "memory_day_locations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "memory_day_id": {
+          "name": "memory_day_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "province_code": {
+          "name": "province_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "province_name": {
+          "name": "province_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "district_code": {
+          "name": "district_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "district_name": {
+          "name": "district_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sort_order": {
+          "name": "sort_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "memory_day_locations_day_sort_index": {
+          "name": "memory_day_locations_day_sort_index",
+          "columns": [
+            {
+              "expression": "memory_day_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "sort_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "memory_day_locations_memory_day_id_memory_days_id_fk": {
+          "name": "memory_day_locations_memory_day_id_memory_days_id_fk",
+          "tableFrom": "memory_day_locations",
+          "tableTo": "memory_days",
+          "columnsFrom": [
+            "memory_day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "memory_day_locations_sort_order_nonnegative": {
+          "name": "memory_day_locations_sort_order_nonnegative",
+          "value": "\"memory_day_locations\".\"sort_order\" >= 0"
+        },
+        "memory_day_locations_district_shape": {
+          "name": "memory_day_locations_district_shape",
+          "value": "(\"memory_day_locations\".\"district_code\" IS NULL) = (\"memory_day_locations\".\"district_name\" IS NULL)"
+        },
+        "memory_day_locations_coordinate_range": {
+          "name": "memory_day_locations_coordinate_range",
+          "value": "\"memory_day_locations\".\"longitude\" BETWEEN -180 AND 180 AND \"memory_day_locations\".\"latitude\" BETWEEN -90 AND 90"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.memory_days": {
+      "name": "memory_days",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "memory_date": {
+          "name": "memory_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "memory_days_memory_date_unique": {
+          "name": "memory_days_memory_date_unique",
+          "columns": [
+            {
+              "expression": "memory_date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "memory_days_created_by_profiles_id_fk": {
+          "name": "memory_days_created_by_profiles_id_fk",
+          "tableFrom": "memory_days",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.memory_items": {
+      "name": "memory_items",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "kind": {
+          "name": "kind",
+          "type": "memory_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_precision": {
+          "name": "date_precision",
+          "type": "memory_date_precision",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "memory_day_id": {
+          "name": "memory_day_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "memory_year": {
+          "name": "memory_year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "memory_month": {
+          "name": "memory_month",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "text_content": {
+          "name": "text_content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "object_key": {
+          "name": "object_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "original_file_name": {
+          "name": "original_file_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "file_size_bytes": {
+          "name": "file_size_bytes",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "duration_seconds": {
+          "name": "duration_seconds",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sort_order": {
+          "name": "sort_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "memory_items_day_sort_index": {
+          "name": "memory_items_day_sort_index",
+          "columns": [
+            {
+              "expression": "memory_day_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "sort_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "memory_items_partial_date_index": {
+          "name": "memory_items_partial_date_index",
+          "columns": [
+            {
+              "expression": "date_precision",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "memory_year",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "memory_month",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "memory_items_memory_day_id_memory_days_id_fk": {
+          "name": "memory_items_memory_day_id_memory_days_id_fk",
+          "tableFrom": "memory_items",
+          "tableTo": "memory_days",
+          "columnsFrom": [
+            "memory_day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "memory_items_created_by_profiles_id_fk": {
+          "name": "memory_items_created_by_profiles_id_fk",
+          "tableFrom": "memory_items",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "memory_items_sort_order_nonnegative": {
+          "name": "memory_items_sort_order_nonnegative",
+          "value": "\"memory_items\".\"sort_order\" >= 0"
+        },
+        "memory_items_date_shape": {
+          "name": "memory_items_date_shape",
+          "value": "\n        (\"memory_items\".\"date_precision\" = 'day' AND \"memory_items\".\"memory_day_id\" IS NOT NULL AND \"memory_items\".\"memory_year\" IS NULL AND \"memory_items\".\"memory_month\" IS NULL)\n        OR (\"memory_items\".\"date_precision\" = 'month' AND \"memory_items\".\"memory_day_id\" IS NULL AND \"memory_items\".\"memory_year\" IS NOT NULL AND \"memory_items\".\"memory_month\" BETWEEN 1 AND 12)\n        OR (\"memory_items\".\"date_precision\" = 'year' AND \"memory_items\".\"memory_day_id\" IS NULL AND \"memory_items\".\"memory_year\" IS NOT NULL AND \"memory_items\".\"memory_month\" IS NULL)\n        OR (\"memory_items\".\"date_precision\" = 'none' AND \"memory_items\".\"memory_day_id\" IS NULL AND \"memory_items\".\"memory_year\" IS NULL AND \"memory_items\".\"memory_month\" IS NULL)\n      "
+        },
+        "memory_items_content_shape": {
+          "name": "memory_items_content_shape",
+          "value": "\n        (\"memory_items\".\"kind\" = 'text' AND \"memory_items\".\"text_content\" IS NOT NULL AND length(btrim(\"memory_items\".\"text_content\")) > 0 AND \"memory_items\".\"object_key\" IS NULL)\n        OR (\"memory_items\".\"kind\" IN ('photo', 'video') AND \"memory_items\".\"text_content\" IS NULL AND \"memory_items\".\"object_key\" IS NOT NULL AND length(btrim(\"memory_items\".\"object_key\")) > 0)\n      "
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.profiles": {
+      "name": "profiles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "profiles_id_users_id_fk": {
+          "name": "profiles_id_users_id_fk",
+          "tableFrom": "profiles",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.memory_date_precision": {
+      "name": "memory_date_precision",
+      "schema": "public",
+      "values": [
+        "none",
+        "year",
+        "month",
+        "day"
+      ]
+    },
+    "public.memory_kind": {
+      "name": "memory_kind",
+      "schema": "public",
+      "values": [
+        "photo",
+        "video",
+        "text"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
