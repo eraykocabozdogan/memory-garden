@@ -22,7 +22,7 @@ Karar sürecinden önce netleşenler:
 
 ## Karar 1: Kapsam
 
-Durum: **Kısmen kararlaştırıldı.** N2, N3, N5, N6 ve N8'in ayrıntıları açık.
+Durum: **Kararlaştırıldı.** Aşağıdaki tüm maddeler ilk sürümde yer alacak.
 
 ### Genel (G)
 
@@ -71,14 +71,22 @@ Gerekçe: Araştırma emeğini görünür kılar ve projenin giriş yapmadan inc
 | # | Özellik | Karar |
 |---|---|---|
 | N1 | "Geçen yıl bugün" anı hatırlatması | Evet |
-| N2 | Partner günlük yazınca / çiçek bırakınca bildirim | **Kesin olacak.** Yöntem açık (web push, Telegram, e-posta, SMS, WhatsApp) |
-| N3 | PWA (telefona uygulama gibi kurulum) | Açık; N2 yöntemine bağlı |
-| N4 | Anılarda filtreleme | Evet, **filtreleme şart, metin araması şart değil** |
+| N2 | Bildirim: partner günlük yazınca, çiçek bırakınca, özel gün gelince | Evet, **PWA web push** ile |
+| N3 | PWA (telefona uygulama gibi kurulum) | Evet; iPhone'da web push için zorunlu |
+| N4 | Anılarda filtreleme: etiket, yıl, il, tür (foto/video/not) | Evet; metin araması yok |
 | N5 | Etiketler | Evet (ayrıntılar aşağıda) |
 | N6 | Özel günler | Evet (ayrıntılar aşağıda) |
 | N7 | Rehberde anlama göre arama ("özlem", "teşekkür") | Evet |
-| N8 | İngilizce dil desteği | Evet; kapsamı (sadece arayüz mü, çiçek içerikleri de mi) açık |
+| N8 | İngilizce dil desteği: arayüz + çiçek rehberi içerikleri | Evet |
 | N9 | Tüm anıları zip olarak dışa aktarma | Hayır |
+
+**N2 gerekçesi:** Ücretsiz, tamamen Cloudflare içinde, ek hesap gerektirmiyor. Telegram,
+e-posta, SMS ve WhatsApp değerlendirildi; SMS ve WhatsApp ücretli ve Cloudflare dışı,
+e-posta anlık değil, Telegram ek uygulama gerektiriyor. Bilinen sınır: iPhone'da bildirim
+için uygulamanın ana ekrana eklenmesi gerekiyor.
+
+**N8 gerekçesi:** Herkese açık rehber İK'ların göreceği vitrin. Kaynak kitaplar zaten
+İngilizce; çeviriler AI ile hazırlanıp proje sahibi tarafından kontrol edilecek.
 
 **N5 ve N6 arasındaki ayrım:**
 
@@ -87,3 +95,20 @@ Gerekçe: Araştırma emeğini görünür kılar ve projenin giriş yapmadan inc
 - **Etiket (N5):** Tekrar etmez; belirli bir güne ya da birkaç günlük bir aralığa aittir.
   Örnek: 17 Temmuz 2025 Çanakkale tatili. Etiketler, o günlere ait medyaları gruplamak için
   gün öğelerinin içinden oluşturulur.
+
+**Etiket ayrıntıları:**
+
+| # | Soru | Karar |
+|---|---|---|
+| E1 | Etiket nasıl kapsar? | Tarih aralığı verilir, aralıktaki günler otomatik dahil olur; sonra tek tek gün çıkarılıp eklenebilir |
+| E2 | Neyi gruplar? | Bütün günü (o günün tüm öğeleri) |
+| E3 | Bir gün birden fazla etikette olabilir mi? | Evet |
+| E4 | Yalnızca ay/yıl tarihli anılar etiketlenebilir mi? | Hayır; etiketler günlere bağlı |
+
+**Özel gün ayrıntıları:**
+
+| # | Soru | Karar |
+|---|---|---|
+| Ö1 | Ekranda neler olacak? | İsim, tarih, kaçıncı yıl olduğu, sıradaki yıldönümüne geri sayım |
+| Ö2 | O tarihteki geçmiş anılar gösterilsin mi? | Evet (N1 ile aynı altyapı) |
+| Ö3 | Bildirim gitsin mi? | Evet, gün geldiğinde (N2 ile) |
