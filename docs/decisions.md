@@ -327,3 +327,14 @@ Durum: **Kararlaştırıldı.**
   Worker adıyla yayınlanır. workers.dev Public Suffix List'te olduğu için gerçek uygulama ve
   demo birbirinin çerezlerine erişemez.
 - İleride özel bir alan adı alınırsa kod değişmeden Worker'lara bağlanabilir.
+
+## Mimari dokümanı sonrası düzeltmeler
+
+Durum: **Kararlaştırıldı.** Mimari dokümanı (`docs/architecture.md`) bu düzeltmelerle onaylandı.
+
+| Konu | İlk öneri | Karar |
+|---|---|---|
+| Takılan video işinin tespiti | 6 saat sabit süre | **Nabız:** container her dakika ilerleme bildirir; 10 dakika haber gelmezse iş başarısız sayılır. Fotoğraf işleri 15 dakika. Yan fayda: arayüzde ilerleme yüzdesi. |
+| Kaydedilmemiş yüklemelerin temizliği | 2 gün, gecelik | **6 saat, saatlik temizlik.** Vazgeçilen yüklemeler zaten anında silinir; 6 saat yalnızca uygulamanın kapandığı ya da çöktüğü durumlar için. Yükleme token'ları da 6 saat geçerli. |
+| Workers Paid planı | — | Proje sahibi Paid plana geçti. Gerekçe: Container'lar yalnızca Paid planda; Free plandaki 10 ms işlemci sınırı şifre kontrolünü bile zorluyor; Paid plan hesap başına olduğu için ileride eklenecek projeler de aynı $5 içinde. |
+| Eski sürüm etiketi | — | Son Next.js commit'i (`1357af6`) `v0-nextjs` olarak etiketlenecek. |

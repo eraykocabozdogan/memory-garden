@@ -189,7 +189,8 @@ kontrolünden geçer; tüm girdiler Zod ile doğrulanır. Frontend, Hono RPC ile
 | Demo | `POST /api/demo/start` (yalnızca demo Worker'ında) |
 
 `memory-garden-media` Worker'ında, yalnızca job token ile erişilebilen:
-`POST /internal/config`, `POST /internal/multipart`, `POST /internal/callback`.
+`POST /internal/config`, `POST /internal/multipart`, `POST /internal/heartbeat`,
+`POST /internal/callback`.
 
 ## 7. Veri modeli
 
@@ -204,7 +205,8 @@ sorgularla çözülür.
 | `memory_day` | `date` (YYYY-MM-DD), `created_by`, `created_at` | `date` tekil |
 | `day_location` | `day_id`, `province_code/name`, `district_code/name`, `lat`, `lng`, `sort_order` | (`day_id`, `sort_order`); ilçe kodu ve adı birlikte |
 | `memory_item` | `kind`, `date_precision`, `day_id` \| `year`/`month`, `text`, `caption` (≤280), `sort_order`, `created_by`, zamanlar, `deleted_at`, `deleted_by` | tarih şekli CHECK'i; not yalnızca `text` türünde; (`day_id`, `sort_order`), (`date_precision`, `year`, `month`), `deleted_at` |
-| `media_asset` | `item_id`, `status`, `source_key`, `display_key`, `preview_key`, `original_name`, türler, boyutlar, `width`, `height`, `duration_s`, `run_id`, `attempts`, `error_code`, `processed_at` | `ready` ise çıktılar dolu; (`status`, `updated_at`) |
+| `media_asset` | `item_id`, `status`, `source_key`, `display_key`, `preview_key`, `original_name`, türler, boyutlar, `width`, `height`, `duration_s`, `run_id`, `attempts`, `progress`, `heartbeat_at`, `error_code`, `processed_at` | `ready` ise çıktılar dolu; (`status`, `updated_at`) |
+| `pending_upload` | `object_key`, `upload_id` (multipart ise), `user_id`, `created_at` | Pakete bağlanınca silinir; 6 saatten eskiler temizlenir |
 | `tag` | `name`, `start_date`, `end_date`, `created_by` | `start_date ≤ end_date` |
 | `tag_override` | `tag_id`, `date`, `mode` (`exclude` \| `include`) | birincil anahtar (`tag_id`, `date`) |
 | `special_day` | `name`, `month`, `day`, `start_year`, `created_by` | 29 Şubat → artık olmayan yıllarda 28 Şubat |
@@ -227,18 +229,22 @@ sorgularla çözülür.
 
 1. Tarayıcı dosyaların çekim tarihini okur ve tarih alanına önerir.
 2. `POST /api/uploads`: 100 MB'a kadar tek imzalı PUT; üstünde 16 MB'lık parçalarla multipart.
-   Her dosya için HMAC imzalı bir yükleme token'ı döner.
+   Her dosya için HMAC imzalı, 6 saat geçerli bir yükleme token'ı döner ve yükleme
+   `pending_upload` tablosuna kaydedilir.
 3. Tarayıcı aynı anda en fazla iki dosyayı doğrudan R2'ye (`incoming/`) yükler. Bağlantı
-   koparsa parçalar yeniden denenir; uygulama kapatılırsa yükleme iptal olur.
+   koparsa parçalar yeniden denenir. Kullanıcı vazgeçerse `POST /api/uploads/abort` dosyayı
+   hemen siler; uygulama kapanır ya da çökerse saatlik temizlik 6 saat sonra siler.
 4. `POST /api/memories`: Worker token'ları ve R2'deki dosyaları doğrular, tek bir D1 batch'i ile
-   gün, konumlar, öğeler ve `queued` durumundaki medya satırlarını yazar, sonra her medya için
-   kuyruğa bir iş bırakır.
+   gün, konumlar, öğeler ve `queued` durumundaki medya satırlarını yazar, `pending_upload`
+   kayıtlarını siler, sonra her medya için kuyruğa bir iş bırakır.
 5. `memory-garden-media`:
    - **Foto:** Images binding ile 2560 px WebP ve 720 px WebP önizleme üretilir, R2'ye yazılır.
    - **Video:** İş başına bir container başlatılır; container yalnızca kısa ömürlü bir job token
      ve API adresi alır. Kaynağı imzalı URL'den okur, en fazla 1080p H.264/AAC MP4 (HDR→SDR) ve
      720 px WebP kapak üretir, çıktıyı parça parça imzalı URL'lerle yükler, sonra
      `/internal/callback`'i çağırır.
+   - **Nabız:** Container çalışırken her dakika `/internal/heartbeat`'e ilerleme yüzdesini
+     gönderir. Uygulama bu yüzdeyi "İşleniyor %40" olarak gösterir.
 6. Çıktılar doğrulanınca medya `ready` olur ve orijinal silinir. Hata olursa `failed` olur ve
    orijinal yeniden deneme için kalır.
 7. Uygulama işleme durumunu TanStack Query ile periyodik olarak yeniler.
@@ -274,11 +280,13 @@ satırları ve R2 dosyalarını kalıcı olarak siler; aktif anısı kalmayan g�
 
 | Sıklık | İş |
 |---|---|
-| 15 dakikada bir | 6 saatten uzun süredir `processing` olan medyayı `failed` (`worker_lost`) yap |
-| Her gece 03:00 | 30 günü dolan çöp kutusu öğelerini kalıcı sil; veritabanına bağlanmamış 2 günden eski `incoming/` dosyalarını sil |
+| 5 dakikada bir | Videoda 10 dakikadır nabız gelmeyen, fotoğrafta 15 dakikadır bitmeyen `processing` medyayı `failed` (`worker_lost`) yap |
+| Saatte bir | 6 saatten eski, pakete bağlanmamış `pending_upload` kayıtlarının dosyalarını sil ve multipart yüklemelerini iptal et |
+| Her gece 03:00 | 30 günü dolan çöp kutusu öğelerini kalıcı sil |
 | Haftalık (GitHub Actions) | D1'in tam yedeğini R2'ye yaz, 12 haftadan eskileri sil |
 
-R2 yaşam döngüsü kuralı: tamamlanmamış multipart yüklemeler 1 gün sonra iptal edilir.
+Ek güvenlik ağı olarak R2 yaşam döngüsü kuralı, tamamlanmamış multipart yüklemeleri 1 gün
+sonra iptal eder.
 
 ## 9. Güvenlik
 
@@ -357,7 +365,7 @@ geçici bir temayla ilerler ve tasarım sistemi gelince giydirilir.
 
 | Ne zaman | Adım |
 |---|---|
-| Aşama 0 | Cloudflare'de Workers Paid planına geçmek ($5/ay) |
+| ~~Aşama 0~~ | ~~Cloudflare'de Workers Paid planına geçmek ($5/ay)~~ **Yapıldı** (proje sahibi bildirdi; API token eklenince doğrulanacak) |
 | Aşama 0 | Bir Cloudflare API token'ı oluşturup GitHub repo secret'larına eklemek (adım adım yönerge verilecek) |
 | Aşama 1 | İki hesabın kullanıcı adı ve görünen adını belirlemek; script'i çalıştırıp şifreleri belirlemek |
 | Aşama 2 | UI seçimlerini göndermek |
