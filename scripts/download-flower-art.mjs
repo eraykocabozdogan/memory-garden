@@ -102,6 +102,14 @@ async function cropRegion(buffer, crop) {
     .toBuffer();
 }
 
+// "faded": muted, slightly brown tones for a representative image of a dried flower.
+function applyTreatment(image, treatment) {
+  if (!treatment) return image;
+  if (treatment === "faded")
+    return image.modulate({ saturation: 0.45, hue: -12, brightness: 1.02 });
+  throw new Error(`Unknown treatment: ${treatment}`);
+}
+
 async function exists(filePath) {
   try {
     await access(filePath);
@@ -135,7 +143,7 @@ for (const [index, entry] of pending.entries()) {
   }
 
   const cropped = await cropRegion(await sharp(sourceBuffer).rotate().toBuffer(), entry.crop);
-  const image = await sharp(cropped)
+  const image = await applyTreatment(sharp(cropped), entry.treatment)
     .resize({ width: 1280, height: 1900, fit: "inside", withoutEnlargement: true })
     .webp({ quality: 84, effort: 5 })
     .toBuffer();
