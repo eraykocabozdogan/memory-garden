@@ -18,21 +18,13 @@ Son güncelleme: 2026-10-09 (Aşama 0 sonrası). Yeni bir sohbet buradan devam e
 
 ### Proje sahibinin yapacakları
 
-1. **Aşama 0'ı incelemek ve onaylamak**, sonra branch'i `main`'e merge etmek (ya da Claude'a
-   merge ettirmek).
-2. **`v0-nextjs` etiketini oluşturmak.** Etiket bir oturumda GitHub'a gönderilemedi (oturumun git
-   bağlantısı yalnızca çalışma branch'ine push'a izin verdi). GitHub'da: repo → **Releases** →
-   **Draft a new release** → **Choose a tag** kutusuna `v0-nextjs` yaz → **Target** olarak commit
-   `1357af6`'yı seç (son Next.js commit'i: "feat(auth): load usernames and member names from the
-   database") → yayınla.
-3. **GitHub secret'ları:** repo → **Settings** → **Secrets and variables** → **Actions** →
-   `CLOUDFLARE_API_TOKEN` ve `CLOUDFLARE_ACCOUNT_ID`. Aşama 1'deki ilk deploy'dan önce gerekli.
-   (Claude ortamına, env1'e, ortam değişkeni olarak eklendi ve doğrulandı: token aktif, hesaba
-   erişiyor.)
-4. **Workers Paid planını teyit etmek:** Cloudflare paneli → Workers & Pages → Plans. Token'da
-   fatura okuma izni olmadığı için API'den doğrulanamadı. İstenirse token'a **Account → Billing →
-   Read** izni eklenebilir.
-5. **UI seçimlerini hazırlamak** (Karar 8, aşağıdaki rehber). Aşama 1 bunu beklemeden ilerleyebilir.
+1. **UI seçimlerini hazırlamak** (Karar 8, aşağıdaki rehber). Aşama 1 bunu beklemeden ilerleyebilir.
+2. İsteğe bağlı: `v0-nextjs` etiketi (proje sahibi için önemli değil). Oluşturulmak istenirse:
+   GitHub → Releases → Draft a new release → tag `v0-nextjs`, target commit `1357af6`.
+
+Tamamlananlar: Aşama 0 onaylandı. GitHub secret'ları (`CLOUDFLARE_API_TOKEN`,
+`CLOUDFLARE_ACCOUNT_ID`) repoya eklendi. Hesap Workers Paid planında (proje sahibi panelden
+doğruladı). Token env1 ortamında da var ve doğrulandı.
 
 ### Claude'un yapacakları (Aşama 1)
 
@@ -67,8 +59,23 @@ Son güncelleme: 2026-10-09 (Aşama 0 sonrası). Yeni bir sohbet buradan devam e
 - Teknik değişiklikler ve gerekçeleri: `docs/decisions.md` → "Aşama 0 sırasında yapılan teknik
   değişiklikler".
 
-**Aşama 3'te proje sahibine sorulacak:** Çiçek kataloğunda 61 kayıt var ama yalnızca 55'inin
-Curtis çizimi var (6'sı çizimsiz). Rehberde 61'in hepsi mi, yalnızca çizimli 55'i mi gösterilsin?
+## Aşama 3'te proje sahibine sorulacaklar (çiçek görselleri)
+
+1. **Çizimsiz kayıtlar:** Katalogda 61 kayıt var; 6'sının Curtis çizimi yok (Aynısefa,
+   Horozibiği, Erguvan, Portakal çiçeği, Müge, Unutma beni). Rehberde gösterilsinler mi?
+2. **Paylaşılan görseller:** Çizimli 55 kaydın 13'ü, tür ya da çeşide özel bir çizim bulunamadığı
+   için genel türün çizimini paylaşıyor (55 kayıt, 47 farklı görsel):
+   - Papatya → Katmerli papatya
+   - Haşhaş → Beyaz haşhaş
+   - Gül → Beyaz gül, Beyaz gül tomurcuğu, Gül tomurcuğu
+   - Leylak → Beyaz leylak
+   - Menekşe → Kokulu menekşe, Hercai menekşe
+
+   Seçenekler: (a) olduğu gibi kalsın ama "temsilî görsel" diye belirtilsin; (b) bu kayıtlar
+   için başka kamu malı kaynaklardan özel görsel bulunsun. `research/` içindeki Ingram, Phillips
+   ve Tyas kırpımlarında aday var: hercai menekşe (p-015 pansy), papatya (p-019 daisy),
+   menekşe (t-011 purple violet), gül çeşitleri, haşhaş (i-009 poppy). Ama üslup Curtis'ten
+   farklı; (c) görselsiz gösterilsin.
 
 ## Karar 8: UI — proje sahibi için rehber
 
