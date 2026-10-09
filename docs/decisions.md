@@ -398,7 +398,7 @@ Uygulama sırasında çıkan iki karar:
 | # | Soru | Seçenekler | Seçim | Gerekçe |
 |---|---|---|---|---|
 | Y4 | Kaynakta simge anlamı olarak verilmeyen, anlatıdan çıkan anlamlar (21 kayıt; liste doğrulama raporunda) | a) anlam alanından silinsin · b) ayrı "çağrışımlar" alanına taşınsın · c) olduğu gibi kalsın | **b** | Kaynağa sadakat korunur, anı uygulamasına uyan "yas", "anma" gibi anlamlar kaybolmaz. Veri modeline `associations` alanı eklendi; arayüzde anlamdan ayrı satırda gösterilecek. |
-| Y5 | Görseli bulunamayan iki kayıt: beyaz leylak, kurumuş gül | a) görselsiz · b) "temsilî" notlu yakın görsel (kurumuş gül için soluk tonla işlenmiş gül plakası) · c) katalogdan çıkar · d) daha geç kaynaklarda aramaya devam | **d, olmazsa b** | Önce gerçek bir plaka aranır; bulunamazsa kayıt seçilebilir kalsın diye temsilî görsel, arayüzde "temsilî" notuyla. |
+| Y5 | Görseli bulunamayan iki kayıt: beyaz leylak, kurumuş gül | a) görselsiz · b) "temsilî" notlu yakın görsel (kurumuş gül için soluk tonla işlenmiş gül plakası) · c) katalogdan çıkar · d) daha geç kaynaklarda aramaya devam | **d, olmazsa b** | Önce gerçek bir plaka aranır; bulunamazsa kayıt seçilebilir kalsın diye temsilî görsel, arayüzde "temsilî" notuyla. Sonuç: arama iki kayıt için de dönem baskısı bulamadı; ikisi temsilî görsel aldı (ayrıntı doğrulama raporunda). |
 
 Uygulama sırasındaki teknik değişiklik: görseller artık birden fazla kaynaktan geldiği için
 `curtis-artwork.json` → `flower-artwork.json`, `public/flowers/curtis/` → `public/flowers/art/`;

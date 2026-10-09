@@ -63,16 +63,16 @@ doğruladı). Token env1 ortamında da var ve doğrulandı.
 
 Ekim 2026'da katalog kaynaklara karşı baştan sona doğrulandı ve düzeltildi: 146 anlatı
 paragrafı, atıflar, anlamlar ve görseller. Yöntem: `research/flowers/catalog-methodology.md`;
-sonuçlar: `research/flowers/catalog-verification-2026-10.md`. 61 kaydın 59'u kendi görseline
-sahip; görseller `apps/web/public/flowers/art/`, kaynak listesi
-`packages/shared/src/flowers/flower-artwork.json` (`pnpm flowers:assets` yeniden üretir).
+sonuçlar: `research/flowers/catalog-verification-2026-10.md`. 61 kaydın hepsinin kendi görseli
+var (beyaz leylak ve kurumuş gül "temsilî"); görseller `apps/web/public/flowers/art/`, kaynak
+listesi `packages/shared/src/flowers/flower-artwork.json` (`pnpm flowers:assets` yeniden üretir).
 
-Proje sahibinin kararını bekleyenler (`docs/decisions.md` → "Çiçek kataloğunun yöntemi ve
-doğrulaması"):
+Aşama 3 için notlar:
 
-- **Y4:** Kaynakta simge anlamı olarak geçmeyen ama anlatıdan çıkan anlamlar (yas, anma,
-  kıskançlık vb., 21 kayıt) anlam alanında kalsın mı?
-- **Y5:** Görseli bulunamayan iki kayıt: beyaz leylak, kurumuş gül.
+- Çiçek kaydında anlam (`meaning`) ile çağrışımlar (`associations`) ayrı satırlarda gösterilir
+  (Y4). Çağrışım alanı boş olabilir.
+- `artwork.representative` doğruysa görselin yanında "temsilî" notu gösterilir (Y5).
+- Görsel kaynağı `artwork.sourceUrl` ile Commons sayfasına bağlanır.
 
 ## Karar 8: UI — proje sahibi için rehber
 

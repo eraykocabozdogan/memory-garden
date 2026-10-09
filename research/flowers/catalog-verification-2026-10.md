@@ -211,8 +211,13 @@ G1 sırasının dışına çıkılan yerler: Curtis'te tür düzeyinde uygun pla
 el boyaması baskıları kullanıldı; o da yoksa (ayçiçeği, haşhaş, menekşeler) daha erken ya da
 daha geç bir botanik baskı seçildi.
 
-Görsel bulunamayan iki kayıt (seçilemez durumda, karar bekliyor):
+Gerçek görseli bulunamayan iki kayıt (Y5: önce daha geniş arama, olmazsa temsilî görsel):
 
-- **Beyaz leylak:** Dönem kaynaklarında beyaz leylak plakası bulunamadı (Redouté'ninki açık
-  lila).
-- **Kurumuş gül:** Botanik plakalarda kurumuş gül çizilmez.
+- **Beyaz leylak:** Daha geç kaynaklar ve fidanlık katalogları da tarandı; yalnız 1900'lerin
+  siyah beyaz fotoğrafları çıktı. Temsilî görsel: Redouté, *Choix des plus belles fleurs*
+  Plate 109 (çok açık lila leylak).
+- **Kurumuş gül:** Botanik plakalarda kurumuş gül çizilmez. Temsilî görsel: Redouté, *Rosa
+  gallica purpuro-violacea magna*, soluk tonlarla işlendi (`treatment: "faded"`).
+
+İkisi `flower-artwork.json` içinde `representative: true` ile işaretli; arayüz bu görselleri
+"temsilî" notuyla gösterecek.

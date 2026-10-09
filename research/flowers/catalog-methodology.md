@@ -93,9 +93,12 @@ Karar kaydı: `docs/decisions.md` → "Çiçek görselleri" (G1–G5).
 4. **Kırpma (G2, G3).** Büyük plakalarda bitki ortalanır; boş kâğıt, yazılar ve parça çizimleri
    atılır. Tomurcuk kayıtları gül plakalarındaki tomurcuk detayından kırpılır. Kırpma oranları
    `flower-artwork.json` içinde `crop` alanında durur, böylece görsel yeniden üretilebilir.
-5. **Lisans.** Yalnız kamu malı (public domain) baskılar. Kaynak dosya Wikimedia Commons'taki
+5. **Temsilî görsel.** Kaydın kendisini gösteren bir plaka bulunamazsa en yakın plaka
+   kullanılabilir; `representative: true` ile işaretlenir ve arayüzde "temsilî" diye belirtilir.
+   Gerekirse ton işlemi uygulanır (`treatment: "faded"`: kurumuş çiçek için soluk tonlar).
+6. **Lisans.** Yalnız kamu malı (public domain) baskılar. Kaynak dosya Wikimedia Commons'taki
    adıyla `fileName` alanına yazılır; uygulama bu adla kaynak sayfasına bağlantı verir.
-6. **İşleme.** `pnpm flowers:assets` görseli indirir, kırpar, en fazla 1280×1900 piksel WebP'ye
+7. **İşleme.** `pnpm flowers:assets` görseli indirir, kırpar, en fazla 1280×1900 piksel WebP'ye
    çevirir (`apps/web/public/flowers/art/<id>.webp`).
 
 ## 5. Yeni kayıt eklerken kontrol listesi
