@@ -250,3 +250,30 @@ Durum: **Kararlaştırıldı.** Karar 5 tamamlandı.
 - Zamanlar UTC saklanır; gün hesapları ve gösterim İstanbul saatine göredir.
 - Demo ortamı aynı şemayı ayrı bir D1 veritabanında kullanır.
 - Kimlikler rastgele UUID'dir.
+
+## Karar 6: Medya
+
+Durum: **Kararlaştırıldı.**
+
+| # | Konu | Seçim | Değerlendirilen diğer seçenekler |
+|---|---|---|---|
+| 6a | Fotoğraf işleme | **Cloudflare Images** (Worker dönüştürür, sonucu R2'ye kaydeder) | ffmpeg container, telefonda küçültme |
+| 6b | Video işleme | **Container + ffmpeg** (eski projedeki tarif) | Cloudflare Stream |
+| 6c | Orijinal dosyalar | **İşlem başarıyla bitince silinir** | Saklanması ve "orijinali indir" |
+| 6d | Görüntüleme kalitesi | Video en fazla 1080p H.264 MP4; fotoğraf uzun kenar en fazla 2560 px WebP; önizleme uzun kenar 720 px WebP | — |
+
+**Gerekçeler:**
+
+- **Cloudflare Images:** HEIC destekliyor, container gerektirmiyor; ayda 5.000 ücretsiz dönüşüm
+  iki kişinin kullanımını karşılıyor.
+- **Container:** Cloudflare Stream, Workers Paid planına dahil değil; 1.000 dakikalık bloklar
+  halinde ayrıca ücretlendiriliyor (blok başına ayda $5). Proje sahibinin kuralı: Stream
+  plana dahilse Stream, ayrı bir abonelikse container.
+- **Orijinallerin silinmesi:** Depolama maliyetini düşürür.
+
+**Sonuçları:** "Orijinali indir" özelliği yok. İndirme, işlenmiş versiyonu verir. HDR ve
+1080p/2560 px üstü çözünürlük kalıcı olarak kaybolur. İşleme başarısız olursa orijinal,
+yeniden deneme için yerinde kalır.
+
+**Önizlemeler:** Ayrı, küçük dosyalar olarak işleme sırasında bir kere üretilir ve R2'de
+saklanır. Videoların önizlemesi bir kare görseldir (video değil).
