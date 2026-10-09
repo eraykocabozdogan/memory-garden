@@ -166,3 +166,28 @@ Durum: **Kararlaştırıldı.**
 - **İki Worker:** Sık değişen uygulama kodu, nadiren değişen ve derlenmesi yavaş olan ffmpeg
   container'ından ayrılıyor; uygulama deploy'ları hızlı kalıyor. İki Worker arasındaki
   bağlantı Cloudflare Queues ile.
+
+## Karar 4: Giriş sistemi
+
+Durum: **Kararlaştırıldı.**
+
+| # | Konu | Seçim | Değerlendirilen diğer seçenekler |
+|---|---|---|---|
+| 4a | Giriş altyapısı | **Better Auth** (D1 üzerinde) | Kendi yazdığımız sistem, Cloudflare Access |
+| 4b | Oturum süresi | **Kayan 90 gün:** her kullanımda yeniden 90 güne uzar | Sabit 30 gün, süresiz |
+| 4c | Face ID / parmak izi (passkey) | **Evet**, şifreye ek yöntem olarak | Yalnızca şifre |
+| 4d | Demo girişi | **Tek tıkla "Demo olarak gez", tek demo hesabı.** Partner tarafı hazır örnek verilerle doldurulur. | Sayfada yazan demo şifresi; demo'da partner değiştirme |
+| 4e | Hesap oluşturma ve şifre sıfırlama | **Komut satırı script'i** + uygulama içinde "şifremi değiştir" ekranı | Partnerin sıfırlaması, e-posta ile sıfırlama |
+
+**Gerekçeler:**
+
+- **Better Auth:** Güvenlik kodu sıfırdan yazılmıyor; şifre saklama, oturum, deneme sınırı ve
+  passkey hazır. Kendi giriş ekranı tasarlanabiliyor (Cloudflare Access'te bu mümkün değil).
+- **Kayan 90 gün:** PWA'da sık giriş istemek uygulama hissini bozar; kullanılmayan oturum yine
+  de kendiliğinden kapanır.
+- **Passkey:** Telefonda şifre yazmadan giriş; şifre her zaman yedek olarak kalır.
+- **Script ile hesap yönetimi:** E-posta ile sıfırlama akışı iki kişilik uygulamada gereksiz
+  bir saldırı yüzeyi.
+
+**Bilinen sınır:** iPhone'da ana ekrana eklenen uygulama Safari'den ayrı çalışır; kurulumdan
+sonra uygulamanın içinden bir kez giriş yapmak gerekir.
