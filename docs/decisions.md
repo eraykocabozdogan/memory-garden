@@ -141,3 +141,28 @@ ve veri yükleme kodunun taşınması demek.
 
 **Sabit kabul edilen:** React. Seçilen UI araçları (shadcn, React Bits, 21st.dev) React
 bileşenleri sunuyor.
+
+## Karar 3: Backend / API yapısı
+
+Durum: **Kararlaştırıldı.**
+
+| # | Konu | Seçim | Değerlendirilen diğer seçenekler |
+|---|---|---|---|
+| 3a | API framework'ü | **Hono** | itty-router, framework'süz Worker |
+| 3b | Frontend–backend iletişimi | **Hono RPC** (tip güvenli REST) | Klasik REST + fetch, tRPC |
+| 3c | Veri doğrulama | **Zod** | Valibot |
+| 3d | Frontend veri yönetimi | **TanStack Query** | React Router'ın kendi veri yükleme sistemi |
+| 3e | Worker yapısı | **İki Worker:** `app` (arayüz, API, cron) + `media` (kuyruk + ffmpeg container) | Tek Worker |
+
+**Gerekçeler:**
+
+- **Hono:** Workers için yazılmış, küçük ve yaygın; Better Auth ve Zod ile doğrudan çalışıyor,
+  Hono RPC'yi mümkün kılıyor.
+- **Hono RPC:** Backend ve frontend arasındaki uyumsuzluklar kod yazarken TypeScript
+  tarafından yakalanıyor; ek kütüphane gerektirmiyor.
+- **Zod:** Aynı doğrulama kuralları backend'de ve frontend formlarında kullanılabiliyor.
+- **TanStack Query:** Önbellek, otomatik tekrar deneme, iyimser güncelleme ve telefonda
+  kalıcı önbellek; PWA ve çevrimdışı açılış hedeflerine hizmet ediyor.
+- **İki Worker:** Sık değişen uygulama kodu, nadiren değişen ve derlenmesi yavaş olan ffmpeg
+  container'ından ayrılıyor; uygulama deploy'ları hızlı kalıyor. İki Worker arasındaki
+  bağlantı Cloudflare Queues ile.
