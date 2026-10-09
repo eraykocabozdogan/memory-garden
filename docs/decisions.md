@@ -354,7 +354,7 @@ Durum: **Kararlaştırıldı.** Mimari dokümanı (`docs/architecture.md`) bu d�
 
 ## Çiçek görselleri (Aşama 3'e hazırlık)
 
-Durum: **Kısmen kararlaştırıldı.** Doğrulama raporu:
+Durum: **Kararlaştırıldı.** Doğrulama raporu:
 `research/flowers/catalog-verification-2026-10.md`.
 
 | # | Konu | Karar |
@@ -366,5 +366,29 @@ Durum: **Kısmen kararlaştırıldı.** Doğrulama raporu:
 | G4 | Yanlış türü gösteren görseller | **Düzeltilecek** (papatya/katmerli papatya yer değiştirir, haşhaş, menekşe, gül vb.) |
 | G5 | Görseli olmayan 6 kayıt | **Aynı kurallarla görsel aranacak** |
 
-Bekleyen: Doğrulamada ortaya çıkan ek görsel uyumsuzlukları ve anlam düzeltmeleri için
-proje sahibinin onayı. Ardından her kayıt için aday karşılaştırma sayfası hazırlanacak.
+Doğrulamadan sonra (proje sahibi "önerilerini onaylıyorum"):
+
+| # | Konu | Karar |
+|---|---|---|
+| M1–M5 | Eksik anlamlar (lavanta "gayret", ayçiçeği "sahte zenginlik / kibir / hayranlık", sarı nergis "karşılıksız aşk", aynısefa "keder", beyaz leylak "masumiyet") | **Eklenecek** |
+| M6–M7 | İsteğe bağlı anlamlar (beyaz gül "sana layığım", manolya "doğa sevgisi") | **Eklenecek** (öneriye uyuldu) |
+| — | Kaydın gösterdiği bitkiyle uyuşmayan görseller (raporda liste) | **Değiştirilecek** (G4) |
+| T1–T4 | Aynı cins, farklı tür: yüksükotu, kına çiçeği, büyük çiçekli manolya, ayçiçeği | **Değiştirilecek** |
+| T5–T6 | Sarı nergis (*N. minor*), tek katlı gül (*R. ecae*) | **Kalacak** (fark küçük) |
+
+## Çiçek kataloğunun yöntemi ve doğrulaması
+
+Durum: **Kararlaştırıldı.**
+
+Konu: Kaynak araştırması (`research/flowers/stage-1/`) belgeli ve doğrulamadan geçti; ama
+uygulamaya giren 61 kaydın nasıl seçildiği, Türkçe metinlerin nasıl yazıldığı ve görsellerin
+nasıl eşlendiği hiçbir yerde yazılı değildi. Bu kısım GPT ile üretilmişti ve hatalar orada
+çıktı.
+
+| # | Soru | Seçenekler | Seçim | Gerekçe |
+|---|---|---|---|---|
+| Y1 | Katalog için yöntem belgesi | a) yazılsın · b) mevcut raporlar yeter | **a** | Yeni çiçekler aynı kuralla eklenir; "veri nasıl seçildi" sorusunun yazılı cevabı olur. |
+| Y2 | Uzun anlatı metinlerinin doğrulanması | a) 61 kaydın hepsi · b) 10–15 kayıtlık örneklem · c) yok | **a** | En riskli kısım bu metinler; 61 kayıt yapılabilir boyutta. Kaynakta olmayan cümle düzeltilir ya da çıkarılır. |
+| Y3 | Sıralama | Onaylı düzeltmeler + Y1 + Y2 tek iş olarak Aşama 3'ten önce | **Evet** | Aşama 3 doğrulanmış veriyle başlar. |
+
+Baştan araştırma yapılmadı: kaynak atıflarının hepsi kitapların tam metinlerinde bulundu.
