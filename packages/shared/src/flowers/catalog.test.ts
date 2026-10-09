@@ -28,6 +28,14 @@ test("every catalog record with artwork has its own local image", () => {
   ).toBe(true);
 });
 
+test("story-drawn associations are kept apart from source emblem meanings", () => {
+  expect(getFlowerById("papaver")).toMatchObject({
+    meaning: "teselli, acının dinmesi, unutma",
+    associations: "uyku, yas",
+  });
+  expect(flowerCatalog.every((flower) => typeof flower.associations === "string")).toBe(true);
+});
+
 test("no two records share the same source image region", () => {
   const regions = flowerArtwork.map((entry) =>
     JSON.stringify({ fileName: entry.fileName, crop: "crop" in entry ? entry.crop : null }),
@@ -40,6 +48,7 @@ test("catalog meanings and narratives remain attached to their scientific paths"
     path: "Rosa › kırmızı",
     name: "Kırmızı gül",
     meaning: "aşk",
+    associations: "",
   });
 });
 

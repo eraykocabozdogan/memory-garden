@@ -141,8 +141,11 @@ Kaynakta hiç geçmeyen ya da yanlış çevrilmiş anlamlar düzeltildi:
 | Zambak | "saflık" eklendi | Ingram s. 273: purity |
 | Lavanta | "ayrılık" → "anlaşmazlık" | Phillips: disunion |
 
-Açık soru (Y4): aşağıdaki anlamlar kaynakta simge anlamı olarak verilmiyor, ama atıf yapılan
-sayfalardaki anlatıdan çıkıyor (örneğin haşhaşta Roma cenaze âdetinden "yas").
+Aşağıdaki anlamlar kaynakta simge anlamı olarak verilmiyor, ama atıf yapılan sayfalardaki
+anlatıdan çıkıyor (örneğin haşhaşta Roma cenaze âdetinden "yas"). Y4 kararıyla (b) anlam
+alanından ayrı bir `associations` (çağrışımlar) alanına taşındılar. Erguvandaki "sessiz ve
+karşılıksız sevgi" kaynağa uygun olarak "sessiz sevgi" oldu (şiir, sevginin karşılıksız değil
+bilinmeyen kaldığını söyler).
 
 | Kayıt | Anlatıdan çıkan anlamlar |
 |---|---|

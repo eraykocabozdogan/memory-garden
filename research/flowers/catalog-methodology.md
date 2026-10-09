@@ -49,9 +49,16 @@ katmanında var, katalogda kullanılmıyor.
 - İki kaynak farklı anlam veriyorsa ikisi de yazılır (örnek: lavanta, Türk çiçek dilinde gayret,
   kıta Avrupasında güvensizlik).
 - İngilizce anlam Türkçeye anlamıyla çevrilir, sözcük sözcük değil.
-- Kaynakta hiç geçmeyen anlam yazılmaz. Kaynak bir anlamı yalnız anlatı içinde ima ediyorsa
-  (örneğin cenaze âdetinden "yas") bu alanda kalıp kalmayacağı açık bir karar (Y4,
-  `docs/decisions.md`).
+- Kaynakta hiç geçmeyen anlam yazılmaz. Kaynağın simge anlamı olarak vermediği, yalnız anlatıdan
+  çıkan anlamlar bu alana değil `associations` alanına yazılır.
+
+### `associations` (çağrışımlar)
+
+- Atıf yapılan sayfalardaki anlatının açıkça kurduğu ama kaynağın simge anlamı olarak vermediği
+  bağlar (örneğin haşhaşta Roma cenaze âdetinden "yas", sümbülde mitteki "kıskançlık").
+- Her çağrışımın dayandığı anlatı, kaydın `narratives` alanında bulunur.
+- Arayüzde anlamdan ayrı bir satırda, "çağrışımlar" başlığıyla gösterilir. Çağrışım yoksa alan
+  boş kalır.
 
 ### `context` (atıf)
 
