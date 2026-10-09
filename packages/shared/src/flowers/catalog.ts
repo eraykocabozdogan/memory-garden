@@ -1,17 +1,22 @@
 import catalogData from "./catalog-data.json";
-import curtisArtwork from "./curtis-artwork.json";
+import flowerArtwork from "./flower-artwork.json";
 
 export type FlowerArtwork = {
   src: string;
   sourceTitle: string;
   sourceUrl: string;
+  /** The source shows a close stand-in, not the record itself; the UI labels it "temsilî". */
+  representative: boolean;
 };
 
 export type FlowerCatalogEntry = {
   id: string;
   path: string;
   name: string;
+  /** Emblem meanings the sources give this flower. */
   meaning: string;
+  /** Associations the cited narratives draw but the sources do not give as an emblem (may be empty). */
+  associations: string;
   context: string;
   narratives: string[];
   artwork?: FlowerArtwork;
@@ -22,12 +27,13 @@ function commonsFileUrl(fileName: string) {
 }
 
 const artworkById = new Map(
-  curtisArtwork.map(({ id, fileName }) => [
-    id,
+  flowerArtwork.map((entry) => [
+    entry.id,
     {
-      src: `/flowers/curtis/${id}.webp`,
-      sourceTitle: fileName,
-      sourceUrl: commonsFileUrl(fileName),
+      src: `/flowers/art/${entry.id}.webp`,
+      sourceTitle: entry.fileName,
+      sourceUrl: commonsFileUrl(entry.fileName),
+      representative: "representative" in entry && entry.representative === true,
     },
   ]),
 );

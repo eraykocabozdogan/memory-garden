@@ -1,6 +1,6 @@
 # Devir notu: nerede kaldık
 
-Son güncelleme: 2026-10-09 (Aşama 0 sonrası). Yeni bir sohbet buradan devam eder.
+Son güncelleme: 2026-10-09 (Aşama 0 ve çiçek kataloğu doğrulaması sonrası). Yeni bir sohbet buradan devam eder.
 
 ## Durum
 
@@ -12,7 +12,7 @@ Son güncelleme: 2026-10-09 (Aşama 0 sonrası). Yeni bir sohbet buradan devam e
 | Aşama 0: Hazırlık | **Kod tarafı tamamlandı**, proje sahibinin onayını bekliyor (ayrıntılar aşağıda) |
 | Aşama 1: Temel + giriş | Sıradaki |
 
-Çalışma branch'i: `claude/wonderful-dijkstra-c10sbz`.
+Ana branch: `main`. Bir oturum kendi çalışma branch'inde çalışır; iş bitince main'e mergelenir ve branch silinir.
 
 ## Sıradaki adımlar
 
@@ -42,7 +42,7 @@ doğruladı). Token env1 ortamında da var ve doğrulandı.
 
 - Eski Next.js uygulaması silindi. Korunanlar taşındı:
   - `research/` olduğu gibi kaldı.
-  - Curtis görselleri → `apps/web/public/flowers/curtis/`.
+  - Curtis görselleri → `apps/web/public/flowers/art/`.
   - Çiçek kataloğu, Türkiye konumları, tarih/günlük/bahçe mantığı → `packages/shared/src/`.
   - ffmpeg container'ı → `apps/media/container/` (Aşama 5'te güncellenecek: fotoğraf yolu
     kaldırılacak, 1080p sınırı ve nabız eklenecek).
@@ -59,23 +59,20 @@ doğruladı). Token env1 ortamında da var ve doğrulandı.
 - Teknik değişiklikler ve gerekçeleri: `docs/decisions.md` → "Aşama 0 sırasında yapılan teknik
   değişiklikler".
 
-## Aşama 3'te proje sahibine sorulacaklar (çiçek görselleri)
+## Çiçek kataloğu (Aşama 3'e hazırlık)
 
-1. **Çizimsiz kayıtlar:** Katalogda 61 kayıt var; 6'sının Curtis çizimi yok (Aynısefa,
-   Horozibiği, Erguvan, Portakal çiçeği, Müge, Unutma beni). Rehberde gösterilsinler mi?
-2. **Paylaşılan görseller:** Çizimli 55 kaydın 13'ü, tür ya da çeşide özel bir çizim bulunamadığı
-   için genel türün çizimini paylaşıyor (55 kayıt, 47 farklı görsel):
-   - Papatya → Katmerli papatya
-   - Haşhaş → Beyaz haşhaş
-   - Gül → Beyaz gül, Beyaz gül tomurcuğu, Gül tomurcuğu
-   - Leylak → Beyaz leylak
-   - Menekşe → Kokulu menekşe, Hercai menekşe
+Ekim 2026'da katalog kaynaklara karşı baştan sona doğrulandı ve düzeltildi: 146 anlatı
+paragrafı, atıflar, anlamlar ve görseller. Yöntem: `research/flowers/catalog-methodology.md`;
+sonuçlar: `research/flowers/catalog-verification-2026-10.md`. 61 kaydın hepsinin kendi görseli
+var (beyaz leylak ve kurumuş gül "temsilî"); görseller `apps/web/public/flowers/art/`, kaynak
+listesi `packages/shared/src/flowers/flower-artwork.json` (`pnpm flowers:assets` yeniden üretir).
 
-   Seçenekler: (a) olduğu gibi kalsın ama "temsilî görsel" diye belirtilsin; (b) bu kayıtlar
-   için başka kamu malı kaynaklardan özel görsel bulunsun. `research/` içindeki Ingram, Phillips
-   ve Tyas kırpımlarında aday var: hercai menekşe (p-015 pansy), papatya (p-019 daisy),
-   menekşe (t-011 purple violet), gül çeşitleri, haşhaş (i-009 poppy). Ama üslup Curtis'ten
-   farklı; (c) görselsiz gösterilsin.
+Aşama 3 için notlar:
+
+- Çiçek kaydında anlam (`meaning`) ile çağrışımlar (`associations`) ayrı satırlarda gösterilir
+  (Y4). Çağrışım alanı boş olabilir.
+- `artwork.representative` doğruysa görselin yanında "temsilî" notu gösterilir (Y5).
+- Görsel kaynağı `artwork.sourceUrl` ile Commons sayfasına bağlanır.
 
 ## Karar 8: UI — proje sahibi için rehber
 
@@ -87,7 +84,7 @@ bir sistem (`npx shadcn add ...`). "Registry", bu formatta bileşen yayınlayan 
 (21st.dev ve React Bits da öyle). Tema değişkenleri (`--primary`, `--background`, `--radius`…)
 tüm bileşenleri birbirine bağlar.
 
-**Adım 0 (10 dk):** Uygulamanın hissini anlatan üç kelime seç. `public/flowers/curtis/`
+**Adım 0 (10 dk):** Uygulamanın hissini anlatan üç kelime seç. `public/flowers/art/`
 çizimlerine bak; renkler bu eski botanik çizimlerle uyumlu olmalı.
 
 **Adım 1: tweakcn.com/editor/theme (45 dk, zorunlu)**

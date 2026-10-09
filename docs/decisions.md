@@ -351,3 +351,55 @@ Durum: **Kararlaştırıldı.** Mimari dokümanı (`docs/architecture.md`) bu d�
 | TypeScript | — | **TypeScript 7** | Güncel sürüm; kullanılan araçların hepsi destekliyor. |
 | İmzalı token'lar | Upload ve job token için iki ayrı kopya | **Tek ortak modül** (`packages/shared/src/tokens`), WebCrypto ile | Aynı kod hem Worker'larda hem testlerde çalışıyor; iki kopya bakımı yok. |
 | Bahçe başlangıcı (D4) | — | `buildGardenDays` artık başlangıç gününü parametre olarak alıyor | Sabit 30 Ağustos 2026 tarihi kaldırıldı; bahçe ilk günlükten başlıyor. |
+
+## Çiçek görselleri (Aşama 3'e hazırlık)
+
+Durum: **Kararlaştırıldı.** Doğrulama raporu:
+`research/flowers/catalog-verification-2026-10.md`.
+
+| # | Konu | Karar |
+|---|---|---|
+| — | Genel türün çizimini paylaşan kayıtlar | **Her kayda özel görsel bulunacak** |
+| G1 | Kaynak önceliği | **Önce Curtis** (Botanical Magazine ve Flora Londinensis); yoksa aynı dönemin el boyaması baskıları (Edwards's Botanical Register, Redouté, Sowerby vb.) |
+| G2 | Büyük sayfalı plakalar | **Kırpılacak**: bitki ortalanır, boş kâğıt ve parça çizimleri atılır |
+| G3 | Tomurcuk kayıtları | **Gül plakalarındaki tomurcuk detayından kırpılacak** |
+| G4 | Yanlış türü gösteren görseller | **Düzeltilecek** (papatya/katmerli papatya yer değiştirir, haşhaş, menekşe, gül vb.) |
+| G5 | Görseli olmayan 6 kayıt | **Aynı kurallarla görsel aranacak** |
+
+Doğrulamadan sonra (proje sahibi "önerilerini onaylıyorum"):
+
+| # | Konu | Karar |
+|---|---|---|
+| M1–M5 | Eksik anlamlar (lavanta "gayret", ayçiçeği "sahte zenginlik / kibir / hayranlık", sarı nergis "karşılıksız aşk", aynısefa "keder", beyaz leylak "masumiyet") | **Eklenecek** |
+| M6–M7 | İsteğe bağlı anlamlar (beyaz gül "sana layığım", manolya "doğa sevgisi") | **Eklenecek** (öneriye uyuldu) |
+| — | Kaydın gösterdiği bitkiyle uyuşmayan görseller (raporda liste) | **Değiştirilecek** (G4) |
+| T1–T4 | Aynı cins, farklı tür: yüksükotu, kına çiçeği, büyük çiçekli manolya, ayçiçeği | **Değiştirilecek** |
+| T5–T6 | Sarı nergis (*N. minor*), tek katlı gül (*R. ecae*) | **Kalacak** (fark küçük) |
+
+## Çiçek kataloğunun yöntemi ve doğrulaması
+
+Durum: **Kararlaştırıldı.**
+
+Konu: Kaynak araştırması (`research/flowers/stage-1/`) belgeli ve doğrulamadan geçti; ama
+uygulamaya giren 61 kaydın nasıl seçildiği, Türkçe metinlerin nasıl yazıldığı ve görsellerin
+nasıl eşlendiği hiçbir yerde yazılı değildi. Bu kısım GPT ile üretilmişti ve hatalar orada
+çıktı.
+
+| # | Soru | Seçenekler | Seçim | Gerekçe |
+|---|---|---|---|---|
+| Y1 | Katalog için yöntem belgesi | a) yazılsın · b) mevcut raporlar yeter | **a** | Yeni çiçekler aynı kuralla eklenir; "veri nasıl seçildi" sorusunun yazılı cevabı olur. |
+| Y2 | Uzun anlatı metinlerinin doğrulanması | a) 61 kaydın hepsi · b) 10–15 kayıtlık örneklem · c) yok | **a** | En riskli kısım bu metinler; 61 kayıt yapılabilir boyutta. Kaynakta olmayan cümle düzeltilir ya da çıkarılır. |
+| Y3 | Sıralama | Onaylı düzeltmeler + Y1 + Y2 tek iş olarak Aşama 3'ten önce | **Evet** | Aşama 3 doğrulanmış veriyle başlar. |
+
+Baştan araştırma yapılmadı: kaynak atıflarının hepsi kitapların tam metinlerinde bulundu.
+
+Uygulama sırasında çıkan iki karar:
+
+| # | Soru | Seçenekler | Seçim | Gerekçe |
+|---|---|---|---|---|
+| Y4 | Kaynakta simge anlamı olarak verilmeyen, anlatıdan çıkan anlamlar (21 kayıt; liste doğrulama raporunda) | a) anlam alanından silinsin · b) ayrı "çağrışımlar" alanına taşınsın · c) olduğu gibi kalsın | **b** | Kaynağa sadakat korunur, anı uygulamasına uyan "yas", "anma" gibi anlamlar kaybolmaz. Veri modeline `associations` alanı eklendi; arayüzde anlamdan ayrı satırda gösterilecek. |
+| Y5 | Görseli bulunamayan iki kayıt: beyaz leylak, kurumuş gül | a) görselsiz · b) "temsilî" notlu yakın görsel (kurumuş gül için soluk tonla işlenmiş gül plakası) · c) katalogdan çıkar · d) daha geç kaynaklarda aramaya devam | **d, olmazsa b** | Önce gerçek bir plaka aranır; bulunamazsa kayıt seçilebilir kalsın diye temsilî görsel, arayüzde "temsilî" notuyla. Sonuç: arama iki kayıt için de dönem baskısı bulamadı; ikisi temsilî görsel aldı (ayrıntı doğrulama raporunda). |
+
+Uygulama sırasındaki teknik değişiklik: görseller artık birden fazla kaynaktan geldiği için
+`curtis-artwork.json` → `flower-artwork.json`, `public/flowers/curtis/` → `public/flowers/art/`;
+görsel üretme script'i kırpma oranlarını uyguluyor.

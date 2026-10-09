@@ -134,11 +134,11 @@ shadcn tabanlı bileşenler, TanStack Query, Hono RPC istemcisi, Zod.
 | Türkçe | İngilizce | İçerik |
 |---|---|---|
 | `/` | `/en` | Rehber ana sayfası, giriş ve demo bağlantıları |
-| `/cicekler/:slug` | `/en/flowers/:slug` | 61 çiçek: Curtis çizimi, anlam, tarihsel anlatı, kaynak |
+| `/cicekler/:slug` | `/en/flowers/:slug` | 61 çiçek: tarihsel botanik çizim, anlam, çağrışımlar, tarihsel anlatı, kaynak |
 | `/kaynaklar` | `/en/sources` | Ingram, Phillips, Tyas ve görsel karşılaştırma çalışması |
 | `/hakkinda` | `/en/about` | Proje hakkında (yalnızca demo'da bağlantılı) |
 
-Anlama göre arama (N7) tarayıcıda, katalog verisi üzerinde çalışır; sunucu gerektirmez.
+Anlama göre arama (N7) tarayıcıda, katalog verisi üzerinde (anlamlar ve çağrışımlar) çalışır; sunucu gerektirmez.
 
 **Uygulama (SPA, giriş gerekli):**
 
