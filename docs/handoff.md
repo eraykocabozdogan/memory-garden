@@ -12,7 +12,7 @@ Son güncelleme: 2026-10-09 (Aşama 0 ve çiçek kataloğu doğrulaması sonras�
 | Aşama 0: Hazırlık | **Kod tarafı tamamlandı**, proje sahibinin onayını bekliyor (ayrıntılar aşağıda) |
 | Aşama 1: Temel + giriş | Sıradaki |
 
-Çalışma branch'i: `claude/wonderful-dijkstra-c10sbz`.
+Ana branch: `main`. Bir oturum kendi çalışma branch'inde çalışır; iş bitince main'e mergelenir ve branch silinir.
 
 ## Sıradaki adımlar
 
