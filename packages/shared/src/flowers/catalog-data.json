@@ -48,7 +48,7 @@
     "id": "bellis-perennis",
     "path": "Bellis › perennis",
     "name": "Papatya",
-    "meaning": "masumiyet, çocukluk, anma, sevginin karşılığını sorgulama, kabul, kararsızlık",
+    "meaning": "masumiyet, çocukluk, sevginin karşılığını sorgulama, kabul, kararsızlık",
     "context": "Phillips, “Innocence”, s. 188; Ingram, “Daisy”, s. 266–268; çocuk oyunları, Ossian aktarımı ve şövalyelik geleneği.",
     "narratives": [
       "Phillips, papatyanın çocukluğun ilk çiçek eğlencelerinden birini oluşturması nedeniyle masumiyetin simgesi yapıldığını söyler.",
@@ -201,7 +201,7 @@
     "id": "fuchsia",
     "path": "Fuchsia",
     "name": "Küpe çiçeği",
-    "meaning": "zevk, zarafet, seçicilik",
+    "meaning": "zevk, zarafet",
     "context": "Phillips, “Taste”, s. 299; Ingram, “Fuchsia”, s. 148–149; görünüş açıklaması ve İngiltere'deki yetiştiricilik anlatısı.",
     "narratives": [
       "Phillips, zengin renkli çiçeklerin iddiasız görünüşünde özel bir uyum ve güzellik bulunduğunu, yaprakların arasında büyük bir zarafetle sarktıklarını söyler; fuşyayı bu nedenle zevkin simgesi yapar.",
@@ -224,7 +224,7 @@
     "id": "helianthus",
     "path": "Helianthus",
     "name": "Ayçiçeği",
-    "meaning": "sahte zenginlik, kibir, hayranlık, inanç, bağlılık, kararlılık, kıskançlık, terk edilmiş aşk",
+    "meaning": "sahte zenginlik, kibir, hayranlık, inanç, kararlılık, kıskançlık, terk edilmiş aşk",
     "context": "Ingram, “Sunflower (False riches)”, s. 320–323 ve çiçek sözlüğü (s. 355–362); İspanyol çiçek dili ve kaynağın ayçiçeğine bağladığı Clytie miti.",
     "narratives": [
       "Ingram, ayçiçeğinin çiçeklerini daima güneşe çevirdiğine dair yaygın inanışı aktarır. Bu inanışı paylaşan İspanyollar, çiçek dillerinde ayçiçeğini inancın simgesi yapmıştır. Bir İspanyol şaire göre gerçek inanç, bulutlara, rüzgârlara ve havadaki, yerdeki, gökteki bütün değişikliklere rağmen başını kaldırıp kararlılıkla Tanrı'sına bakan güneş çiçeği gibidir.",
@@ -300,7 +300,7 @@
     "id": "lilium",
     "path": "Lilium",
     "name": "Zambak",
-    "meaning": "haşmet, sadelik, inanç, masumiyet, korunma, anma",
+    "meaning": "haşmet, saflık, sadelik, inanç, masumiyet, korunma, anma",
     "context": "Ingram, “The Lily”, s. 272–275; Kitab-ı Mukaddes göndermeleri, Harz Dağları anlatısı ve Sevilla mezarlığı anlatısı.",
     "narratives": [
       "Ingram, göğün kraliçesi Juno'ya adanan zambağın genellikle haşmetin simgesi sayıldığını söyler.",
@@ -336,7 +336,7 @@
     "id": "magnolia-grandiflora",
     "path": "Magnolia › grandiflora",
     "name": "Büyük çiçekli manolya",
-    "meaning": "vakar, ihtişam, onur, doğa sevgisi",
+    "meaning": "vakar, ihtişam, doğa sevgisi",
     "context": "Phillips, “Dignity”, s. 120; Ingram, “Magnolia”, s. 116–117 ve çiçek sözlüğü (s. 355–362); Florida ormanları, Bretagne meclisi ve Paris ve Çin imparatorluk bahçeleri.",
     "narratives": [
       "Phillips, çiçeğin görkeminin bitkiler dünyasındaki yüksek yerine uygun olduğunu söyler. Doğal toprağında orman ağaçlarının üzerine yükselir, vakarını sergiler ve Florida ormanlarına kokusunu dağıtır.",
@@ -349,7 +349,7 @@
     "id": "malus-cicek",
     "path": "Malus › çiçek",
     "name": "Elma çiçeği",
-    "meaning": "tercih, seni seçiyorum",
+    "meaning": "tercih",
     "context": "Ingram, “Apple-blossom”, s. 177–180; çiçeğin görünüşü ve ardından gelen meyve arasındaki karşılaştırma.",
     "narratives": [
       "Ingram'ın aktardığı deneyimli bir çiçek dili yazarı, elma çiçeğini tercihin simgesi sayar: yalnızca çok güzel bir çiçek değildir; güzel ve yararlı bir meyvenin öncüsüdür, bu nedenle gülün kendisine bile tercih edilebilir."
@@ -359,7 +359,7 @@
     "id": "mirabilis-jalapa",
     "path": "Mirabilis › jalapa",
     "name": "Akşamsefası",
-    "meaning": "çekingenlik, gizli sevgi, karanlıkta umut",
+    "meaning": "çekingenlik, utangaç sevgi, karanlıkta umut",
     "context": "Phillips, “Timidity”, s. 304; Ingram, “Marvel of Peru”, s. 197–199; gündüz kapanıp gece açma davranışı.",
     "narratives": [
       "Phillips, çoğu çiçeği canlandırıp açan güneşin bakışına dayanamadığı için akşamsefasının çekingenliğin simgesi yapıldığını söyler.",
@@ -407,7 +407,7 @@
     "id": "nelumbo-nucifera",
     "path": "Nelumbo › nucifera",
     "name": "Hint lotusu",
-    "meaning": "sessiz aşk, yaratıcı güç",
+    "meaning": "sessizlik, yaratıcı güç",
     "context": "Phillips, “Silence”, s. 279–280; kaynakta tarihsel `Nymphaea Nelumbo` adıyla geçen Hint lotusu.",
     "narratives": [
       "Phillips, sevginin sessizce üzerimize süzüldüğünü söyler; Hintlilerin anlattığına göre Cupid ilk kez Ganj üzerinde Nymphaea Nelumbo'nun üstünde süzülürken görülmüştür.",
@@ -453,7 +453,7 @@
     "id": "passiflora",
     "path": "Passiflora",
     "name": "Çarkıfelek",
-    "meaning": "inanç, kutsal acı, kefaret, dinî batıl inanç ve taassup",
+    "meaning": "inanç, kutsal acı, kefaret, dinî batıl inanç",
     "context": "Phillips, “Religious Superstition”, s. 262; Ingram, “Passion Flower”, s. 304–305; Katolik çile simgeciliği ve İspanyol istilası anlatısı.",
     "narratives": [
       "Phillips, Batı dünyasının Murucuia'sı İtalya'da görülür görülmez batıl inancın ya da hilenin bu çiçekte İsa'nın Çilesi'nin gizemli bir tasvirini bulduğunu söyler. Çiçek böylece Flos Passionis ve Christi Passionis Imago adlarını almış, 'çile çiçeği' adı ve simgesi buradan doğmuştur.",
@@ -538,7 +538,7 @@
     "id": "rosa-kirmizi",
     "path": "Rosa › kırmızı",
     "name": "Kırmızı gül",
-    "meaning": "aşk, tutku",
+    "meaning": "aşk",
     "context": "Ingram, “The Rose”, s. 30–31; İranlı şair Jami'nin gül-bülbül anlatısı.",
     "narratives": [
       "Ingram, İranlı şair Jami'nin dizelerine göre ilk gülün, uyuşuk lotus geceleri uyuduğu için çiçekler Allah'tan yeni bir hükümdar istediğinde Gülistan'da açtığını anlatır. Bu genç kraliçe başta kar beyazıdır ve dikenlerle korunur. Bülbül ona öyle âşık olur ki kalbini dikenlere bastırır; kanının ulaştığı yerler kıpkırmızı olur, ulaşamadığı taç yaprak uçları beyaz kalır."
@@ -613,7 +613,7 @@
     "id": "syringa",
     "path": "Syringa",
     "name": "Leylak",
-    "meaning": "ilk aşk, terk ediliş",
+    "meaning": "ilk aşk heyecanı, terk ediliş",
     "context": "Phillips, “Forsaken”, s. 152; Ingram, “Lilac”, s. 114–115; Doğu geleneği ve ilkbaharda çiçeklenme.",
     "narratives": [
       "Phillips, bitkinin getirildiği Doğu ülkelerinde leylakların terk edilmiş kişiyi temsil ettiğini söyler; âşıklar sevgililerini bıraktıklarında onlara bu çiçeği sunar.",
@@ -661,7 +661,7 @@
     "id": "viola",
     "path": "Viola",
     "name": "Menekşe",
-    "meaning": "sadakat, bağlılık",
+    "meaning": "tevazu, sadakat, bağlılık",
     "context": "Ingram, “Violet”, s. 256–261; Toulouse Çiçek Oyunları ve Napolyon'un sürgünü.",
     "narratives": [
       "Ingram bazı kişilerin menekşeyi tevazunun, bazılarının ise sadakatin simgesi saydığını aktarır; Shakespeare'in çağdaşı bir şair “Menekşe sadakat içindir; bende kalacaktır” der.",

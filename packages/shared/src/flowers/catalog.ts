@@ -1,5 +1,5 @@
 import catalogData from "./catalog-data.json";
-import curtisArtwork from "./curtis-artwork.json";
+import flowerArtwork from "./flower-artwork.json";
 
 export type FlowerArtwork = {
   src: string;
@@ -22,10 +22,10 @@ function commonsFileUrl(fileName: string) {
 }
 
 const artworkById = new Map(
-  curtisArtwork.map(({ id, fileName }) => [
+  flowerArtwork.map(({ id, fileName }) => [
     id,
     {
-      src: `/flowers/curtis/${id}.webp`,
+      src: `/flowers/art/${id}.webp`,
       sourceTitle: fileName,
       sourceUrl: commonsFileUrl(fileName),
     },

@@ -31,7 +31,7 @@ test("catalog meanings and narratives remain attached to their scientific paths"
   expect(getFlowerById("rosa-kirmizi")).toMatchObject({
     path: "Rosa › kırmızı",
     name: "Kırmızı gül",
-    meaning: "aşk, tutku",
+    meaning: "aşk",
   });
 });
 

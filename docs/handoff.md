@@ -42,7 +42,7 @@ doğruladı). Token env1 ortamında da var ve doğrulandı.
 
 - Eski Next.js uygulaması silindi. Korunanlar taşındı:
   - `research/` olduğu gibi kaldı.
-  - Curtis görselleri → `apps/web/public/flowers/curtis/`.
+  - Curtis görselleri → `apps/web/public/flowers/art/`.
   - Çiçek kataloğu, Türkiye konumları, tarih/günlük/bahçe mantığı → `packages/shared/src/`.
   - ffmpeg container'ı → `apps/media/container/` (Aşama 5'te güncellenecek: fotoğraf yolu
     kaldırılacak, 1080p sınırı ve nabız eklenecek).
@@ -87,7 +87,7 @@ bir sistem (`npx shadcn add ...`). "Registry", bu formatta bileşen yayınlayan 
 (21st.dev ve React Bits da öyle). Tema değişkenleri (`--primary`, `--background`, `--radius`…)
 tüm bileşenleri birbirine bağlar.
 
-**Adım 0 (10 dk):** Uygulamanın hissini anlatan üç kelime seç. `public/flowers/curtis/`
+**Adım 0 (10 dk):** Uygulamanın hissini anlatan üç kelime seç. `public/flowers/art/`
 çizimlerine bak; renkler bu eski botanik çizimlerle uyumlu olmalı.
 
 **Adım 1: tweakcn.com/editor/theme (45 dk, zorunlu)**
