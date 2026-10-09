@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX "memory_items_object_key_unique" ON "memory_items" USING btree ("object_key");

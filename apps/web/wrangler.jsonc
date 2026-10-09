@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "memory-garden",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  // The prerendered guide and the SPA bundle are static assets. API requests always reach
+  // the Worker; any other path without a matching file falls through to the Worker, which
+  // answers with the SPA shell.
+  "assets": {
+    "directory": "./build/client",
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    "run_worker_first": ["/api/*"]
+  },
+  "env": {
+    "demo": {
+      "name": "memory-garden-demo"
+    }
+  }
+}

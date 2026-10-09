@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.worker.tsbuildinfo",
+    "types": ["node"]
+  },
+  "include": ["worker", "worker-configuration.d.ts", "e2e", "*.config.ts"]
+}

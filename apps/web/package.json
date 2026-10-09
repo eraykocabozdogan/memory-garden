@@ -1,0 +1,38 @@
+{
+  "name": "@memory-garden/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n app,api -c blue,green \"pnpm dev:app\" \"pnpm dev:api\"",
+    "dev:app": "react-router dev",
+    "dev:api": "wrangler dev --port 8787",
+    "build": "react-router build",
+    "preview": "wrangler dev --port 4173",
+    "typegen": "react-router typegen && wrangler types",
+    "typecheck": "pnpm typegen && tsc -b",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "deploy": "pnpm build && wrangler deploy"
+  },
+  "dependencies": {
+    "@memory-garden/shared": "workspace:*",
+    "hono": "^4.13.13",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router": "^8.4.0",
+    "isbot": "^5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@react-router/dev": "^8.4.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "concurrently": "^10.0.6",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.4",
+    "vitest": "^4.1.0",
+    "wrangler": "^4.149.0"
+  }
+}

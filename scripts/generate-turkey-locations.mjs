@@ -8,7 +8,7 @@ const OPEN_ADMIN_ROOT = `https://raw.githubusercontent.com/open-admin-data/turke
 const TURKEY_GEO_ROOT = `https://raw.githubusercontent.com/onurusluca/turkey-geo-api/${TURKEY_GEO_REVISION}/data/jsonl`;
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const outputPath = resolve(projectRoot, "features/locations/turkey-locations.json");
+const outputPath = resolve(projectRoot, "packages/shared/src/locations/turkey-locations.json");
 
 async function fetchText(url) {
   const response = await fetch(url);
@@ -101,9 +101,7 @@ const locations = officialProvinces
       .map((officialDistrict) => {
         const officialNameKey = matchingKey(officialDistrict.name);
         const openDistrict = openByName.get(
-          officialNameKey === "merkez"
-            ? matchingKey(officialProvince.name)
-            : officialNameKey,
+          officialNameKey === "merkez" ? matchingKey(officialProvince.name) : officialNameKey,
         );
         if (!openDistrict) {
           unmatched.push(`${officialProvince.name} / ${officialDistrict.name}`);
@@ -133,4 +131,6 @@ if (unmatched.length > 0) {
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, `${JSON.stringify(locations)}\n`, "utf8");
-console.log(`Wrote ${locations.length} provinces and ${openDistricts.length} districts to ${outputPath}`);
+console.log(
+  `Wrote ${locations.length} provinces and ${openDistricts.length} districts to ${outputPath}`,
+);

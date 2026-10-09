@@ -1,6 +1,5 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { mkdir } from "node:fs/promises";
 
 const [inputPath, outputPath] = process.argv.slice(2);
 

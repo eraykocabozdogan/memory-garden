@@ -3,9 +3,17 @@ import path from "node:path";
 
 import sharp from "sharp";
 
-import artwork from "../features/flowers/curtis-artwork.json" with { type: "json" };
+import artwork from "../packages/shared/src/flowers/curtis-artwork.json" with { type: "json" };
 
-const outputDirectory = path.join(process.cwd(), "public", "flowers", "curtis");
+const outputDirectory = path.join(
+  import.meta.dirname,
+  "..",
+  "apps",
+  "web",
+  "public",
+  "flowers",
+  "curtis",
+);
 const userAgent = "ikimize flower catalog/1.0 (Wikimedia Commons asset import)";
 const apiUrl = "https://commons.wikimedia.org/w/api.php";
 
@@ -74,9 +82,7 @@ for (const [index, entry] of artwork.entries()) {
   if (!sourceBuffer) {
     const source = sourceImages.get(entry.fileName);
     if (!source?.thumburl) throw new Error(`No Wikimedia image found for ${entry.fileName}`);
-    sourceBuffer = Buffer.from(
-      await (await fetchWithRetry(source.thumburl)).arrayBuffer(),
-    );
+    sourceBuffer = Buffer.from(await (await fetchWithRetry(source.thumburl)).arrayBuffer());
     downloaded.set(entry.fileName, sourceBuffer);
     await pause(1_500);
   }
