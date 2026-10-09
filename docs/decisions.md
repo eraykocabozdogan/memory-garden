@@ -280,7 +280,7 @@ saklanır. Videoların önizlemesi bir kare görseldir (video değil).
 
 ## Karar 7: Demo ortamı
 
-Durum: **Kararlaştırıldı.** 7b'nin uygulama yöntemi önerildi, onay bekliyor.
+Durum: **Kararlaştırıldı.**
 
 | # | Konu | Karar |
 |---|---|---|
@@ -291,7 +291,7 @@ Durum: **Kararlaştırıldı.** 7b'nin uygulama yöntemi önerildi, onay bekliyo
 | 7d | Tanıtım | Üst bilgi şeridi ("Bu bir demo" + GitHub) ve "Bu proje hakkında" sayfası (teknolojiler, mimari, önemli kararlar) |
 | 7e | Erişim | Ana sitenin giriş ekranında "Demo olarak gez" bağlantısı + CV'deki doğrudan link. Demo sayfaları Google'a kapalı. |
 
-**7b uygulama önerisi (onay bekliyor):** Her demo kopyası ayrı bir Durable Object içinde kendi
+**7b uygulama yöntemi (onaylandı):** Her demo kopyası ayrı bir Durable Object içinde kendi
 SQLite veritabanıyla çalışır. Aynı şema ve aynı API kodu kullanılır; yalnızca veritabanı
 bağlantısı değişir. Kopya, son kullanımdan 24 saat sonra kendini siler. Demo görselleri tüm
 kopyalar arasında paylaşılan, salt okunur dosyalardır; demo'da silme işlemi R2'deki dosyalara
@@ -299,3 +299,31 @@ dokunmaz. Kötüye kullanıma karşı IP başına yeni kopya oluşturma sınır�
 Değerlendirilen alternatifler: ziyaretçi başına ayrı D1 veritabanı (oluşturması yavaş, Worker'a
 dinamik bağlanamıyor); tek demo veritabanında tüm tablolara "ziyaretçi" sütunu (gerçek
 uygulamanın şemasını ve tüm sorgularını demo için karmaşıklaştırır).
+
+## Karar 8: UI
+
+Durum: **Bekliyor.** Proje sahibi tweakcn, shadcn blokları, React Bits ve (isteğe bağlı)
+21st.dev üzerinden seçimlerini hazırlıyor. Seçimler kodlamanın tasarım sistemi aşamasında
+kurulacak; backend aşamaları bunu beklemeden ilerleyebilir.
+
+## Karar 9: Altyapı ve süreç
+
+Durum: **Kararlaştırıldı.**
+
+| # | Konu | Seçim | Değerlendirilen diğer seçenekler |
+|---|---|---|---|
+| 9a-1 | Uygulamanın adı | **Memory Garden** | İkimize |
+| 9a-2 | Alan adı | **Ücretsiz workers.dev:** `memory-garden.erayai.workers.dev`, demo `memory-garden-demo.erayai.workers.dev` | Cloudflare Registrar'dan .com/.app, .com.tr |
+| 9b | Deploy | **GitHub Actions:** testler geçmeden deploy yok; `main`'e merge sonrası önce demo, sonra gerçek uygulama | Workers Builds, elle deploy |
+| 9c | Ortamlar | **Yerel + demo + gerçek**; ayrı staging yok | Ayrı staging ortamı |
+| 9d | Testler | **Birim (Vitest) + API (Vitest, Workers test ortamı) + uçtan uca (Playwright, 5–6 kritik akış, mobil + masaüstü) + performans (Lighthouse CI, rehber sayfaları)** | Yalnızca birim + API, yalnızca birim |
+| 9e | Yedekleme | **D1 Time Travel (30 gün) + haftalık tam veritabanı yedeği R2'ye, 12 hafta saklanır** | Yalnızca Time Travel |
+| 9f | Hata takibi | **Cloudflare Workers Logs**; tarayıcı hataları kendi API'miz üzerinden aynı yere | Sentry |
+| 9g | Kod araçları | **Tek repo, üç paket** (`web`, `media`, `shared`), **pnpm**, **Biome** | Tek paket; npm/bun; ESLint + Prettier |
+
+**Notlar:**
+
+- workers.dev'de alt alan adı iç içe olamadığı için demo, `demo.` alt adresi yerine ayrı bir
+  Worker adıyla yayınlanır. workers.dev Public Suffix List'te olduğu için gerçek uygulama ve
+  demo birbirinin çerezlerine erişemez.
+- İleride özel bir alan adı alınırsa kod değişmeden Worker'lara bağlanabilir.
