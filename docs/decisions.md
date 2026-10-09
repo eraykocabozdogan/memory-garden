@@ -71,7 +71,7 @@ Gerekçe: Araştırma emeğini görünür kılar ve projenin giriş yapmadan inc
 | # | Özellik | Karar |
 |---|---|---|
 | N1 | "Geçen yıl bugün" anı hatırlatması | Evet |
-| N2 | Bildirim: partner günlük yazınca, çiçek bırakınca, özel gün gelince | Evet, **PWA web push** ile |
+| N2 | Bildirim: partner günlük yazınca, çiçek bırakınca | Evet, **PWA web push** ile (özel gün bildirimi yok, bkz. Karar 5f) |
 | N3 | PWA (telefona uygulama gibi kurulum) | Evet; iPhone'da web push için zorunlu |
 | N4 | Anılarda filtreleme: etiket, yıl, il, tür (foto/video/not) | Evet; metin araması yok |
 | N5 | Etiketler | Evet (ayrıntılar aşağıda) |
@@ -111,7 +111,7 @@ için uygulamanın ana ekrana eklenmesi gerekiyor.
 |---|---|---|
 | Ö1 | Ekranda neler olacak? | İsim, tarih, kaçıncı yıl olduğu, sıradaki yıldönümüne geri sayım |
 | Ö2 | O tarihteki geçmiş anılar gösterilsin mi? | Evet (N1 ile aynı altyapı) |
-| Ö3 | Bildirim gitsin mi? | Evet, gün geldiğinde (N2 ile) |
+| Ö3 | Bildirim gitsin mi? | **Hayır** (Karar 5f ile değişti; önce "evet" kararlaştırılmıştı) |
 
 ## Karar 2: Frontend yaklaşımı
 
@@ -191,3 +191,26 @@ Durum: **Kararlaştırıldı.**
 
 **Bilinen sınır:** iPhone'da ana ekrana eklenen uygulama Safari'den ayrı çalışır; kurulumdan
 sonra uygulamanın içinden bir kez giriş yapmak gerekir.
+
+## Karar 5: Veri modeli
+
+Durum: **Kısmen kararlaştırıldı.** Tablo yapısı ayrıca, tablo tablo ele alınacak.
+
+| # | Konu | Seçim | Değerlendirilen diğer seçenekler |
+|---|---|---|---|
+| 5a | Veritabanı kütüphanesi | **Drizzle** | Kysely, düz SQL |
+| 5b | Etiket aralığına sonradan eklenen günler | **Otomatik dahil** (elle çıkarılmadıysa) | Yalnızca oluşturma anındaki günler |
+| 5c | Silinen anılar | **Çöp kutusu:** 30 gün geri alınabilir, sonra R2 dosyalarıyla birlikte kalıcı silinir | Onaylı kalıcı silme |
+| 5d | "Kim ekledi" bilgisi | **Gösterilsin**, küçük ve sade | Gösterilmesin |
+| 5e | Bildirim tercihleri | **Ayarlarda aç/kapa**, her üye kendisi için: günlük, çiçek | Hepsi her zaman açık |
+| 5f | Özel gün bildirimi | **Olmayacak** | Sabah 09:00 bildirimi |
+| 5g | 29 Şubat'taki özel gün, artık yıl olmayan yıllarda | **28 Şubat'ta** gösterilir | 1 Mart |
+
+**Gerekçeler:**
+
+- **Drizzle:** Şema TypeScript'te, migration'lar otomatik; Better Auth ve Zod ile doğrudan
+  çalışıyor. D1 interaktif transaction desteklemediği için çok adımlı yazmalar `batch()` ile
+  yapılacak.
+- **Etiketler otomatik kapsar:** Etiket bir tarih aralığı olarak düşünülüyor; istisnalar ayrı
+  tutuluyor.
+- **Çöp kutusu:** Anılar geri getirilemeyecek türden veri ve iki üye de silebiliyor.
