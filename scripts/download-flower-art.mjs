@@ -12,10 +12,20 @@ const force = args.includes("--force");
 const onlyIds = new Set(args.filter((arg) => !arg.startsWith("--")));
 const entries = artwork.filter(({ id }) => onlyIds.size === 0 || onlyIds.has(id));
 
-const outputDirectory = path.join(import.meta.dirname, "..", "apps", "web", "public", "flowers", "art");
+const outputDirectory = path.join(
+  import.meta.dirname,
+  "..",
+  "apps",
+  "web",
+  "public",
+  "flowers",
+  "art",
+);
 const userAgent = "MemoryGarden/1.0 (https://github.com/eraykocabozdogan/memory-garden)";
 const apiUrl = "https://commons.wikimedia.org/w/api.php";
 const sourceWidth = 2400;
+// A crop keeps at least this many source pixels across, so small details stay sharp.
+const minimumCropWidth = 1400;
 
 function pause(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -33,7 +43,7 @@ async function fetchWithRetry(url) {
   throw new Error(`Download failed: ${url}`);
 }
 
-async function querySourceImages(fileNames) {
+async function querySourceImages(fileNames, width = sourceWidth) {
   const sourceImages = new Map();
   for (let index = 0; index < fileNames.length; index += 40) {
     const url = new URL(apiUrl);
@@ -47,7 +57,7 @@ async function querySourceImages(fileNames) {
     );
     url.searchParams.set("prop", "imageinfo");
     url.searchParams.set("iiprop", "url|size");
-    url.searchParams.set("iiurlwidth", String(sourceWidth));
+    url.searchParams.set("iiurlwidth", String(width));
     url.searchParams.set("format", "json");
 
     const body = await (await fetchWithRetry(url)).json();
@@ -56,6 +66,22 @@ async function querySourceImages(fileNames) {
     }
   }
   return sourceImages;
+}
+
+function requiredWidth(entry) {
+  return entry.crop ? Math.ceil(minimumCropWidth / entry.crop.width) : sourceWidth;
+}
+
+// Narrow crops need a larger rendition than the default; Commons caps a rendition at the original size.
+async function upgradeRenditions(sourceImages, pendingEntries) {
+  for (const entry of pendingEntries) {
+    const imageInfo = sourceImages.get(entry.fileName);
+    if (!imageInfo) continue;
+    const width = Math.min(imageInfo.width, requiredWidth(entry));
+    if (width <= (imageInfo.thumbwidth ?? imageInfo.width)) continue;
+    const [larger] = (await querySourceImages([entry.fileName], width)).values();
+    if (larger) sourceImages.set(entry.fileName, larger);
+  }
 }
 
 function sourceUrl(imageInfo) {
@@ -95,6 +121,7 @@ for (const entry of entries) {
 }
 
 const sourceImages = await querySourceImages([...new Set(pending.map(({ fileName }) => fileName))]);
+await upgradeRenditions(sourceImages, pending);
 const downloaded = new Map();
 
 for (const [index, entry] of pending.entries()) {

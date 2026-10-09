@@ -392,3 +392,14 @@ nasıl eşlendiği hiçbir yerde yazılı değildi. Bu kısım GPT ile üretilmi
 | Y3 | Sıralama | Onaylı düzeltmeler + Y1 + Y2 tek iş olarak Aşama 3'ten önce | **Evet** | Aşama 3 doğrulanmış veriyle başlar. |
 
 Baştan araştırma yapılmadı: kaynak atıflarının hepsi kitapların tam metinlerinde bulundu.
+
+Bekleyen kararlar:
+
+| # | Konu | Durum |
+|---|---|---|
+| Y4 | Kaynakta simge anlamı olarak verilmeyen, anlatıdan çıkan anlamlar (21 kayıt; liste doğrulama raporunda) anlam alanında kalsın mı? | **Proje sahibinin kararını bekliyor** |
+| Y5 | Görseli bulunamayan iki kayıt: beyaz leylak, kurumuş gül | **Proje sahibinin kararını bekliyor** |
+
+Uygulama sırasındaki teknik değişiklik: görseller artık birden fazla kaynaktan geldiği için
+`curtis-artwork.json` → `flower-artwork.json`, `public/flowers/curtis/` → `public/flowers/art/`;
+görsel üretme script'i kırpma oranlarını uyguluyor.

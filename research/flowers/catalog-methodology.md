@@ -9,7 +9,7 @@ yöntemi ve doğrulaması".
 | Katman | Nerede | Ne içerir |
 |---|---|---|
 | Araştırma | `research/flowers/stage-1/` | Üç kitabın girdileri, dahil etme kapıları, birleştirme kuralları, sayfa atıfları. 331 birleşik kayıt. |
-| Katalog | `packages/shared/src/flowers/catalog-data.json` ve `curtis-artwork.json` | Uygulamada gösterilen 61 kayıt: Türkçe ad, anlam, atıf, anlatılar, görsel. |
+| Katalog | `packages/shared/src/flowers/catalog-data.json` ve `flower-artwork.json` | Uygulamada gösterilen 61 kayıt: Türkçe ad, anlam, atıf, anlatılar, görsel. |
 
 Araştırma katmanı en baştan belgeliydi (`stage-1/*.md`). Katalog katmanı ilk kez GPT ile
 yazıldı ve yöntemi kayıtlı değildi. Ekim 2026'da tüm katalog kaynaklara karşı doğrulandı
@@ -85,11 +85,11 @@ Karar kaydı: `docs/decisions.md` → "Çiçek görselleri" (G1–G5).
    görseli o rengi ya da biçimi gösterir.
 4. **Kırpma (G2, G3).** Büyük plakalarda bitki ortalanır; boş kâğıt, yazılar ve parça çizimleri
    atılır. Tomurcuk kayıtları gül plakalarındaki tomurcuk detayından kırpılır. Kırpma oranları
-   `curtis-artwork.json` içinde `crop` alanında durur, böylece görsel yeniden üretilebilir.
+   `flower-artwork.json` içinde `crop` alanında durur, böylece görsel yeniden üretilebilir.
 5. **Lisans.** Yalnız kamu malı (public domain) baskılar. Kaynak dosya Wikimedia Commons'taki
    adıyla `fileName` alanına yazılır; uygulama bu adla kaynak sayfasına bağlantı verir.
 6. **İşleme.** `pnpm flowers:assets` görseli indirir, kırpar, en fazla 1280×1900 piksel WebP'ye
-   çevirir (`apps/web/public/flowers/curtis/<id>.webp`).
+   çevirir (`apps/web/public/flowers/art/<id>.webp`).
 
 ## 5. Yeni kayıt eklerken kontrol listesi
 

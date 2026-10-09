@@ -4,12 +4,13 @@ import { fileURLToPath } from "node:url";
 import { expect, test } from "vitest";
 
 import { flowerCatalog, getFlowerById, isFlowerId } from "./catalog";
+import flowerArtwork from "./flower-artwork.json";
 
 const webPublicDirectory = fileURLToPath(new URL("../../../../apps/web/public/", import.meta.url));
 
-test("the Curtis catalog contains 55 unique selectable records with local artwork", () => {
-  expect(flowerCatalog).toHaveLength(55);
-  expect(new Set(flowerCatalog.map((flower) => flower.id)).size).toBe(55);
+test("every catalog record with artwork has its own local image", () => {
+  expect(flowerCatalog).toHaveLength(59);
+  expect(new Set(flowerCatalog.map((flower) => flower.id)).size).toBe(59);
   expect(
     flowerCatalog.every(
       (flower) => flower.meaning && flower.context && flower.narratives.length > 0,
@@ -27,6 +28,13 @@ test("the Curtis catalog contains 55 unique selectable records with local artwor
   ).toBe(true);
 });
 
+test("no two records share the same source image region", () => {
+  const regions = flowerArtwork.map((entry) =>
+    JSON.stringify({ fileName: entry.fileName, crop: "crop" in entry ? entry.crop : null }),
+  );
+  expect(new Set(regions).size).toBe(regions.length);
+});
+
 test("catalog meanings and narratives remain attached to their scientific paths", () => {
   expect(getFlowerById("rosa-kirmizi")).toMatchObject({
     path: "Rosa › kırmızı",
@@ -35,17 +43,8 @@ test("catalog meanings and narratives remain attached to their scientific paths"
   });
 });
 
-test("flowers without Curtis artwork remain readable but cannot be newly selected", () => {
-  const excludedIds = [
-    "calendula-officinalis",
-    "celosia-argentea-ibik-bicimli",
-    "cercis-siliquastrum",
-    "citrus-cicek",
-    "convallaria-majalis",
-    "myosotis",
-  ];
-
-  for (const flowerId of excludedIds) {
+test("records without artwork remain readable but cannot be newly selected", () => {
+  for (const flowerId of ["rosa-kurumus", "syringa-beyaz"]) {
     expect(getFlowerById(flowerId)).toBeDefined();
     expect(isFlowerId(flowerId)).toBe(false);
   }

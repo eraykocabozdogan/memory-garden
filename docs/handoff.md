@@ -1,6 +1,6 @@
 # Devir notu: nerede kaldık
 
-Son güncelleme: 2026-10-09 (Aşama 0 sonrası). Yeni bir sohbet buradan devam eder.
+Son güncelleme: 2026-10-09 (Aşama 0 ve çiçek kataloğu doğrulaması sonrası). Yeni bir sohbet buradan devam eder.
 
 ## Durum
 
@@ -59,23 +59,20 @@ doğruladı). Token env1 ortamında da var ve doğrulandı.
 - Teknik değişiklikler ve gerekçeleri: `docs/decisions.md` → "Aşama 0 sırasında yapılan teknik
   değişiklikler".
 
-## Aşama 3'te proje sahibine sorulacaklar (çiçek görselleri)
+## Çiçek kataloğu (Aşama 3'e hazırlık)
 
-1. **Çizimsiz kayıtlar:** Katalogda 61 kayıt var; 6'sının Curtis çizimi yok (Aynısefa,
-   Horozibiği, Erguvan, Portakal çiçeği, Müge, Unutma beni). Rehberde gösterilsinler mi?
-2. **Paylaşılan görseller:** Çizimli 55 kaydın 13'ü, tür ya da çeşide özel bir çizim bulunamadığı
-   için genel türün çizimini paylaşıyor (55 kayıt, 47 farklı görsel):
-   - Papatya → Katmerli papatya
-   - Haşhaş → Beyaz haşhaş
-   - Gül → Beyaz gül, Beyaz gül tomurcuğu, Gül tomurcuğu
-   - Leylak → Beyaz leylak
-   - Menekşe → Kokulu menekşe, Hercai menekşe
+Ekim 2026'da katalog kaynaklara karşı baştan sona doğrulandı ve düzeltildi: 146 anlatı
+paragrafı, atıflar, anlamlar ve görseller. Yöntem: `research/flowers/catalog-methodology.md`;
+sonuçlar: `research/flowers/catalog-verification-2026-10.md`. 61 kaydın 59'u kendi görseline
+sahip; görseller `apps/web/public/flowers/art/`, kaynak listesi
+`packages/shared/src/flowers/flower-artwork.json` (`pnpm flowers:assets` yeniden üretir).
 
-   Seçenekler: (a) olduğu gibi kalsın ama "temsilî görsel" diye belirtilsin; (b) bu kayıtlar
-   için başka kamu malı kaynaklardan özel görsel bulunsun. `research/` içindeki Ingram, Phillips
-   ve Tyas kırpımlarında aday var: hercai menekşe (p-015 pansy), papatya (p-019 daisy),
-   menekşe (t-011 purple violet), gül çeşitleri, haşhaş (i-009 poppy). Ama üslup Curtis'ten
-   farklı; (c) görselsiz gösterilsin.
+Proje sahibinin kararını bekleyenler (`docs/decisions.md` → "Çiçek kataloğunun yöntemi ve
+doğrulaması"):
+
+- **Y4:** Kaynakta simge anlamı olarak geçmeyen ama anlatıdan çıkan anlamlar (yas, anma,
+  kıskançlık vb., 21 kayıt) anlam alanında kalsın mı?
+- **Y5:** Görseli bulunamayan iki kayıt: beyaz leylak, kurumuş gül.
 
 ## Karar 8: UI — proje sahibi için rehber
 

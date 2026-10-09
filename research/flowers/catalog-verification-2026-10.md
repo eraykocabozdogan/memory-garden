@@ -86,3 +86,130 @@ William Curtis, *Flora Londinensis* (1777): tek katlı papatya (*Bellis perennis
 menekşe (*Viola odorata*), yabani hercai menekşe (*Viola tricolor*). Diğer kayıtlar için
 Commons'ta *Edwards's Botanical Register*, Redouté, Köhler ve Flora Batava gibi aynı dönem
 kaynaklarında adaylar var.
+
+## İkinci tur: anlatı metinleri
+
+Katalogdaki 146 anlatı paragrafının her biri, atıf yapılan sayfalarla archive.org tam
+metinleri üzerinden karşılaştırıldı (ayrıntılı kayıt: her paragraf için karar, kaynak sayfa
+ve İngilizce alıntı; doğrulama sırasında üretildi, düzeltmeler doğrudan kataloğa işlendi).
+
+| Sonuç | Paragraf |
+|---|---|
+| Kaynağa sadık | 84 |
+| Küçük sapma (düzeltildi) | 61 |
+| Kaynakta olmayan cümle (düzeltildi) | 1 |
+| Kaynakla çelişen | 0 |
+
+Uydurma bir olay, kişi ya da efsane bulunmadı. Sapmaların türleri:
+
+- **İhtiyat ifadesinin düşmesi:** kaynak "söylenir", "belki", "ileri sürülür" derken metin
+  olgu gibi anlatıyordu (unutma beni / Waterloo, Brahma'nın lotusta doğuşu, erguvan şiiri).
+- **Aktarılan şairin adının olmaması:** Phillips ve Ingram'ın alıntıladığı şiirler kaynağın
+  kendi sözü gibi verilmişti (Eliza Cook, Shaw, Cowper, William Browne, Jami, Adelaide Procter).
+- **İki tanığın birleştirilmesi:** gül mezar âdetlerinde Evelyn ile Camden.
+- **Dışarıdan bilgi eklenmesi:** "IV. Henri" (kaynakta "Henry the Great"), "Fransa'ya",
+  Harpokrates "sessizlik tanrısı", "uzun hapislik".
+- **Çeviri hatası:** kırmızı gülde "güllerin yeni hükümdarı" (kaynakta çiçeklerin istediği yeni
+  hükümdar); beyaz gül tomurcuğunda Venus'un "oğlu" (kaynakta sevgilisi).
+- **Kaynakta olmayan cümle:** beyaz gül tomurcuğunda "aşkı tanımayan kalbi temsil eder"
+  açıklaması; Phillips simgeyi açıklamaz, yalnız miti ve dizeleri verir.
+- **Ad yazımları:** kaynaktaki biçime döndü (Clytie, Leucothoe, Fulke, Geoffry/Gefroi, Pedma,
+  Culpepper, Lutzen, Proserpine).
+
+Atıf düzeltmeleri: sayfa aralıkları (gül "Secrecy" s. 274–275, lale s. 112–113, gül evreleri
+s. 43, siklamen s. 119, süpürgeotu s. 172–173, Cezayir menekşesi s. 86–88, beyaz gül s. 27–28,
+beyaz haşhaş s. 277–278, kırmızı gül s. 30–31); erguvandaki şiirin adı ("The Wayside Inn",
+Adelaide Procter); manolyada "Fransa sarayı" yerine Bretagne meclisi ve Paris.
+
+### Anlam alanı
+
+Kaynakta hiç geçmeyen ya da yanlış çevrilmiş anlamlar düzeltildi:
+
+| Kayıt | Değişiklik | Kaynak |
+|---|---|---|
+| Papatya | "anma" çıkarıldı | Kaynakta yok |
+| Ayçiçeği | "bağlılık" çıkarıldı | Kaynakta yok |
+| Akşamsefası | "gizli sevgi" → "utangaç sevgi" | Ingram: bashful love |
+| Hint lotusu | "sessiz aşk" → "sessizlik" | Phillips: Silence |
+| Çarkıfelek | "taassup" çıkarıldı | Phillips: Religious Superstition |
+| Küpe çiçeği | "seçicilik" çıkarıldı | Kaynakta yok; anlam: Taste |
+| Büyük çiçekli manolya | "onur" çıkarıldı | Kaynakta yok |
+| Elma çiçeği | "seni seçiyorum" çıkarıldı | Ingram: Preference |
+| Kırmızı gül | "tutku" çıkarıldı | Kaynakta yok |
+| Leylak | "ilk aşk" → "ilk aşk heyecanı" | Ingram: Love's first emotions |
+| Menekşe | "tevazu" eklendi | Ingram bölüm başlığı: Modesty |
+| Zambak | "saflık" eklendi | Ingram s. 273: purity |
+| Lavanta | "ayrılık" → "anlaşmazlık" | Phillips: disunion |
+
+Açık soru (Y4): aşağıdaki anlamlar kaynakta simge anlamı olarak verilmiyor, ama atıf yapılan
+sayfalardaki anlatıdan çıkıyor (örneğin haşhaşta Roma cenaze âdetinden "yas").
+
+| Kayıt | Anlatıdan çıkan anlamlar |
+|---|---|
+| Papatya | çocukluk, kararsızlık |
+| Ayçiçeği | kıskançlık, terk edilmiş aşk |
+| Akşamsefası | karanlıkta umut |
+| Lale | saplantı, aşırılık |
+| Hercai menekşe | aşk yarası, kalıcı aşk |
+| Anemon | yas |
+| Erguvan | ihanet, sessiz ve karşılıksız sevgi, hatıra, yas |
+| Ters lale | kahramanlık anısı |
+| Sümbül | kıskançlık, yas, anma |
+| Süsen | iyi haber |
+| Unutma beni | uzakta bağlılık |
+| Süpürgeotu | pişmanlık |
+| Aynısefa | adanmışlık, bütün düşüncelerin tek yöne çevrilmesi |
+| Portakal çiçeği | evlilik |
+| Küpe çiçeği | zarafet |
+| Haşhaş | uyku, yas |
+| Hasekiküpesi | maskaralık |
+| Acem borusu | kolay kopuş |
+| Yüksükotu | gizli tehlike |
+| Zambak | sadelik, inanç, korunma, anma |
+| Beyaz leylak | geçici gençlik |
+
+## Görsel değişiklikleri (G1–G5 uygulandı)
+
+Her kayıt kendi görselini aldı; iki kayıt artık aynı görseli paylaşmıyor. Kaynak dosyaların
+hepsi Wikimedia Commons'ta kamu malı (ya da Flickr Commons "No restrictions") olarak işaretli.
+Kırpma oranları `packages/shared/src/flowers/flower-artwork.json` içinde.
+
+| Kayıt | Yeni görsel | Kaynak, yıl | Not |
+|---|---|---|---|
+| Papatya | Tek katlı *Bellis perennis* | Curtis, *Flora Londinensis*, 1777 | Kırpıldı (küçük bitki, büyük sayfa) |
+| Kokulu menekşe | *Viola odorata* | Curtis, *Flora Londinensis* | Kırpıldı |
+| Yüksükotu | *Digitalis purpurea* | Curtis, *Flora Londinensis* | |
+| Anemon | *Anemone coronaria* | Curtis's *Botanical Magazine* No. 841 | |
+| Hint lotusu | Renkli *Nelumbo* çiçeği | Curtis's *Botanical Magazine* | Eskisi renksiz çizimdi |
+| Gül tomurcuğu | Tomurcuk detayı | Curtis's *Botanical Magazine* Plate 3475 | Kırpıldı (G3) |
+| Yarı açmış gül | Yarı açmış yosun gülü | *The Botanical Magazine* Plate 69, 1788 | Kırpıldı |
+| Gül | *Rosa gallica regalis* | Redouté, *Les Roses* | |
+| Tam açmış gül | *Rosa gallica flore giganteo* | Redouté, *Les Roses* | |
+| Beyaz gül tomurcuğu | Beyaz yosun gülü tomurcukları | Redouté, *Les Roses* | Kırpıldı (G3) |
+| Safran çiçeği | *Crocus sativus* | Redouté, *Les Liliacées* | |
+| Müge | *Convallaria majalis* | Redouté, *Les Liliacées* | Yeni (G5) |
+| Cezayir menekşesi | *Vinca major* | Redouté, Duhamel *Traité des arbres* | Kırpıldı |
+| Erguvan | *Cercis siliquastrum* | Redouté, Duhamel *Traité des arbres* | Yeni (G5), kırpıldı |
+| Büyük çiçekli manolya | *Magnolia grandiflora* | Redouté, Duhamel *Traité des arbres* | Kırpıldı |
+| Horozibiği | İbikli *Celosia* | *Edwards's Botanical Register* | Yeni (G5) |
+| Portakal çiçeği | Çiçekli portakal dalı | *The Botanical Register*, 1815 | Yeni (G5), kütüphane damgası kırpıldı |
+| Aslanağzı | *Antirrhinum majus* | *Paxton's Magazine of Botany*, 1838 | |
+| Aynısefa | *Calendula officinalis* | C. Hullmandel taş baskısı, 19. yüzyıl | Yeni (G5), yazı kırpıldı |
+| Unutma beni | *Myosotis sylvatica* | Sowerby, *English Botany* (1863 baskısı) | Yeni (G5), kırpıldı |
+| Kına çiçeği | *Impatiens balsamina* | Weinmann, *Phytanthoza iconographia*, 1737–45 | Renk skalası kırpıldı |
+| Menekşe | *Viola odorata* | *Flora Batava* | |
+| Hercai menekşe | *Viola tricolor* | *Flora Batava* | Curtis'teki yabani tür çok küçük ve soluk |
+| Haşhaş | *Papaver somniferum* | *Flora Batava* | |
+| Beyaz haşhaş | Beyaz *P. somniferum* çiçeği | Köhler, *Medizinal-Pflanzen*, 1887 | Kırpıldı |
+| Ayçiçeği | *Helianthus annuus* | Besler, *Hortus Eystettensis* | Curtis döneminde *H. annuus* plakası bulunamadı |
+| Tek katlı gül | Aynı plaka | Curtis's *Botanical Magazine* | Parça çizimleri kırpıldı (G2) |
+
+G1 sırasının dışına çıkılan yerler: Curtis'te tür düzeyinde uygun plaka yoksa aynı dönemin
+el boyaması baskıları kullanıldı; o da yoksa (ayçiçeği, haşhaş, menekşeler) daha erken ya da
+daha geç bir botanik baskı seçildi.
+
+Görsel bulunamayan iki kayıt (seçilemez durumda, karar bekliyor):
+
+- **Beyaz leylak:** Dönem kaynaklarında beyaz leylak plakası bulunamadı (Redouté'ninki açık
+  lila).
+- **Kurumuş gül:** Botanik plakalarda kurumuş gül çizilmez.
