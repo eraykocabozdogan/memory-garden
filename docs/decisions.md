@@ -112,3 +112,32 @@ için uygulamanın ana ekrana eklenmesi gerekiyor.
 | Ö1 | Ekranda neler olacak? | İsim, tarih, kaçıncı yıl olduğu, sıradaki yıldönümüne geri sayım |
 | Ö2 | O tarihteki geçmiş anılar gösterilsin mi? | Evet (N1 ile aynı altyapı) |
 | Ö3 | Bildirim gitsin mi? | Evet, gün geldiğinde (N2 ile) |
+
+## Karar 2: Frontend yaklaşımı
+
+Durum: **Kararlaştırıldı.**
+
+**Seçim: A. SPA + statik rehber.** React Router v7, sunucu render'ı kapalı (`ssr: false`).
+Herkese açık rehber sayfaları (TR + EN) deploy sırasında HTML olarak üretilir (prerender).
+Giriş arkasındaki uygulama SPA olarak tarayıcıda çalışır ve verileri API'den alır.
+
+| Seçenek | Sonuç |
+|---|---|
+| A. SPA + statik rehber | **Seçildi** |
+| B. Tam SSR (React Router v7) | Geçerli alternatif. Sayfalar verilerle dolu gelir, ama sunucu/tarayıcı kod ayrımı ve PWA daha karmaşık. |
+| C. Next.js + OpenNext | Elendi: adapter katmanı, Next 16 desteğinin bir kısmı deneysel |
+| D. Astro (rehber) + React SPA (uygulama) | Elendi: iki ayrı framework; rehber hızında A'ya göre kazancı küçük |
+
+**Gerekçe:** Uygulamanın öncelikleri telefonda uygulama hissi, PWA, bildirim ve çevrimdışı
+açılış; bunlar A'da daha kolay ve sağlam. Harita ve büyük dosya yüklemeleri tarayıcıya özgü
+parçalar ve SPA'da sunucu/tarayıcı ayrımı sorunu çıkarmıyor. Rehber, statik üretimle hızlı
+açılıyor ve Google'da görünür oluyor.
+
+**Bilinen ödünler:** Giriş arkasındaki sayfalarda ilk açılışta kısa bir yükleniyor görünümü
+olabilir (PWA önbelleği ve iskelet ekranlarla azaltılacak).
+
+**Geri dönülebilirlik:** A ve B aynı framework'ü kullanıyor; B'ye geçmek bir ayar değişikliği
+ve veri yükleme kodunun taşınması demek.
+
+**Sabit kabul edilen:** React. Seçilen UI araçları (shadcn, React Bits, 21st.dev) React
+bileşenleri sunuyor.
