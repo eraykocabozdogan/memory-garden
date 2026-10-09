@@ -277,3 +277,25 @@ yeniden deneme için yerinde kalır.
 
 **Önizlemeler:** Ayrı, küçük dosyalar olarak işleme sırasında bir kere üretilir ve R2'de
 saklanır. Videoların önizlemesi bir kare görseldir (video değil).
+
+## Karar 7: Demo ortamı
+
+Durum: **Kararlaştırıldı.** 7b'nin uygulama yöntemi önerildi, onay bekliyor.
+
+| # | Konu | Karar |
+|---|---|---|
+| 7a | Demo'da açık olanlar | Gezinme, görünümler, harita, filtreler, rehber, not ekleme, anı düzenleme, silme/çöp kutusu, etiket ve özel gün oluşturma, günlük yazma/düzenleme/silme, çiçek bırakma, dil ve tema. **Kapalı:** foto/video yükleme ("demoda kapalı" uyarısı), bildirimler, şifre değiştirme, passkey. Partnerin açık günlükleri her yeni kopyada güncel tarihlerle oluşturulur. |
+| 7b | Sıfırlama | **Her ziyaretçiye ayrı kopya.** "Demo olarak gez"e her basışta sıfırdan, temiz bir demo açılır; ziyaretçiler birbirinin değişikliklerini görmez. |
+| 7c | Örnek içerik | Kurgusal bir çift; Unsplash/Pexels görselleri (Türkiye'den yerler); iki yıla yayılmış ~40 anı, 2–3 kısa video, etiketler, özel günler, günlükler, ~30 çiçeklik bahçe |
+| 7c-1 | İçerik dili | **Türkçe** |
+| 7d | Tanıtım | Üst bilgi şeridi ("Bu bir demo" + GitHub) ve "Bu proje hakkında" sayfası (teknolojiler, mimari, önemli kararlar) |
+| 7e | Erişim | Ana sitenin giriş ekranında "Demo olarak gez" bağlantısı + CV'deki doğrudan link. Demo sayfaları Google'a kapalı. |
+
+**7b uygulama önerisi (onay bekliyor):** Her demo kopyası ayrı bir Durable Object içinde kendi
+SQLite veritabanıyla çalışır. Aynı şema ve aynı API kodu kullanılır; yalnızca veritabanı
+bağlantısı değişir. Kopya, son kullanımdan 24 saat sonra kendini siler. Demo görselleri tüm
+kopyalar arasında paylaşılan, salt okunur dosyalardır; demo'da silme işlemi R2'deki dosyalara
+dokunmaz. Kötüye kullanıma karşı IP başına yeni kopya oluşturma sınırı uygulanır.
+Değerlendirilen alternatifler: ziyaretçi başına ayrı D1 veritabanı (oluşturması yavaş, Worker'a
+dinamik bağlanamıyor); tek demo veritabanında tüm tablolara "ziyaretçi" sütunu (gerçek
+uygulamanın şemasını ve tüm sorgularını demo için karmaşıklaştırır).
