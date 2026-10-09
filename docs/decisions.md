@@ -214,3 +214,39 @@ Durum: **Kısmen kararlaştırıldı.** Tablo yapısı ayrıca, tablo tablo ele 
 - **Etiketler otomatik kapsar:** Etiket bir tarih aralığı olarak düşünülüyor; istisnalar ayrı
   tutuluyor.
 - **Çöp kutusu:** Anılar geri getirilemeyecek türden veri ve iki üye de silebiliyor.
+
+### Tablolar
+
+Durum: **Kararlaştırıldı.** Karar 5 tamamlandı.
+
+| Tablo | İçerik |
+|---|---|
+| Kullanıcı, oturum, hesap, passkey | Better Auth tabloları. Kullanıcıda görünen ad, giriş adı, dil tercihi (TR/EN) ve bildirim ayarları (günlük, çiçek). E-posta alanı teknik zorunluluk; iç adres yazılır, gönderim yapılmaz. Tema cihazda tutulur. |
+| Anı günleri | Tarih (tekil), oluşturan. Aktif anısı kalmayan gün görünmez; çöp kutusu boşalınca silinir. |
+| Gün konumları | Gün, il, ilçe, koordinat, rota sırası. İsim ve koordinat satıra kopyalanır (ileride dünya geneline geçişte şema değişmez). |
+| Anı öğeleri | Tür, tarih hassasiyeti, gün ya da yıl/ay, not metni, **foto/video açıklaması**, sıra, ekleyen, silinme zamanı ve silen (çöp kutusu). |
+| Medya | İşleme durumu, R2 dosya yolları, orijinal ad, tür, boyutlar, en/boy, süre, deneme sayısı, hata kodu. |
+| Etiketler | İsim, başlangıç ve bitiş tarihi, oluşturan. |
+| Etiket istisnaları | Etiket, tarih, tür (aralıktan çıkar / aralık dışından ekle). Gün kaydına değil tarihe bağlı. |
+| Özel günler | İsim, ay-gün, başlangıç yılı, oluşturan. Kaçıncı yıl ve geri sayım hesaplanır. |
+| Günlükler | Yazan, metin (en fazla 2.000 karakter), yayın zamanı, kapanış zamanı (+24 saat), güncelleme zamanı. |
+| Çiçekler | Günlük, bırakan, çiçek kimliği, zaman. Günlük başına en fazla bir çiçek. |
+| Bildirim abonelikleri | Üye, telefonun bildirim adresi ve anahtarları, cihaz adı, son kullanım. |
+
+| # | Ürün sorusu | Karar |
+|---|---|---|
+| T1 | Profil fotoğrafı | **Hayır**, baş harf |
+| T2 | Foto/videoya açıklama | **Evet**, isteğe bağlı, kısa (~280 karakter) |
+| T3 | Fotoğraf içindeki bilgilerin kullanımı | **Çekim tarihi önerilsin** (tarayıcıda okunur, değiştirilebilir). Konum önerilmez. İşlenmiş dosyalardan bu bilgiler silinir. |
+| T4 | Etiket görünümü | **Sadece isim** |
+| T5 | Özel güne emoji | **Hayır** |
+| T6 | Günlük uzunluk sınırı | **2.000 karakter** |
+| T7 | Çiçekle birlikte not | **Hayır**; çiçeğin anlamı mesajın kendisi |
+| T8 | Günlük silinirse bırakılmış çiçek | **Bahçede kalır**, günlük metni silinir |
+
+**Teknik tercihler:**
+
+- Çiçek kataloğu (TR + EN) ve Türkiye il/ilçe listesi veritabanında değil kodda durur.
+- Zamanlar UTC saklanır; gün hesapları ve gösterim İstanbul saatine göredir.
+- Demo ortamı aynı şemayı ayrı bir D1 veritabanında kullanır.
+- Kimlikler rastgele UUID'dir.
