@@ -351,3 +351,20 @@ Durum: **Kararlaştırıldı.** Mimari dokümanı (`docs/architecture.md`) bu d�
 | TypeScript | — | **TypeScript 7** | Güncel sürüm; kullanılan araçların hepsi destekliyor. |
 | İmzalı token'lar | Upload ve job token için iki ayrı kopya | **Tek ortak modül** (`packages/shared/src/tokens`), WebCrypto ile | Aynı kod hem Worker'larda hem testlerde çalışıyor; iki kopya bakımı yok. |
 | Bahçe başlangıcı (D4) | — | `buildGardenDays` artık başlangıç gününü parametre olarak alıyor | Sabit 30 Ağustos 2026 tarihi kaldırıldı; bahçe ilk günlükten başlıyor. |
+
+## Çiçek görselleri (Aşama 3'e hazırlık)
+
+Durum: **Kısmen kararlaştırıldı.** Doğrulama raporu:
+`research/flowers/catalog-verification-2026-10.md`.
+
+| # | Konu | Karar |
+|---|---|---|
+| — | Genel türün çizimini paylaşan kayıtlar | **Her kayda özel görsel bulunacak** |
+| G1 | Kaynak önceliği | **Önce Curtis** (Botanical Magazine ve Flora Londinensis); yoksa aynı dönemin el boyaması baskıları (Edwards's Botanical Register, Redouté, Sowerby vb.) |
+| G2 | Büyük sayfalı plakalar | **Kırpılacak**: bitki ortalanır, boş kâğıt ve parça çizimleri atılır |
+| G3 | Tomurcuk kayıtları | **Gül plakalarındaki tomurcuk detayından kırpılacak** |
+| G4 | Yanlış türü gösteren görseller | **Düzeltilecek** (papatya/katmerli papatya yer değiştirir, haşhaş, menekşe, gül vb.) |
+| G5 | Görseli olmayan 6 kayıt | **Aynı kurallarla görsel aranacak** |
+
+Bekleyen: Doğrulamada ortaya çıkan ek görsel uyumsuzlukları ve anlam düzeltmeleri için
+proje sahibinin onayı. Ardından her kayıt için aday karşılaştırma sayfası hazırlanacak.
