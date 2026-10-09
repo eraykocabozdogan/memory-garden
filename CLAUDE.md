@@ -9,8 +9,8 @@
 ## Projenin durumu
 
 Memory Garden, Cloudflare üzerinde sıfırdan yeniden yazılıyor. Planlama bitti, mimari onaylandı.
-Repodaki uygulama kodu (Next.js + Supabase + Vercel) **eski sürüm**; Aşama 0'da silinecek.
-Korunacak dosyaların listesi `docs/handoff.md`'de. `AGENTS.md`'deki Next.js notu eski sürüme ait.
+Eski Next.js + Supabase + Vercel sürümü Aşama 0'da silindi (git geçmişinde ve `v0-nextjs`
+etiketinde duruyor). Güncel durum ve sıradaki aşama `docs/handoff.md`'de.
 
 ## Çalışma modeli (proje sahibinin açık isteği, mutlaka uy)
 
@@ -39,9 +39,13 @@ Korunacak dosyaların listesi `docs/handoff.md`'de. `AGENTS.md`'deki Next.js not
 
 ## Teknik özet
 
-- Cloudflare Workers (Paid plan), React Router v7 SPA + prerender, Hono + Hono RPC, Zod,
+- Cloudflare Workers (Paid plan), React Router v8 SPA + prerender, Hono + Hono RPC, Zod,
   TanStack Query, D1 + Drizzle, Better Auth, R2, Queues, Cloudflare Images, Containers (ffmpeg),
   Durable Objects (demo), pnpm monorepo (`apps/web`, `apps/media`, `packages/shared`), Biome,
   Vitest + Playwright + Lighthouse CI, GitHub Actions.
 - Adresler: `memory-garden.erayai.workers.dev`, `memory-garden-demo.erayai.workers.dev`.
 - D1 interaktif transaction desteklemez: çok adımlı yazmalar `batch()` ile.
+- Worker'ı Wrangler paketler (Vite eklentisi değil); geliştirmede `pnpm dev` iki süreci birlikte
+  başlatır. Komutlar: `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`.
+- Bu bulut ortamında Playwright için `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/opt/pw-browsers/chromium`
+  kullan (önceden kurulu tarayıcı).

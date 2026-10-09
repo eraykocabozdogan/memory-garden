@@ -1,63 +1,44 @@
-# Memory Garden: a private shared memory space for two
+# Memory Garden
 
-A private web app for a couple. It has two parts:
+A private memory and diary app for two people, and a public guide to the language of flowers
+built on historical sources (Ingram 1869, Phillips 1825, Tyas 1869) and the plates of Curtis's
+Botanical Magazine. Runs entirely on Cloudflare.
 
-- **Memories:** a shared timeline of multimedia "memory days". Each package can hold
-  up to 20 mixed photos, videos and text notes (5 GB total), with day, month, year or no
-  date precision and one or more Turkish province/district locations shown on a map.
-- **Diary garden:** short diary entries that stay visible to the partner for
-  24 hours. The partner answers by leaving a flower from a 61-entry catalog
-  illustrated with public-domain plates from Curtis's Botanical Magazine. The flowers persist as a growing garden.
+> **Status:** being rewritten from scratch on Cloudflare. The previous Next.js + Supabase + Vercel
+> version is tagged `v0-nextjs`.
 
-Personal media is never stored in this repository. It lives in a private R2 bucket
-behind signed, short-lived URLs.
+## Documentation (Turkish)
 
-## Architecture
+- [`docs/decisions.md`](docs/decisions.md): every product and technical decision, the options
+  considered and the reasoning
+- [`docs/architecture.md`](docs/architecture.md): the system design
+- [`docs/handoff.md`](docs/handoff.md): current status and next steps
 
-```
-Browser ──(signed multipart upload)──► Cloudflare R2  incoming/
-   │                                         ▲
-   ▼                                         │ short-lived per-part URLs
-Next.js 16 app (Vercel) ──dispatch──► Cloud Run Job: media-worker
-   │  Supabase Auth + Postgres (Drizzle)        ffmpeg / WebP / H.264, HDR→SDR
-   ◄────────────── signed callback ─────────────┘
-```
+## Stack
 
-- **App:** Next.js 16 (App Router, React 19), TypeScript, Tailwind 4, shadcn/Base UI,
-  Motion, MapLibre GL.
-- **Auth/DB:** Supabase Auth with a two-member allow-list. Postgres schema and
-  migrations are managed with Drizzle ORM.
-- **Uploads:** browser → R2 multipart uploads (two files in flight), verified by
-  signed upload tokens. Memory items and media rows are inserted in one short
-  transaction, and processing is dispatched only after commit.
-- **Media worker:** a Cloud Run Job container that normalizes each asset into a
-  full-size WebP or H.264/AAC MP4 plus a 720px preview, and tone-maps HDR
-  (BT.2020 PQ/HLG) video to SDR. It receives only a short-lived job token, never
-  database or permanent storage credentials. Keyless GCP auth uses Vercel OIDC and
-  Workload Identity Federation. See [`docs/media-processing.md`](docs/media-processing.md).
-- **Tests:** Playwright end-to-end tests in `tests/e2e`.
+Cloudflare Workers, React Router (SPA + prerendered public pages), Hono, D1 + Drizzle,
+Better Auth, R2, Queues, Cloudflare Images, Containers (ffmpeg), Durable Objects, pnpm monorepo,
+Biome, Vitest, Playwright.
 
-## Run locally
+## Repository layout
+
+| Path | Contents |
+|---|---|
+| `apps/web` | React Router app and the Hono API Worker (`memory-garden`, `memory-garden-demo`) |
+| `apps/media` | Media processing Worker and the ffmpeg container (`memory-garden-media`) |
+| `packages/shared` | Shared domain logic, flower catalog, Turkish locations |
+| `research` | The flower-language source study and visual source comparison |
+| `scripts` | Data generation scripts |
+
+## Development
+
+Requires Node 22.22+ and pnpm 10.
 
 ```bash
-cp .env.example .env.local   # fill in Supabase, R2 and GCP values
-npm install
-npm run db:migrate
-npm run dev
+pnpm install
+pnpm dev          # app on http://localhost:5173, API Worker on :8787
+pnpm check        # Biome
+pnpm typecheck
+pnpm test         # unit tests
+pnpm test:e2e     # Playwright against a production build served by Wrangler
 ```
-
-Members sign in with a username stored in `profiles.username`. The app looks up the
-matching Supabase Auth email on the server, so no member identity lives in the code.
-Display names also come from `profiles`. After creating the two Supabase users:
-
-```sql
-insert into profiles (id, display_name, username)
-values ('<auth-user-id>', '<display name>', '<login username>');
-```
-
-`/prototype` and `/prototype/diary` render the UI with mock data and need no backend.
-`research/` holds the flower-language source study (Ingram 1869, Phillips 1825,
-Tyas 1869) and the visual source comparison behind the catalog.
-
-> This is the public source of an app I use privately. Personal data and credentials
-> are not part of this repository.

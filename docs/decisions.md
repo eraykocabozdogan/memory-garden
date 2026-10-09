@@ -338,3 +338,16 @@ Durum: **Kararlaştırıldı.** Mimari dokümanı (`docs/architecture.md`) bu d�
 | Kaydedilmemiş yüklemelerin temizliği | 2 gün, gecelik | **6 saat, saatlik temizlik.** Vazgeçilen yüklemeler zaten anında silinir; 6 saat yalnızca uygulamanın kapandığı ya da çöktüğü durumlar için. Yükleme token'ları da 6 saat geçerli. |
 | Workers Paid planı | — | Proje sahibi Paid plana geçti. Gerekçe: Container'lar yalnızca Paid planda; Free plandaki 10 ms işlemci sınırı şifre kontrolünü bile zorluyor; Paid plan hesap başına olduğu için ileride eklenecek projeler de aynı $5 içinde. |
 | Eski sürüm etiketi | — | Son Next.js commit'i (`1357af6`) `v0-nextjs` olarak etiketlenecek. |
+
+## Aşama 0 sırasında yapılan teknik değişiklikler
+
+Ürünü etkilemeyen, uygulama sırasında ortaya çıkan değişiklikler.
+
+| Konu | Plan | Uygulama | Neden |
+|---|---|---|---|
+| React Router sürümü | v7 | **v8** | v8 güncel ana sürüm. `ssr: false` + `prerender` aynen destekleniyor; v7'ye göre kırıcı değişiklikler küçük. |
+| Worker'ın paketlenmesi | Cloudflare Vite eklentisi | **Wrangler** paketliyor; React Router yalnızca statik dosyaları üretiyor | Cloudflare Vite eklentisi, React Router'ın build sırasındaki prerender adımıyla birlikte çalışmıyor (build hatası). Production çıktısı aynı; geliştirmede iki süreç çalışıyor (Vite + `wrangler dev`). |
+| Test aracı sürümü | — | **Vitest 4** | Cloudflare'in Workers test ortamı Vitest 4 istiyor. |
+| TypeScript | — | **TypeScript 7** | Güncel sürüm; kullanılan araçların hepsi destekliyor. |
+| İmzalı token'lar | Upload ve job token için iki ayrı kopya | **Tek ortak modül** (`packages/shared/src/tokens`), WebCrypto ile | Aynı kod hem Worker'larda hem testlerde çalışıyor; iki kopya bakımı yok. |
+| Bahçe başlangıcı (D4) | — | `buildGardenDays` artık başlangıç gününü parametre olarak alıyor | Sabit 30 Ağustos 2026 tarihi kaldırıldı; bahçe ilk günlükten başlıyor. |

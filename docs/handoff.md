@@ -1,6 +1,6 @@
 # Devir notu: nerede kaldık
 
-Son güncelleme: 2026-10-09. Yeni bir sohbet buradan devam eder.
+Son güncelleme: 2026-10-09 (Aşama 0 sonrası). Yeni bir sohbet buradan devam eder.
 
 ## Durum
 
@@ -9,84 +9,66 @@ Son güncelleme: 2026-10-09. Yeni bir sohbet buradan devam eder.
 | Karar 1–7, 9 ve mimari düzeltmeleri | **Kararlaştırıldı** (`docs/decisions.md`) |
 | Mimari dokümanı | **Onaylandı** (`docs/architecture.md`) |
 | Karar 8: UI | **Bekliyor.** Proje sahibi seçimlerini hazırlıyor (aşağıdaki rehber). |
-| Kodlama | **Başlamadı.** Sıradaki iş Aşama 0. |
+| Aşama 0: Hazırlık | **Kod tarafı tamamlandı**, proje sahibinin onayını bekliyor (ayrıntılar aşağıda) |
+| Aşama 1: Temel + giriş | Sıradaki |
 
-Bütün planlama çalışması `claude/wonderful-dijkstra-c10sbz` branch'inde yapıldı.
+Çalışma branch'i: `claude/wonderful-dijkstra-c10sbz`.
 
 ## Sıradaki adımlar
 
 ### Proje sahibinin yapacakları
 
-1. **`v0-nextjs` etiketini oluşturmak.** Etiket, önceki oturumda GitHub'a gönderilemedi
-   (oturumun git bağlantısı yalnızca çalışma branch'ine push'a izin verdi). GitHub'da:
-   repo → **Releases** → **Draft a new release** → **Choose a tag** kutusuna `v0-nextjs` yaz →
-   **Target** olarak commit `1357af6`'yı seç (son Next.js commit'i:
-   "feat(auth): load usernames and member names from the database") → yayınla.
-   İstersen sürüm notu: "Cloudflare'e geçişten önceki son Next.js + Supabase + Vercel sürümü".
-2. **Cloudflare API token'ı oluşturmak** (deploy ve doğrulama için):
-   - Cloudflare paneli → sağ üstte profil → **My Profile** → **API Tokens** → **Create Token**.
-   - **Edit Cloudflare Workers** şablonuyla başla. İzinlere D1, Workers R2 Storage, Queues ve
-     listede varsa Containers ile Cloudflare Images için **Edit** ekle. Hesap olarak kendi
-     hesabını seç.
-   - Token'ı iki yere ekle:
-     - GitHub repo → **Settings** → **Secrets and variables** → **Actions** → yeni secret'lar:
-       `CLOUDFLARE_API_TOKEN` ve `CLOUDFLARE_ACCOUNT_ID` (Account ID, Cloudflare panelinde
-       Workers sayfasının sağ tarafında yazar).
-     - Claude'un oturumda `wrangler` çalıştırabilmesi için: Claude Code bulut ortamı ayarları
-       (oturum başlığındaki ortam menüsü → **Edit**) → **Network secrets** (eski uygulamada
-       **API credentials**) ya da ortam değişkeni olarak aynı iki isimle. Yeni oturumlar bunu
-       otomatik görür.
-   - Token'ı sohbete yapıştırma.
-3. **UI seçimlerini hazırlamak** (Karar 8, aşağıdaki rehber). Aşama 0 ve 1 bunu beklemeden
-   ilerleyebilir.
+1. **Aşama 0'ı incelemek ve onaylamak**, sonra branch'i `main`'e merge etmek (ya da Claude'a
+   merge ettirmek).
+2. **`v0-nextjs` etiketini oluşturmak.** Etiket bir oturumda GitHub'a gönderilemedi (oturumun git
+   bağlantısı yalnızca çalışma branch'ine push'a izin verdi). GitHub'da: repo → **Releases** →
+   **Draft a new release** → **Choose a tag** kutusuna `v0-nextjs` yaz → **Target** olarak commit
+   `1357af6`'yı seç (son Next.js commit'i: "feat(auth): load usernames and member names from the
+   database") → yayınla.
+3. **GitHub secret'ları:** repo → **Settings** → **Secrets and variables** → **Actions** →
+   `CLOUDFLARE_API_TOKEN` ve `CLOUDFLARE_ACCOUNT_ID`. Aşama 1'deki ilk deploy'dan önce gerekli.
+   (Claude ortamına, env1'e, ortam değişkeni olarak eklendi ve doğrulandı: token aktif, hesaba
+   erişiyor.)
+4. **Workers Paid planını teyit etmek:** Cloudflare paneli → Workers & Pages → Plans. Token'da
+   fatura okuma izni olmadığı için API'den doğrulanamadı. İstenirse token'a **Account → Billing →
+   Read** izni eklenebilir.
+5. **UI seçimlerini hazırlamak** (Karar 8, aşağıdaki rehber). Aşama 1 bunu beklemeden ilerleyebilir.
 
-### Claude'un yapacakları
+### Claude'un yapacakları (Aşama 1)
 
-1. Token ortamda varsa `wrangler whoami` ile hesabın **Workers Paid** planında olduğunu doğrula.
-   Önceki oturumda doğrulanamadı; proje sahibi Paid plana geçtiğini bildirdi.
-2. **Aşama 0**'a başla. Ayrıntılı görev listesi aşağıda.
-3. Her aşamadan sonra proje sahibine ne yapıldığını özetle ve onay al.
+1. Ortamda `CLOUDFLARE_API_TOKEN` ve `CLOUDFLARE_ACCOUNT_ID` var mı kontrol et (değerleri asla
+   yazdırma).
+2. Cloudflare kaynaklarını oluştur: D1 `memory-garden`; R2 `memory-garden-media` (EU) ve
+   `memory-garden-demo-media`; Queue `media-jobs`; R2 CORS (uygulama adresinden PUT); R2 yaşam
+   döngüsü kuralı (tamamlanmamış multipart 1 gün). Kaynak oluşturmak dışarıya dönük bir işlem;
+   önce proje sahibine ne oluşturulacağını söyle.
+3. `deploy.yml` (ve sonra `backup.yml`) GitHub Actions iş akışları.
+4. Aşama 1'in içeriği: `docs/architecture.md` §13.
+5. Her aşamadan sonra proje sahibine ne yapıldığını özetle ve onay al.
 
-## Aşama 0: Hazırlık
+## Aşama 0: Yapılanlar
 
-### 1. Korunacak dosyalar ve yeni yerleri
+- Eski Next.js uygulaması silindi. Korunanlar taşındı:
+  - `research/` olduğu gibi kaldı.
+  - Curtis görselleri → `apps/web/public/flowers/curtis/`.
+  - Çiçek kataloğu, Türkiye konumları, tarih/günlük/bahçe mantığı → `packages/shared/src/`.
+  - ffmpeg container'ı → `apps/media/container/` (Aşama 5'te güncellenecek: fotoğraf yolu
+    kaldırılacak, 1080p sınırı ve nabız eklenecek).
+  - Veri script'leri `scripts/` altında, yolları güncellendi.
+- Saf mantık testleri Vitest'e çevrildi. Eski prototip arayüz testleri silindi.
+- İmzalı token'lar tek ortak modülde (`packages/shared/src/tokens`), WebCrypto ile, testli. Upload
+  ve job token'larının içerikleri Aşama 1 ve 5'te bu modülle yazılacak.
+- Bahçenin sabit başlangıç tarihi kaldırıldı (D4).
+- pnpm monorepo: `apps/web` (React Router v8 + Hono Worker), `apps/media` (Worker iskeleti),
+  `packages/shared`. TypeScript 7 (strict), Biome, Vitest 4, Playwright.
+- `apps/web`: `/` prerender ediliyor; `/app` SPA olarak açılıyor; `/api/health` çalışıyor; demo
+  ortamı `wrangler.jsonc` içinde tanımlı.
+- GitHub Actions `ci.yml`: Biome, typecheck, birim testleri, build, uçtan uca testler.
+- Teknik değişiklikler ve gerekçeleri: `docs/decisions.md` → "Aşama 0 sırasında yapılan teknik
+  değişiklikler".
 
-| Eski konum | Yeni konum | Not |
-|---|---|---|
-| `research/` | `research/` | Olduğu gibi. Proje sahibi için çok değerli; dokunma. |
-| `public/flowers/curtis/` | `apps/web/public/flowers/curtis/` | 61 Curtis görseli |
-| `features/flowers/catalog-data.json`, `curtis-artwork.json`, `catalog.ts` | `packages/shared/src/flowers/` | İngilizce içerik Aşama 3'te eklenecek |
-| `features/locations/turkey-locations.json`, `turkey-locations.ts`, `memory-location-selection.ts`, `DATA_SOURCE.md` | `packages/shared/src/locations/` | |
-| `features/memories/date-value.ts`, `batch-limits.ts`, `memory-update-input.ts` | `packages/shared/src/memories/` | |
-| `features/diary/diary-policy.ts`, `garden-layout.ts` | `packages/shared/src/diary/` | `garden-layout.ts`'teki sabit başlangıç tarihi kaldırılacak (D4) |
-| `features/auth/login-identity.ts` | `packages/shared/src/auth/` | |
-| `lib/r2/upload-token.ts`, `lib/media-processing/token.ts`, `object-keys.ts` | `apps/web/worker/` ve `apps/media/src/` | Token ömrü 6 saat olacak |
-| `media-worker/` (src, Dockerfile, tests/smoke.mjs) | `apps/media/container/` | Fotoğraf yolu kaldırılacak (fotoğraflar Images ile işleniyor); 1080p sınırı ve nabız eklenecek |
-| `scripts/import-flower-catalog.mjs`, `generate-turkey-locations.mjs`, `download-curtis-flower-assets.mjs` | `scripts/` | Dosya yolları güncellenecek |
-| `tests/e2e/` içindeki saf mantık testleri (date-value, diary-policy, diary, flower-catalog, turkey-locations, memory-update-input, login-identity) | İlgili paketlerde Vitest testleri | Playwright'tan Vitest'e çevrilecek |
-
-### 2. Silinecekler
-
-`app/`, `components/`, `features/` (korunanlar dışında, `mock-data.ts` dahil), `lib/` (korunanlar
-dışında), `db/`, `drizzle/` (Postgres migration'ları), `next.config.ts`, `proxy.ts`,
-`drizzle.config.ts`, `components.json`, `eslint.config.mjs`, `postcss.config.mjs`,
-`playwright.config.ts`, `package.json`, `package-lock.json`, `.env.example`,
-`scripts/configure-database-env.mjs`, `public/` içindeki varsayılan Next.js SVG'leri,
-`AGENTS.md`'deki Next.js notu. `README.md` yeniden yazılacak.
-
-### 3. Kurulacaklar
-
-- pnpm workspace: `apps/web`, `apps/media`, `packages/shared`. TypeScript (strict), Biome.
-- `apps/web`: React Router v7 (`ssr: false` + prerender), Vite, Cloudflare Vite eklentisi,
-  Hono; `wrangler.jsonc` içinde `production` ve `demo` ortamları.
-- `apps/media`: kuyruk tüketicisi + Container sınıfı iskeleti, `wrangler.jsonc`.
-- `packages/shared`: Drizzle şeması için yer, Zod şemaları, taşınan saf mantık.
-- Vitest (birim + Workers test ortamı), Playwright iskeleti.
-- GitHub Actions: `ci.yml` (Biome, typecheck, test, build). `deploy.yml` ve `backup.yml`
-  token eklendikten sonra.
-- Cloudflare kaynakları (token gelince): D1 `memory-garden`; R2 `memory-garden-media` (EU) ve
-  `memory-garden-demo-media`; Queue `media-jobs`; R2 CORS (uygulama adresinden PUT); R2 yaşam
-  döngüsü kuralı (tamamlanmamış multipart 1 gün).
+**Aşama 3'te proje sahibine sorulacak:** Çiçek kataloğunda 61 kayıt var ama yalnızca 55'inin
+Curtis çizimi var (6'sı çizimsiz). Rehberde 61'in hepsi mi, yalnızca çizimli 55'i mi gösterilsin?
 
 ## Karar 8: UI — proje sahibi için rehber
 
@@ -147,3 +129,9 @@ sorun varsa söyler.
 - Cloudflare Images HEIC girdiyi destekliyor; Images binding özel alan adı gerektirmiyor.
 - iPhone'da web push yalnızca ana ekrana eklenmiş PWA'da çalışıyor.
 - Proje sahibi Android, partneri iPhone kullanıyor.
+- `@cloudflare/vite-plugin`, React Router'ın `ssr: false` + `prerender` build'iyle çalışmıyor
+  (prerender adımı Vite preview sunucusu açarken eklenti henüz yazılmamış deploy ayarını arıyor).
+  Bu yüzden Worker'ı Wrangler paketliyor.
+- Bu bulut ortamında git tag push'u reddediliyor; yalnızca çalışma branch'ine push yapılabiliyor.
+- Cloudflare token'ı env1 ortamında; değişkenler yalnızca ortama eklendikten sonra açılan
+  oturumlarda görünür.

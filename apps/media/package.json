@@ -1,0 +1,19 @@
+{
+  "name": "@memory-garden/media",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typegen": "wrangler types",
+    "typecheck": "pnpm typegen && tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@memory-garden/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "vitest": "^4.1.0",
+    "wrangler": "^4.149.0"
+  }
+}

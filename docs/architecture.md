@@ -60,9 +60,14 @@ dili rehberidir. Tamamen Cloudflare üzerinde çalışır.
 | `LOGIN_LIMIT` | Rate Limiting | Giriş denemesi sınırı |
 | Secret'lar | | `BETTER_AUTH_SECRET`, `UPLOAD_TOKEN_SECRET`, R2 S3 anahtarları (imzalı URL için), VAPID anahtarları (bildirim) |
 
-Statik dosyalar Worker'dan önce sunulur. `/api/*` her zaman Worker'a gider. `/app/*` ve
-`/login` için Worker SPA giriş dosyasını döner; prerender edilmiş rehber sayfaları ise dosya
-olarak sunulur.
+Statik dosyalar Worker'dan önce sunulur. `/api/*` her zaman Worker'a gider. Dosya karşılığı
+olmayan diğer yollar (`/app/*`, `/login`) Worker'a düşer ve Worker SPA giriş dosyasını
+(`__spa-fallback.html`) döner; prerender edilmiş rehber sayfaları dosya olarak sunulur.
+
+**Build:** React Router statik dosyaları `build/client`'a üretir; Worker'ı Wrangler paketler.
+`@cloudflare/vite-plugin` kullanılmıyor, çünkü React Router'ın build sırasındaki prerender
+adımıyla birlikte çalışmıyor. Geliştirmede Vite (`:5173`) uygulamayı sunar ve `/api`
+isteklerini `wrangler dev`'e (`:8787`) yönlendirir.
 
 ### Worker: `memory-garden-demo` (web, demo ortamı)
 
@@ -101,6 +106,8 @@ memory-garden/
 │  │  ├─ app/                 # frontend: route'lar, özellikler, bileşenler
 │  │  ├─ worker/              # Hono API, auth, cron, demo Durable Object
 │  │  ├─ public/flowers/      # Curtis görselleri (mevcut)
+│  │  ├─ e2e/                 # Playwright testleri
+│  │  ├─ react-router.config.ts, vite.config.ts
 │  │  └─ wrangler.jsonc       # ortamlar: production, demo
 │  └─ media/
 │     ├─ src/                 # kuyruk tüketicisi, Images, Container sınıfı, /internal
@@ -117,7 +124,7 @@ memory-garden/
 
 ## 5. Frontend
 
-**Teknoloji:** React, React Router v7 (`ssr: false` + `prerender`), Vite, Tailwind 4,
+**Teknoloji:** React, React Router v8 (`ssr: false` + `prerender`), Vite, Tailwind 4,
 shadcn tabanlı bileşenler, TanStack Query, Hono RPC istemcisi, Zod.
 
 ### Sayfalar
@@ -383,6 +390,7 @@ geçici bir temayla ilerler ve tasarım sistemi gelince giydirilir.
 | Tarih/saat dilimi | date-fns + @date-fns/tz |
 | Formlar | React Hook Form + Zod |
 | Animasyon | Motion |
+| Geliştirmede iki süreç | concurrently |
 | İkonlar | lucide-react |
 | Fontlar | Kendi sunucumuzdan (@fontsource), Türkçe karakter alt kümesiyle |
 | Web push | Workers uyumlu, WebCrypto tabanlı bir kütüphane; uygun olan yoksa kendi uygulamamız |
