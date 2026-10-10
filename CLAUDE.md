@@ -30,7 +30,6 @@ etiketinde duruyor). Güncel durum ve sıradaki aşama `docs/handoff.md`'de.
 
 ## İletişim
 
-- **Türkçe**, sade dil, "sen" hitabı.
 - Teknik terimleri ilk kullanımda kısaca açıkla (proje sahibi örneğin shadcn'i, PWA'yı, SSR'yi
   ilk kez bu süreçte öğrendi). Benzetmeler işe yarıyor.
 - Yanlış anlaşılma varsa nazikçe düzelt.
