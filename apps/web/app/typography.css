@@ -1,0 +1,25 @@
+/* Font stacks. The active set is chosen with data-fonts / data-hand on <html> (see /ui);
+   once a pair is picked these collapse into the :root defaults. */
+:root {
+  --ff-body: "Source Sans 3 Variable", ui-sans-serif, system-ui, sans-serif;
+  --ff-heading: "Lora Variable", ui-serif, Georgia, serif;
+  --ff-hand: "Caveat Variable", cursive;
+}
+
+[data-fonts="soft"] {
+  --ff-body: "Nunito Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --ff-heading: "Fraunces Variable", ui-serif, Georgia, serif;
+}
+
+[data-fonts="journal"] {
+  --ff-body: "Newsreader Variable", ui-serif, Georgia, serif;
+  --ff-heading: "Newsreader Variable", ui-serif, Georgia, serif;
+}
+
+[data-hand="kalam"] {
+  --ff-hand: "Kalam", cursive;
+}
+
+[data-hand="dancing"] {
+  --ff-hand: "Dancing Script Variable", cursive;
+}

@@ -1,3 +1,11 @@
+import "@fontsource-variable/caveat";
+import "@fontsource-variable/dancing-script";
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/lora";
+import "@fontsource-variable/newsreader";
+import "@fontsource-variable/nunito-sans";
+import "@fontsource-variable/source-sans-3";
+import "@fontsource/kalam/400.css";
 import { useEffect, useState } from "react";
 
 import type { Route } from "./+types/ui";
@@ -19,14 +27,36 @@ const PAIRS = [
   ["destructive", "destructive-foreground"],
 ] as const;
 
+const FONT_SETS = [
+  { id: "bookish", name: "Bookish", note: "Lora headings, Source Sans 3 body" },
+  { id: "soft", name: "Soft", note: "Fraunces headings, Nunito Sans body" },
+  { id: "journal", name: "Journal", note: "Newsreader for everything" },
+] as const;
+
+const HANDS = [
+  { id: "caveat", name: "Caveat" },
+  { id: "kalam", name: "Kalam" },
+  { id: "dancing", name: "Dancing Script" },
+] as const;
+
+type FontSetId = (typeof FONT_SETS)[number]["id"];
+type HandId = (typeof HANDS)[number]["id"];
+
 const STORAGE_KEY = "mg-ui-preview";
 
-function readStoredDark(): boolean {
+type Stored = { dark: boolean; fonts: FontSetId; hand: HandId };
+
+function readStored(): Stored {
   try {
-    return window.localStorage.getItem(STORAGE_KEY) === "dark";
+    const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") as Partial<Stored>;
+    return {
+      dark: parsed.dark === true,
+      fonts: FONT_SETS.find((f) => f.id === parsed.fonts)?.id ?? "bookish",
+      hand: HANDS.find((h) => h.id === parsed.hand)?.id ?? "caveat",
+    };
   } catch {
-    // Storage can be blocked; fall back to light.
-    return false;
+    // Storage can be blocked or hold junk; fall back to the defaults.
+    return { dark: false, fonts: "bookish", hand: "caveat" };
   }
 }
 
@@ -35,42 +65,105 @@ const button =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
   "focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
+const choiceClass = (active: boolean) =>
+  `${button} border ${
+    active
+      ? "border-primary bg-primary text-primary-foreground"
+      : "border-input bg-card text-card-foreground"
+  }`;
+
 export default function Ui() {
   const [dark, setDark] = useState(false);
+  const [fonts, setFonts] = useState<FontSetId>("bookish");
+  const [hand, setHand] = useState<HandId>("caveat");
 
   useEffect(() => {
-    setDark(readStoredDark());
+    const stored = readStored();
+    setDark(stored.dark);
+    setFonts(stored.fonts);
+    setHand(stored.hand);
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
+    const root = document.documentElement;
+    root.classList.toggle("dark", dark);
+    root.dataset.fonts = fonts;
+    root.dataset.hand = hand;
     try {
-      window.localStorage.setItem(STORAGE_KEY, dark ? "dark" : "light");
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ dark, fonts, hand }));
     } catch {
       // Not critical: the choice just will not be remembered.
     }
-  }, [dark]);
+  }, [dark, fonts, hand]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-4 py-3">
-          <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
-          <button
-            type="button"
-            aria-pressed={dark}
-            onClick={() => setDark((v) => !v)}
-            className={`${button} border border-input bg-card text-card-foreground`}
-          >
-            {dark ? "Dark (night paper)" : "Light"}
-          </button>
+        <div className="mx-auto max-w-5xl space-y-2 px-4 py-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
+            <button
+              type="button"
+              aria-pressed={dark}
+              onClick={() => setDark((v) => !v)}
+              className={`${button} border border-input bg-card text-card-foreground`}
+            >
+              {dark ? "Dark (night paper)" : "Light"}
+            </button>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted-foreground">Fonts</span>
+            {FONT_SETS.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                aria-pressed={fonts === f.id}
+                onClick={() => setFonts(f.id)}
+                className={choiceClass(fonts === f.id)}
+              >
+                {f.name}
+              </button>
+            ))}
+            <span className="ml-2 text-sm text-muted-foreground">Handwriting</span>
+            {HANDS.map((h) => (
+              <button
+                key={h.id}
+                type="button"
+                aria-pressed={hand === h.id}
+                onClick={() => setHand(h.id)}
+                className={choiceClass(hand === h.id)}
+              >
+                {h.name}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl space-y-12 px-4 py-10">
         <p className="text-muted-foreground" data-testid="theme-note">
-          Parchment: cream paper, forest-green ink.
+          Parchment: cream paper, forest-green ink. Fonts:{" "}
+          {FONT_SETS.find((f) => f.id === fonts)?.note}. Handwriting:{" "}
+          {HANDS.find((h) => h.id === hand)?.name}.
         </p>
+
+        <section aria-labelledby="type" className="space-y-4">
+          <h2 id="type" className="text-2xl font-semibold">
+            Type specimen
+          </h2>
+          <div className="space-y-3 rounded-lg border bg-card p-5 text-card-foreground">
+            <h3 className="text-4xl font-semibold">Bahçemizde ilk çiçek</h3>
+            <h4 className="text-xl font-medium">İlk yağmurdan sonra, vapurda</h4>
+            <p className="max-w-prose text-base leading-relaxed">
+              Pijamalı hasta yağız şoföre çabucak güvendi. Ğüzel şiir ışığında İstanbul; ÇÖĞŞÜİ
+              çöğşüı. Bir anıyı yazmak, onu ikinci kez yaşamaktır.
+            </p>
+            <p className="max-w-prose text-sm text-muted-foreground">
+              Small text: 12 Ekim 2026, Kadıköy · 18°C · ₺120 çay ve simit.
+            </p>
+            <p className="font-hand text-3xl text-primary">Seni düşündüğüm bir akşam…</p>
+          </div>
+        </section>
 
         <section aria-labelledby="swatches" className="space-y-4">
           <h2 id="swatches" className="text-2xl font-semibold">
@@ -126,19 +219,16 @@ export default function Ui() {
             <button type="button" className={`${button} bg-primary text-primary-foreground`}>
               Save memory
             </button>
-            <button type="button" className={`${button} bg-secondary text-secondary-foreground`}>
+            <button type="button" className={`$buttonbg-secondary text-secondary-foreground`}>
               Cancel
             </button>
-            <button type="button" className={`${button} bg-accent text-accent-foreground`}>
+            <button type="button" className={`$buttonbg-accent text-accent-foreground`}>
               Add flower
             </button>
-            <button type="button" className={`${button} border border-input bg-card`}>
+            <button type="button" className={`$buttonborder border-input bg-card`}>
               Outline
             </button>
-            <button
-              type="button"
-              className={`${button} bg-destructive text-destructive-foreground`}
-            >
+            <button type="button" className={`$buttonbg-destructive text-destructive-foreground`}>
               Delete
             </button>
           </div>
@@ -179,7 +269,7 @@ export default function Ui() {
                 className="h-44 w-full rounded-md border object-cover object-top sm:w-32"
               />
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">12 Ekim 2026 · Kadıköy</p>
+                <p className="font-hand text-xl text-muted-foreground">12 Ekim 2026 · Kadıköy</p>
                 <h3 className="text-xl font-semibold">İlk yağmurdan sonra</h3>
                 <p>
                   Vapurda yan yana oturduk, çay soğuyana kadar hiç konuşmadık. Sessizlik de bir
