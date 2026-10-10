@@ -1,3 +1,6 @@
+import "@fontsource-variable/caveat";
+import "@fontsource-variable/lora";
+import "@fontsource-variable/source-sans-3";
 import type { ReactNode } from "react";
 import {
   isRouteErrorResponse,

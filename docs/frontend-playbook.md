@@ -49,9 +49,32 @@ records the options, the pick and why, so the next project can start from it.
 - **Tip:** for "too many choices" steps, narrow to three candidates built from the mood words
   and let the owner compare them live. It is faster than browsing galleries.
 
+### 3. Typography (decided)
+
+- **Pick:** Lora (headings) + Source Sans 3 (body) + Caveat (handwriting accent).
+  Candidates were Soft (Fraunces + Nunito Sans) and Journal (Newsreader only), with Kalam and
+  Dancing Script as other handwriting options.
+- **Why:** the calmest and most readable set for long entries, and the best fit for "paper-like".
+  Dancing Script is lovely for a title but hard to read at small sizes.
+- **Handwriting use:** small accents only (dates, short captions, one-line quotes), never body
+  text. Assumed because the owner did not specify further.
+- **Where:** `apps/web/app/typography.css` (`--ff-body`, `--ff-heading`, `--ff-hand`), mapped to
+  Tailwind in `app.css` (`font-sans`, `font-heading`, `font-hand`); fonts imported in `root.tsx`.
+- **How we got there (reusable):**
+  1. Shortlist as complete pairs, not single fonts: a pair is easier to judge than a font.
+  2. Turkish check on the font files themselves, not on the website: union of the `latin` and
+     `latin-ext` subset cmaps must contain ç ğ ı İ ö ş ü (and â î û ₺). Done with fontTools.
+  3. Self-host with Fontsource (`@fontsource-variable/<name>`); remove unused candidates after
+     the pick so only three families ship.
+  4. A browser test asserts the computed font family and that `document.fonts.check` passes
+     with Turkish letters.
+- **Mistake to avoid:** a scripted multi-step edit of a JSX file stripped `{`/`}` from template
+  strings (`${button}` became `$button`) and shipped unnoticed, because tests and the type
+  checker did not catch it. Rewrite files whole instead of patching by string offsets, and add
+  a test per visible piece (a size or style assertion) so a silent style loss fails.
+
 ## Still to decide
 
-3. Typography
 4. Shape and depth
 5. Base components
 6. Layout blocks

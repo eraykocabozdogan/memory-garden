@@ -14,21 +14,28 @@ test("the UI preview applies the Parchment theme and toggles dark mode", async (
   await expect(html).toHaveClass(/dark/);
 });
 
-test("the UI preview switches font sets and the handwriting accent", async ({ page }) => {
+test("headings, body and handwriting use the chosen self-hosted fonts", async ({ page }) => {
   await page.goto("/ui");
-  const html = page.locator("html");
-  await expect(html).toHaveAttribute("data-fonts", "bookish");
+  await expect(page.getByRole("heading", { name: "Bahçemizde ilk çiçek" })).toHaveCSS(
+    "font-family",
+    /Lora/,
+  );
+  await expect(page.locator("body")).toHaveCSS("font-family", /Source Sans 3/);
+  await expect(page.getByText("Seni düşündüğüm bir akşam…")).toHaveCSS("font-family", /Caveat/);
 
-  await page.getByRole("button", { name: "Soft" }).click();
-  await expect(html).toHaveAttribute("data-fonts", "soft");
-  await page.getByRole("button", { name: "Kalam" }).click();
-  await expect(html).toHaveAttribute("data-hand", "kalam");
-
-  // The heading really uses the chosen family once its font file has loaded.
-  const heading = page.getByRole("heading", { name: "Bahçemizde ilk çiçek" });
-  await expect(heading).toHaveCSS("font-family", /Fraunces/);
+  // The font files really loaded and cover Turkish letters.
   const loaded = await page.evaluate(
-    `document.fonts.ready.then(() => document.fonts.check('16px "Fraunces Variable"', "ğşİ"))`,
+    `document.fonts.ready.then(() =>
+      ['Lora Variable', 'Source Sans 3 Variable', 'Caveat Variable'].every((family) =>
+        document.fonts.check('16px "' + family + '"', 'ğşıİçöü')))`,
   );
   expect(loaded).toBe(true);
+});
+
+test("every control button keeps its base styling", async ({ page }) => {
+  await page.goto("/ui");
+  for (const name of ["Save memory", "Cancel", "Add flower", "Outline", "Delete"]) {
+    const box = await page.getByRole("button", { name }).boundingBox();
+    expect(box?.height, `${name} should be 40px tall`).toBe(40);
+  }
 });
