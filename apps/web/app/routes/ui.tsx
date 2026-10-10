@@ -19,14 +19,29 @@ const PAIRS = [
   ["destructive", "destructive-foreground"],
 ] as const;
 
+const SHAPES = [
+  { id: "paper", name: "Paper", note: "medium corners, light warm shadow, airy" },
+  { id: "soft", name: "Soft", note: "round corners, larger soft shadow, roomiest" },
+  { id: "archive", name: "Archive", note: "crisp corners, flat with borders, denser" },
+] as const;
+
+type ShapeId = (typeof SHAPES)[number]["id"];
+
 const STORAGE_KEY = "mg-ui-preview";
 
-function readStoredDark(): boolean {
+type Stored = { dark: boolean; shape: ShapeId; grain: boolean };
+
+function readStored(): Stored {
   try {
-    return window.localStorage.getItem(STORAGE_KEY) === "dark";
+    const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") as Partial<Stored>;
+    return {
+      dark: parsed.dark === true,
+      shape: SHAPES.find((s) => s.id === parsed.shape)?.id ?? "paper",
+      grain: parsed.grain === true,
+    };
   } catch {
-    // Storage can be blocked; fall back to light.
-    return false;
+    // Storage can be blocked or hold junk; fall back to the defaults.
+    return { dark: false, shape: "paper", grain: false };
   }
 }
 
@@ -35,49 +50,88 @@ const button =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
   "focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
+const choiceClass = (active: boolean) =>
+  `${button} border ${
+    active
+      ? "border-primary bg-primary text-primary-foreground"
+      : "border-input bg-card text-card-foreground"
+  }`;
+
 export default function Ui() {
   const [dark, setDark] = useState(false);
+  const [shape, setShape] = useState<ShapeId>("paper");
+  const [grain, setGrain] = useState(false);
 
   useEffect(() => {
-    setDark(readStoredDark());
+    const stored = readStored();
+    setDark(stored.dark);
+    setShape(stored.shape);
+    setGrain(stored.grain);
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
+    const root = document.documentElement;
+    root.classList.toggle("dark", dark);
+    root.dataset.shape = shape;
+    root.dataset.grain = grain ? "on" : "off";
     try {
-      window.localStorage.setItem(STORAGE_KEY, dark ? "dark" : "light");
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ dark, shape, grain }));
     } catch {
       // Not critical: the choice just will not be remembered.
     }
-  }, [dark]);
+  }, [dark, shape, grain]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground">
       <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-4 py-3">
-          <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
-          <button
-            type="button"
-            aria-pressed={dark}
-            onClick={() => setDark((v) => !v)}
-            className={`${button} border border-input bg-card text-card-foreground`}
-          >
-            {dark ? "Dark (night paper)" : "Light"}
-          </button>
+        <div className="mx-auto max-w-5xl space-y-2 px-4 py-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
+            <button
+              type="button"
+              aria-pressed={dark}
+              onClick={() => setDark((v) => !v)}
+              className={choiceClass(false)}
+            >
+              {dark ? "Dark (night paper)" : "Light"}
+            </button>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted-foreground">Shape</span>
+            {SHAPES.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                aria-pressed={shape === s.id}
+                onClick={() => setShape(s.id)}
+                className={choiceClass(shape === s.id)}
+              >
+                {s.name}
+              </button>
+            ))}
+            <button
+              type="button"
+              aria-pressed={grain}
+              onClick={() => setGrain((v) => !v)}
+              className={`${choiceClass(grain)} ml-2`}
+            >
+              Paper grain: {grain ? "on" : "off"}
+            </button>
+          </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl space-y-12 px-4 py-10">
         <p className="text-muted-foreground" data-testid="theme-note">
-          Parchment: cream paper, forest-green ink. Lora headings, Source Sans 3 body, Caveat
-          handwriting.
+          Parchment colors, Lora + Source Sans 3 + Caveat. Shape:{" "}
+          {SHAPES.find((s) => s.id === shape)?.note}.
         </p>
 
         <section aria-labelledby="type" className="space-y-4">
           <h2 id="type" className="text-2xl font-semibold">
             Type specimen
           </h2>
-          <div className="space-y-3 rounded-lg border bg-card p-5 text-card-foreground">
+          <div className="flex flex-col gap-stack rounded-lg border bg-card p-card text-card-foreground shadow-card">
             <h3 className="text-4xl font-semibold">Bahçemizde ilk çiçek</h3>
             <h4 className="text-xl font-medium">İlk yağmurdan sonra, vapurda</h4>
             <p className="max-w-prose text-base leading-relaxed">
@@ -171,6 +225,22 @@ export default function Ui() {
               className="h-10 rounded-md border border-input bg-card px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
           </div>
+          <div
+            role="menu"
+            aria-label="Sample menu"
+            className="w-56 rounded-lg border bg-popover p-1 text-sm text-popover-foreground shadow-lift"
+          >
+            <div
+              role="menuitem"
+              tabIndex={-1}
+              className="rounded-md bg-accent px-3 py-2 text-accent-foreground"
+            >
+              Edit memory
+            </div>
+            <div role="menuitem" tabIndex={-1} className="rounded-md px-3 py-2">
+              Move to trash
+            </div>
+          </div>
         </section>
 
         <section aria-labelledby="cards" className="space-y-4">
@@ -191,20 +261,20 @@ export default function Ui() {
                 <li className="px-3 py-2">Special days</li>
               </ul>
             </nav>
-            <article className="grid gap-4 rounded-lg border bg-card p-4 text-card-foreground shadow-sm sm:grid-cols-[8rem_1fr]">
+            <article className="grid gap-4 rounded-lg border bg-card p-card text-card-foreground shadow-card sm:grid-cols-[8rem_1fr]">
               <img
                 src="/flowers/art/anemone.webp"
                 alt="Hand-coloured plate of an anemone"
                 className="h-44 w-full rounded-md border object-cover object-top sm:w-32"
               />
-              <div className="space-y-2">
+              <div className="flex flex-col gap-stack">
                 <p className="font-hand text-xl text-muted-foreground">12 Ekim 2026 · Kadıköy</p>
                 <h3 className="text-xl font-semibold">İlk yağmurdan sonra</h3>
                 <p>
                   Vapurda yan yana oturduk, çay soğuyana kadar hiç konuşmadık. Sessizlik de bir
                   anıymış.
                 </p>
-                <ul className="flex flex-wrap gap-2 pt-1 text-xs">
+                <ul className="flex flex-wrap gap-2 text-xs">
                   <li className="rounded-full bg-secondary px-3 py-1 text-secondary-foreground">
                     vapur
                   </li>

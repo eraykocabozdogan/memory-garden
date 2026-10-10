@@ -39,3 +39,31 @@ test("every control button keeps its base styling", async ({ page }) => {
     expect(box?.height, `${name} should be 40px tall`).toBe(40);
   }
 });
+
+test("shape variants change corners, shadow and card padding", async ({ page }) => {
+  await page.goto("/ui");
+  const card = page.getByRole("article");
+
+  // Paper (default)
+  await expect(card).toHaveCSS("border-radius", "8px");
+  await expect(card).toHaveCSS("padding", "20px");
+  await expect(card).not.toHaveCSS("box-shadow", "none");
+
+  await page.getByRole("button", { name: "Soft" }).click();
+  await expect(card).toHaveCSS("border-radius", "16px");
+  await expect(card).toHaveCSS("padding", "24px");
+
+  await page.getByRole("button", { name: "Archive" }).click();
+  await expect(card).toHaveCSS("border-radius", "4px");
+  await expect(card).toHaveCSS("padding", "16px");
+  await expect(card).toHaveCSS("box-shadow", "none");
+});
+
+test("paper grain toggles a background image on the page", async ({ page }) => {
+  await page.goto("/ui");
+  const body = page.locator("body");
+  await expect(body).toHaveCSS("background-image", "none");
+
+  await page.getByRole("button", { name: /Paper grain/ }).click();
+  await expect(body).toHaveCSS("background-image", /url\(/);
+});
