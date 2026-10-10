@@ -13,7 +13,7 @@ import "./app.css";
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="tr" data-palette="parchment">
+    <html lang="tr">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

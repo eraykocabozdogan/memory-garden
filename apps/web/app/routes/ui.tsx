@@ -6,16 +6,8 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: "UI kitchen sink · Memory Garden" }, { name: "robots", content: "noindex" }];
 }
 
-// Design-system preview (stage 2). Shows every token on realistic pieces so palettes can be
-// compared side by side. Not part of the product; remove or hide once the design is settled.
-
-const PALETTES = [
-  { id: "parchment", name: "Parchment", note: "cream paper, forest-green ink" },
-  { id: "rosewood", name: "Rosewood", note: "blush paper, brick-rose ink" },
-  { id: "ink", name: "Faded ink", note: "ivory paper, slate-blue ink" },
-] as const;
-
-type PaletteId = (typeof PALETTES)[number]["id"];
+// Design-system preview (stage 2). Shows every token on realistic pieces so the theme can be
+// judged on real screens. Not part of the product; remove or hide once the design is settled.
 
 const PAIRS = [
   ["background", "foreground"],
@@ -29,18 +21,13 @@ const PAIRS = [
 
 const STORAGE_KEY = "mg-ui-preview";
 
-function readStored(): { palette: PaletteId; dark: boolean } {
+function readStoredDark(): boolean {
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as { palette?: string; dark?: boolean };
-      const palette = PALETTES.find((p) => p.id === parsed.palette)?.id ?? "parchment";
-      return { palette, dark: parsed.dark === true };
-    }
+    return window.localStorage.getItem(STORAGE_KEY) === "dark";
   } catch {
-    // Storage can be blocked; fall back to the defaults.
+    // Storage can be blocked; fall back to light.
+    return false;
   }
-  return { palette: "parchment", dark: false };
 }
 
 const button =
@@ -49,48 +36,26 @@ const button =
   "focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export default function Ui() {
-  const [palette, setPalette] = useState<PaletteId>("parchment");
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
-    const stored = readStored();
-    setPalette(stored.palette);
-    setDark(stored.dark);
+    setDark(readStoredDark());
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.dataset.palette = palette;
-    root.classList.toggle("dark", dark);
+    document.documentElement.classList.toggle("dark", dark);
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ palette, dark }));
+      window.localStorage.setItem(STORAGE_KEY, dark ? "dark" : "light");
     } catch {
       // Not critical: the choice just will not be remembered.
     }
-  }, [palette, dark]);
+  }, [dark]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-4 py-3">
-          <h1 className="mr-auto text-lg font-semibold">Palette preview</h1>
-          <fieldset className="flex flex-wrap gap-2" aria-label="Palette">
-            {PALETTES.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                aria-pressed={palette === p.id}
-                onClick={() => setPalette(p.id)}
-                className={`${button} border ${
-                  palette === p.id
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-input bg-card text-card-foreground"
-                }`}
-              >
-                {p.name}
-              </button>
-            ))}
-          </fieldset>
+          <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
           <button
             type="button"
             aria-pressed={dark}
@@ -103,9 +68,8 @@ export default function Ui() {
       </header>
 
       <main className="mx-auto max-w-5xl space-y-12 px-4 py-10">
-        <p className="text-muted-foreground" data-testid="palette-note">
-          {PALETTES.find((p) => p.id === palette)?.name}:{" "}
-          {PALETTES.find((p) => p.id === palette)?.note}
+        <p className="text-muted-foreground" data-testid="theme-note">
+          Parchment: cream paper, forest-green ink.
         </p>
 
         <section aria-labelledby="swatches" className="space-y-4">
