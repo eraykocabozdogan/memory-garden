@@ -79,34 +79,27 @@ test("icons are Phosphor: light by default, regular in navigation", async ({ pag
   expect(buttonPlus).toBe(light);
 });
 
-test("login background candidates render behind the sheet and keep the form usable", async ({
-  page,
-}) => {
+test("the silk background sits behind the sheet and keeps the form usable", async ({ page }) => {
   // This headless browser has no GPU and draws WebGL on the CPU, so a running full-screen
-  // shader starves the page. With "reduce motion" on, the backgrounds stop animating.
+  // shader starves the page. With "reduce motion" on, the silk draws one frame and stops.
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ui/login");
-  await expect(page.getByTestId("background")).toHaveCount(0);
 
-  for (const name of ["Silk", "Silk + tek Curtis", "Silk + kolaj", "3D çiçek", "Grid Motion"]) {
+  for (const name of ["Silk + tek Curtis", "Silk + kolaj"]) {
     await page.getByRole("button", { name, exact: true }).click();
     const layer = page.getByTestId("background");
+    await expect(layer.locator("canvas")).toHaveCount(1);
     await expect(layer).toHaveAttribute("aria-hidden", "true");
-    // Nothing in the background can take focus (Drift Wall tiles are buttons otherwise).
     await expect(layer).toHaveAttribute("inert", "");
     // The background must never sit on top of the form.
     await page.getByLabel("Kullanıcı adı").click();
     await expect(page.getByLabel("Kullanıcı adı")).toBeFocused();
   }
-  // The image backgrounds use the small thumbnails, never the full-size plates.
-  const images = page.getByTestId("background").locator("img");
-  expect(await images.count()).toBeGreaterThan(20);
-  for (const src of await images.evaluateAll((els) => els.map((e) => e.getAttribute("src")))) {
-    expect(src).toMatch(/^\/flowers\/thumb\//);
-  }
-  await expect(page).toHaveURL(/bg=grid/);
 
-  // "Sayfayı gizle" hides the sheet so a background can be judged on its own.
+  await page.getByRole("button", { name: "Yok", exact: true }).click();
+  await expect(page.getByTestId("background")).toHaveCount(0);
+
+  // "Sayfayı gizle" hides the sheet so the background can be judged on its own.
   await page.getByRole("button", { name: "Sayfayı gizle" }).click();
   await expect(page.getByLabel("Kullanıcı adı")).toBeHidden();
 });

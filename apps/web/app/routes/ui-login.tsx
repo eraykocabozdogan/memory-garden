@@ -1,12 +1,9 @@
 import { flowerCatalog } from "@memory-garden/shared/flowers/catalog";
 import { useTheme } from "next-themes";
-import { type ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 
-import { FlowerFlow } from "~/components/art/flower-flow";
 import { SilkPlate } from "~/components/art/silk-plate";
-import GridMotion from "~/components/backgrounds/GridMotion";
-import Silk from "~/components/backgrounds/Silk";
 import { HerbariumLogin } from "~/components/herbarium-login";
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/ui-login";
@@ -15,114 +12,33 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: "Giriş önizlemesi · Memory Garden" }, { name: "robots", content: "noindex" }];
 }
 
-// Design-system preview (stage 2): candidate backgrounds behind the herbarium login.
-// Shortlist after the owner's feedback: Silk and Grid Motion (React Bits), plus two hand-written
-// WebGL scenes: a plate printed on silk (one random plate, or a collage) and plates flowing
-// over an invisible 3D flower. The layer is `inert` + aria-hidden, so nothing in it takes focus.
-// "Sayfayı gizle" hides the herbarium sheet to see a background on its own.
+// Design-system preview (stage 2): the login background is Curtis on silk (owner's pick over
+// React Bits Silk, Grid Motion and a 3D flower). Two views remain to compare: one random plate
+// covering the screen, or a 5×3 collage (`pnpm flowers:collage`). The layer is `inert` +
+// aria-hidden, so nothing in it takes focus. "Sayfayı gizle" hides the sheet.
 
 const BACKGROUNDS = [
   { id: "yok", name: "Yok" },
-  { id: "silk", name: "Silk" },
   { id: "silk-tek", name: "Silk + tek Curtis" },
   { id: "silk-kolaj", name: "Silk + kolaj" },
-  { id: "cicek", name: "3D çiçek" },
-  { id: "grid", name: "Grid Motion" },
 ] as const;
 
 type BackgroundId = (typeof BACKGROUNDS)[number]["id"];
 
-const CREAM = "#faf3e3";
-const SAND = "#edd4ab";
-
-// A fixed shuffle of the thumbnails for Grid Motion.
-const THUMBS = flowerCatalog
-  .map((flower, i) => ({ src: `/flowers/thumb/${flower.id}.webp`, order: (i * 37) % 61 }))
-  .sort((a, b) => a.order - b.order)
-  .map(({ src }) => src);
-
-function Background({
-  id,
-  light,
-  dpr,
-  still,
-  plate,
-}: {
-  id: BackgroundId;
-  light: boolean;
-  dpr: number;
-  still: boolean;
-  plate: string;
-}) {
-  let layer: ReactNode = null;
-  let faded = false;
-  if (id === "silk") {
-    layer = (
-      <Silk
-        speed={1.5}
-        color={light ? SAND : "#4a3c2e"}
-        sheenColor={light ? CREAM : SAND}
-        lightMode={light}
-        mouseInteraction={false}
-        dpr={dpr}
-        paused={still}
-      />
-    );
-  } else if (id === "silk-tek") {
-    layer = <SilkPlate src={plate} fit="contain" light={light} still={still} />;
-  } else if (id === "silk-kolaj") {
-    layer = <SilkPlate src="/flowers/collage.webp" fit="cover" light={light} still={still} />;
-  } else if (id === "cicek") {
-    layer = <FlowerFlow light={light} still={still} />;
-  } else if (id === "grid") {
-    faded = true;
-    layer = (
-      <GridMotion
-        items={THUMBS.map((src) => ({ src, alt: "" }))}
-        rows={5}
-        aspectRatio={0.62}
-        gap={14}
-        radius={4}
-        speed={10}
-        spotlight={0}
-        dim={0}
-        fade={0.3}
-        theme={light ? "light" : "dark"}
-      />
-    );
-  }
-  if (!layer) return null;
-  return (
-    <div
-      aria-hidden="true"
-      inert
-      data-testid="background"
-      className="fixed inset-0 z-0 overflow-hidden"
-      style={
-        faded ? { opacity: light ? 0.32 : 0.22, filter: "sepia(0.25) saturate(0.85)" } : undefined
-      }
-    >
-      {layer}
-    </div>
-  );
-}
-
 export default function UiLogin() {
   const [params, setParams] = useSearchParams();
-  const bg: BackgroundId = BACKGROUNDS.find((b) => b.id === params.get("bg"))?.id ?? "yok";
+  const bg: BackgroundId = BACKGROUNDS.find((b) => b.id === params.get("bg"))?.id ?? "silk-tek";
   const sheetHidden = params.get("sayfa") === "gizli";
   const { resolvedTheme } = useTheme();
-  const [dpr, setDpr] = useState(1);
-  // `paused`/`still` makes the WebGL backgrounds draw one frame and stop for "reduce motion".
-  const [still, setStill] = useState(false);
-  // "Silk + tek Curtis" shows a random plate on every visit (owner's choice over "flower of
-  // the day" for a single background plate).
+  const light = resolvedTheme !== "dark";
+  // A random plate on every visit (owner's choice over "flower of the day" for the background).
   const [plate] = useState(() => {
     const flower = flowerCatalog[Math.floor(Math.random() * flowerCatalog.length)];
     return flower?.artwork.src ?? "/flowers/art/viola-tricolor.webp";
   });
+  // "Reduce motion": draw one frame and stop.
+  const [still, setStill] = useState(false);
   useEffect(() => {
-    setDpr(window.matchMedia("(max-width: 767px)").matches ? 1 : 1.5);
     setStill(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
@@ -139,7 +55,20 @@ export default function UiLogin() {
 
   return (
     <div className="relative min-h-svh" data-background={bg}>
-      <Background id={bg} light={resolvedTheme !== "dark"} dpr={dpr} still={still} plate={plate} />
+      {bg !== "yok" && (
+        <div
+          aria-hidden="true"
+          inert
+          data-testid="background"
+          className="fixed inset-0 z-0 overflow-hidden"
+        >
+          <SilkPlate
+            src={bg === "silk-tek" ? plate : "/flowers/collage.webp"}
+            light={light}
+            still={still}
+          />
+        </div>
+      )}
       <div className={sheetHidden ? "invisible relative z-10" : "relative z-10"}>
         <HerbariumLogin />
       </div>

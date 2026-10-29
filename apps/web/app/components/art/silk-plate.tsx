@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { bindProgram, createProgram, loadTexture, runLoop } from "./gl";
 
-// A Curtis plate (or a collage of plates) printed on slowly rippling silk. The fold pattern and
+// A Curtis plate (or a collage of plates) printed on slowly rippling silk, covering the screen. The fold pattern and
 // lighting follow React Bits' Silk; the folds also bend the print and the sheen passes over it.
 // One full-screen triangle, one texture.
 
@@ -16,7 +16,6 @@ uniform vec2 uView;
 uniform float uTime;
 uniform sampler2D uImage;
 uniform float uImageAspect;
-uniform float uContain;
 uniform float uReady;
 uniform vec3 uSilk;
 uniform float uLight;
@@ -28,17 +27,12 @@ float silk(vec2 p) {
   return 0.6 + 0.4 * sin(5.0 * (tex.x + tex.y + cos(3.0 * tex.x + 5.0 * tex.y) + 0.02 * uTime));
 }
 
-// Screen UV to image UV: "cover" fills the screen, "contain" shows the whole plate centred.
+// Screen UV to image UV, "cover": the image fills the screen, cropped to its centre.
 vec2 imageUv(vec2 uv) {
   float va = uView.x / uView.y;
   float ia = uImageAspect;
   vec2 c = uv - 0.5;
-  if (uContain > 0.5) {
-    float m = 0.86;
-    if (va > ia) { c.y /= m; c.x *= va / ia / m; } else { c.x /= m; c.y *= ia / va / m; }
-  } else {
-    if (va > ia) { c.y *= ia / va; } else { c.x *= va / ia; }
-  }
+  if (va > ia) { c.y *= ia / va; } else { c.x *= va / ia; }
   return c + 0.5;
 }
 
@@ -62,24 +56,20 @@ void main() {
 
   // The print rides the folds: sample the image slightly displaced along the fold's slope.
   vec2 iuv = imageUv(uv + normal.xy * 0.012);
-  float inside = smoothstep(0.0, 0.012, iuv.x) * smoothstep(0.0, 0.012, 1.0 - iuv.x)
-               * smoothstep(0.0, 0.012, iuv.y) * smoothstep(0.0, 0.012, 1.0 - iuv.y);
   vec3 ink = texture(uImage, clamp(iuv, 0.0, 1.0)).rgb;
   vec3 printed = ink * mix(0.82, 1.06, fold) * mix(1.0, relief, 0.7) * mix(0.55, 1.0, uLight);
 
-  vec3 color = mix(cloth, printed, inside * uReady * 0.96);
+  vec3 color = mix(cloth, printed, uReady * 0.96);
   color += vec3(1.0) * (gloss * 0.32 + pow(n01, 5.0) * 0.06) * mix(0.45, 1.0, uLight);
   outColor = vec4(clamp(color, 0.0, 1.0), 1.0);
 }`;
 
 export function SilkPlate({
   src,
-  fit,
   light,
   still = false,
 }: {
   src: string;
-  fit: "contain" | "cover";
   light: boolean;
   still?: boolean;
 }) {
@@ -101,7 +91,6 @@ export function SilkPlate({
       time: u("uTime"),
       image: u("uImage"),
       aspect: u("uImageAspect"),
-      contain: u("uContain"),
       ready: u("uReady"),
       silk: u("uSilk"),
       light: u("uLight"),
@@ -125,7 +114,6 @@ export function SilkPlate({
         gl.uniform2f(uniforms.view, width, height);
         gl.uniform1f(uniforms.time, time * 0.6);
         gl.uniform1f(uniforms.aspect, aspect);
-        gl.uniform1f(uniforms.contain, fit === "contain" ? 1 : 0);
         gl.uniform1f(uniforms.ready, ready);
         gl.uniform3fv(uniforms.silk, silkColor);
         gl.uniform1f(uniforms.light, light ? 1 : 0);
@@ -146,7 +134,7 @@ export function SilkPlate({
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
     };
-  }, [src, fit, light, still]);
+  }, [src, light, still]);
 
   return <canvas ref={canvasRef} className="block h-full w-full" />;
 }

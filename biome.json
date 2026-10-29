@@ -69,12 +69,6 @@
           }
         }
       }
-    },
-    {
-      "includes": ["apps/web/app/components/backgrounds/**"],
-      "linter": {
-        "enabled": false
-      }
     }
   ]
 }

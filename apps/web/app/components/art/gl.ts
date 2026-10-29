@@ -1,4 +1,4 @@
-// Small WebGL2 helpers shared by the hand-written art backgrounds (silk-plate, flower-flow).
+// Small WebGL2 helpers for the hand-written art background (silk-plate).
 // No library: these scenes are tiny, and a raw context keeps the bundle small.
 
 export function createProgram(gl: WebGL2RenderingContext, vertex: string, fragment: string) {
@@ -122,83 +122,6 @@ export function runLoop(
       document.removeEventListener("visibilitychange", onVisibility);
     },
   };
-}
-
-/* ---------- 4×4 matrices (column-major, as WebGL expects) ---------- */
-
-export type Vec3 = [number, number, number];
-
-export function perspective(fovY: number, aspect: number, near: number, far: number) {
-  const f = 1 / Math.tan(fovY / 2);
-  const nf = 1 / (near - far);
-  return new Float32Array([
-    f / aspect,
-    0,
-    0,
-    0,
-    0,
-    f,
-    0,
-    0,
-    0,
-    0,
-    (far + near) * nf,
-    -1,
-    0,
-    0,
-    2 * far * near * nf,
-    0,
-  ]);
-}
-
-export const sub = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-export const add = (a: Vec3, b: Vec3): Vec3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
-export const scale = (a: Vec3, s: number): Vec3 => [a[0] * s, a[1] * s, a[2] * s];
-export const cross = (a: Vec3, b: Vec3): Vec3 => [
-  a[1] * b[2] - a[2] * b[1],
-  a[2] * b[0] - a[0] * b[2],
-  a[0] * b[1] - a[1] * b[0],
-];
-export const normalize = (a: Vec3): Vec3 => {
-  const l = Math.hypot(a[0], a[1], a[2]) || 1;
-  return [a[0] / l, a[1] / l, a[2] / l];
-};
-const dot = (a: Vec3, b: Vec3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-
-export function lookAt(eye: Vec3, target: Vec3, up: Vec3) {
-  const z = normalize(sub(eye, target));
-  const x = normalize(cross(up, z));
-  const y = cross(z, x);
-  return new Float32Array([
-    x[0],
-    y[0],
-    z[0],
-    0,
-    x[1],
-    y[1],
-    z[1],
-    0,
-    x[2],
-    y[2],
-    z[2],
-    0,
-    -dot(x, eye),
-    -dot(y, eye),
-    -dot(z, eye),
-    1,
-  ]);
-}
-
-export function multiply(a: Float32Array, b: Float32Array) {
-  const out = new Float32Array(16);
-  for (let col = 0; col < 4; col++) {
-    for (let row = 0; row < 4; row++) {
-      let sum = 0;
-      for (let k = 0; k < 4; k++) sum += (a[k * 4 + row] ?? 0) * (b[col * 4 + k] ?? 0);
-      out[col * 4 + row] = sum;
-    }
-  }
-  return out;
 }
 
 /** Activates a program. (A plain function so lint does not mistake `gl.useProgram` for a hook.) */
