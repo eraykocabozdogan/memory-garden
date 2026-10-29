@@ -61,3 +61,27 @@ export function getSelectableFlowerById(flowerId: string) {
 export function isFlowerId(flowerId: string) {
   return selectableFlowersById.has(flowerId);
 }
+
+/**
+ * Turkish descriptors the catalog appends to `path` to tell variants apart
+ * ("Rosa › kırmızı", "Bellis › perennis › katmerli"). They are not part of the botanical name.
+ */
+const VARIANT_DESCRIPTORS = new Set([
+  "beyaz",
+  "çiçek",
+  "ibik biçimli",
+  "katmerli",
+  "kurumuş",
+  "kırmızı",
+  "tam açmış",
+  "tek katlı",
+  "tomurcuk",
+  "yarı açmış",
+]);
+
+/** The botanical (Latin) name from `path`: genus plus species when given, e.g. "Viola tricolor". */
+export function scientificName(flower: Pick<FlowerCatalogEntry, "path">) {
+  const parts = flower.path.split(" › ");
+  const latin = parts.slice(0, 2).filter((part) => !VARIANT_DESCRIPTORS.has(part));
+  return latin.join(" ");
+}

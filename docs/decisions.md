@@ -302,9 +302,23 @@ uygulamanın şemasını ve tüm sorgularını demo için karmaşıklaştırır)
 
 ## Karar 8: UI
 
-Durum: **Bekliyor.** Proje sahibi tweakcn, shadcn blokları, React Bits ve (isteğe bağlı)
-21st.dev üzerinden seçimlerini hazırlıyor. Seçimler kodlamanın tasarım sistemi aşamasında
-kurulacak; backend aşamaları bunu beklemeden ilerleyebilir.
+Durum: **Sürüyor (7/11).** Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek
+sırayla yapılıyor. Ayrıntılar, seçenekler ve yeniden kullanılabilir yöntem:
+`docs/frontend-playbook.md`. Backend aşamaları bunu beklemeden ilerleyebilir.
+
+| # | Konu | Seçim | Değerlendirilen diğer seçenekler | Gerekçe |
+|---|---|---|---|---|
+| 8-1 | His (üç kelime) | **intimate · paper-like · gentle** | nostalgic, archival, quiet | İki kişilik bir anı defteri; çiçekler vurgu, merkez değil |
+| 8-2 | Renkler | **Parchment** (krem kâğıt, orman yeşili mürekkep); koyu mod "gece kâğıdı" | Rosewood, Faded ink | Curtis çizimleriyle en uyumlu; Rosewood'da kaydet ve sil butonları ikisi de kırmızıydı |
+| 8-3 | Yazı tipleri | **Lora** (başlık) + **Source Sans 3** (gövde) + **Caveat** (el yazısı vurgu) | Fraunces + Nunito Sans; Newsreader; Kalam; Dancing Script | En sakin ve okunaklı; Türkçe harfler font dosyalarında doğrulandı |
+| 8-4 | Şekil ve derinlik | **Paper** (8px köşe, hafif sıcak gölge, ferah); kâğıt dokusu şimdilik açık, sonda tekrar bakılacak | Soft, Archive | Dengeli; Soft telefonda fazla yer kaplıyor |
+| 8-5 | Temel bileşenler | **shadcn/ui**, motor **Base UI** (Temmuz 2026'dan beri varsayılan), stil **Vega**; tema yönetimi **next-themes** | Radix, React Aria; Untitled UI | Kurulan token'larla doğrudan uyumlu; Vega, Paper şekliyle örtüşüyor |
+| 8-6a | Uygulama iskeleti | **İçe gömülü yan menü** (shadcn sidebar-08), ikonlara daralabilir; mobilde alt menü | İkona daralan klasik yan menü (sidebar-07) | İçerik menünün üstünde bir kâğıt gibi duruyor; "paper-like" hissine en yakın |
+| 8-6b | Giriş ekranı | **Herbaryum yaprağı, yan yana**: solda kâğıt bantla tutturulmuş günün çiçeği çizimi ve altında el yazısı not ("Her anı bir çiçek…"), sağda müze tipi klasik etiket (bitki, Latince adı, anlamı, tarih) ve içinde alt çizgili form; köşede mürekkep damgası (telefonda gizli) | shadcn login-01, -02, -04; defter kapağı, mektup; levha numarası (önce seçildi, sonra kaldırıldı: kaynakların çoğunda yok); foto köşeliği, dikiş; sade kart; kutulu alanlar; sabit çiçek | Şablon hissi vermiyor; Curtis çizimleri, kâğıt hissi ve arşiv havası tek ekranda. Günün çiçeği yalnızca sıcak anlamlı 10 çiçekten seçiliyor |
+| 8-7 | İkonlar | **Phosphor**: varsayılan **hafif** (light) ağırlık, yan menü ve mobil alt menüde **normal** (regular) | Lucide (2px ve 1.5px), Phosphor normal/iki tonlu tek başına, Tabler | Hafif çizgi kâğıt ve herbaryum havasına en yakın; küçük gezinme ikonlarında silik kalmasın diye normal |
+| 8-8 | Hareketli arka plan (giriş) | **Sürüyor.** Yön: Curtis çizimleri ipeğe basılmış gibi (kendi WebGL2 shader'ımız, `components/art/silk-plate.tsx`). Sıradaki: çiçekleri kâğıttan kesip yoğun kolaj, ipek etkisini güçlendirmek (ayrıntı `docs/handoff.md`) | React Bits Particles, Aurora, Iridescence, Grid Motion, Drift Wall, Logo Loop, düz Silk; duran çizim duvarı; 3D çiçek | Proje sahibi Silk'i ve Curtis'i birlikte istedi; sarı kâğıt zemini az, çiçek çok olsun |
+
+Kalan seçimler: arka plan, yazı animasyonu, hareket, özel bileşenler.
 
 ## Karar 9: Altyapı ve süreç
 

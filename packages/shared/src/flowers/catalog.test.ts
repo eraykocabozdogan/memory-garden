@@ -1,9 +1,9 @@
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
-import { flowerCatalog, getFlowerById, isFlowerId } from "./catalog";
+import { flowerCatalog, getFlowerById, isFlowerId, scientificName } from "./catalog";
 import flowerArtwork from "./flower-artwork.json";
 
 const webPublicDirectory = fileURLToPath(new URL("../../../../apps/web/public/", import.meta.url));
@@ -59,4 +59,20 @@ test("only the dried rose and white lilac use representative images", () => {
     .sort();
   expect(representativeIds).toEqual(["rosa-kurumus", "syringa-beyaz"]);
   expect(isFlowerId("rosa-kurumus")).toBe(true);
+});
+
+describe("scientificName", () => {
+  test("keeps genus and species and drops the Turkish variant descriptors", () => {
+    expect(scientificName({ path: "Viola › tricolor" })).toBe("Viola tricolor");
+    expect(scientificName({ path: "Rosa › kırmızı" })).toBe("Rosa");
+    expect(scientificName({ path: "Rosa › beyaz › tomurcuk" })).toBe("Rosa");
+    expect(scientificName({ path: "Bellis › perennis › katmerli" })).toBe("Bellis perennis");
+    expect(scientificName({ path: "Galanthus" })).toBe("Galanthus");
+  });
+
+  test("gives a Latin-looking binomial or genus for every catalog record", () => {
+    for (const flower of flowerCatalog) {
+      expect(scientificName(flower), flower.id).toMatch(/^[A-Z][a-z]+( [a-z]+)?$/);
+    }
+  });
 });

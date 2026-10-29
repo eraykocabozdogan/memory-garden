@@ -1,0 +1,7 @@
+/* Font stacks: Lora headings, Source Sans 3 body, Caveat for small handwritten accents.
+   All three are self-hosted through Fontsource (imported in root.tsx). */
+:root {
+  --ff-body: "Source Sans 3 Variable", ui-sans-serif, system-ui, sans-serif;
+  --ff-heading: "Lora Variable", ui-serif, Georgia, serif;
+  --ff-hand: "Caveat Variable", cursive;
+}

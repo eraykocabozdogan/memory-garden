@@ -53,6 +53,22 @@
       "formatter": {
         "enabled": false
       }
+    },
+    {
+      "includes": ["apps/web/app/components/ui/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "noLabelWithoutControl": "off"
+          },
+          "suspicious": {
+            "noDocumentCookie": "off"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "off"
+          }
+        }
+      }
     }
   ]
 }

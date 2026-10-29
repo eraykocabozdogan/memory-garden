@@ -1,42 +1,119 @@
 # Devir notu: nerede kaldık
 
-Son güncelleme: 2026-10-09 (Aşama 0 ve çiçek kataloğu doğrulaması sonrası). Yeni bir sohbet buradan devam eder.
+Son güncelleme: 2026-10-29 (Karar 8 / Aşama 2 tasarım seçimleri sürerken). Yeni bir sohbet buradan
+devam eder. Önce bu dosyayı, sonra `docs/frontend-playbook.md`'yi oku.
 
 ## Durum
 
 | Adım | Durum |
 |---|---|
-| Karar 1–7, 9 ve mimari düzeltmeleri | **Kararlaştırıldı** (`docs/decisions.md`) |
-| Mimari dokümanı | **Onaylandı** (`docs/architecture.md`) |
-| Karar 8: UI | **Bekliyor.** Proje sahibi seçimlerini hazırlıyor (aşağıdaki rehber). |
-| Aşama 0: Hazırlık | **Kod tarafı tamamlandı**, proje sahibinin onayını bekliyor (ayrıntılar aşağıda) |
-| Aşama 1: Temel + giriş | Sıradaki |
+| Karar 1–7, 9 ve mimari | **Kararlaştırıldı** (`docs/decisions.md`, `docs/architecture.md`) |
+| Aşama 0: Hazırlık | **Onaylandı** |
+| Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 7/11 seçim bitti, 8. (arka plan) üzerinde çalışılıyor** |
+| Aşama 1: Temel + giriş | Bekliyor (Karar 8 bitince ya da paralel) |
 
-Ana branch: `main`. Bir oturum kendi çalışma branch'inde çalışır; iş bitince main'e mergelenir ve branch silinir.
+Ana branch: `main`. Çalışma branch'i: **`claude/blissful-wright-yju0fk`** (her şey push'lu;
+main'e **merge edilmedi**, PR açılmadı). Yeni sohbet ya bu branch'ten devam
+eder ya da önce bunu main'e mergeleyip yeni branch açar; proje sahibine sor.
 
-## Sıradaki adımlar
+## Karar 8 / Aşama 2: nerede kaldık
 
-### Proje sahibinin yapacakları
+### Çalışma şekli (proje sahibinin isteği, böyle devam et)
 
-1. **UI seçimlerini hazırlamak** (Karar 8, aşağıdaki rehber). Aşama 1 bunu beklemeden ilerleyebilir.
-2. İsteğe bağlı: `v0-nextjs` etiketi (proje sahibi için önemli değil). Oluşturulmak istenirse:
-   GitHub → Releases → Draft a new release → tag `v0-nextjs`, target commit `1357af6`.
+- Ön yüz seçimleri **sırayla, tek tek** yapılıyor. Her adımda: kısa özet ve seçenekler →
+  seçenekleri **canlı önizleme sayfasına** koy → yayınla (`wrangler deploy`) → proje sahibi
+  tarayıcıda/tabletinde görüp seçer → seçileni sabitle, reddedilenleri **sil** → kaydet.
+- Her seçim **iki yere** yazılır: `docs/decisions.md` (Karar 8 tablosu, Türkçe) ve
+  `docs/frontend-playbook.md` (İngilizce, başka projelere taşınabilir yöntem + dersler).
+- Her adım testlerle teslim edilir (`pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
+  `pnpm test:e2e`); yayından önce ekran görüntülerine bakılır (masaüstü, mobil, koyu tema, tablet).
+- İlk yayın onayı alındı (1a): `memory-garden.erayai.workers.dev`'e önizleme için doğrudan
+  deploy edilebilir. D1/R2 gibi **yeni kaynak** oluşturmak hâlâ onay ister.
+- **Dil:** proje sahibi bu sohbetin ortasında "Türkçe devam edeceğiz" dedi; sohbet Türkçe.
+  (Kişisel tercihleri varsayılan olarak İngilizce; yeni sohbette emin değilsen sor.)
+  `CLAUDE.md`'deki "Türkçe" satırını proje sahibinin isteğiyle sildik.
+- Proje sahibi cevaplarda başlık/alt başlık/madde düzeni, kısa cümle, önerinin açıkça
+  işaretlenmesi ([O]), kaynak/tahmin etiketleri ([1], [I], [M]) ve kısa cevap verilebilen
+  numaralı sorular istiyor.
 
-Tamamlananlar: Aşama 0 onaylandı. GitHub secret'ları (`CLOUDFLARE_API_TOKEN`,
-`CLOUDFLARE_ACCOUNT_ID`) repoya eklendi. Hesap Workers Paid planında (proje sahibi panelden
-doğruladı). Token env1 ortamında da var ve doğrulandı.
+### Canlı önizleme sayfaları (noindex, sadece tasarım için)
 
-### Claude'un yapacakları (Aşama 1)
+- `/ui`: token'lar, yazı, butonlar, form, menü/diyalog/sekmeler, Türkçe tarih seçici, bildirim,
+  anı kartı. Üstte kâğıt dokusu ve açık/koyu tema düğmeleri.
+- `/ui/login`: herbaryum giriş ekranı + arka plan seçici + "Sayfayı gizle".
+- `/ui/shell`: içe gömülü yan menü (masaüstü) / alt menü (mobil).
+- `/ui/icons`: Phosphor hafif ve normal.
+- Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
+
+### Bitmiş seçimler (ayrıntı: `docs/decisions.md` 8-1…8-7, playbook §1–7)
+
+1. His: intimate · paper-like · gentle
+2. Renk: Parchment (`app/theme.css`), koyu mod "gece kâğıdı"; `scripts/contrast-check.mjs`
+3. Yazı: Lora + Source Sans 3 + Caveat (`app/typography.css`)
+4. Şekil: Paper (`app/shape.css`); **kâğıt dokusu şimdilik açık, sonda tekrar bakılacak**
+5. Bileşenler: shadcn/ui, Base UI, Vega stili, next-themes (`app/components/ui/`)
+6. İskelet: içe gömülü yan menü (sidebar-08) + mobil alt menü; giriş: herbaryum yaprağı
+   (`app/components/herbarium-login.tsx`: günün çiçeği yalnız sıcak anlamlı 10 çiçekten,
+   `app/lib/login-flower.ts`; Latince ad `scientificName()` ile; levha numarası kaldırıldı)
+7. İkonlar: Phosphor, varsayılan hafif, gezinmede normal (`root.tsx` IconContext)
+
+### Şu an açık: #8 hareketli arka plan (giriş ekranı)
+
+- **Yön kararı:** "Silk + Curtis": Curtis çizimleri dalgalanan ipek kumaşa basılmış gibi.
+  Bileşen: `app/components/art/silk-plate.tsx` (kendi yazdığımız WebGL2 shader, harici
+  kütüphane yok) + `app/components/art/gl.ts` (döngü: ekran dışında/gizli sekmede/"hareketi
+  azalt"ta durur, çözünürlük telefonda 1, diğerlerinde 1.5 ile sınırlı).
+- Reddedilenler (kodları silindi): React Bits Particles, Aurora, Iridescence, Grid Motion,
+  Drift Wall, Logo Loop (kayan sıralar), duran duvar, düz Silk, 3D çiçek (görünmez çiçek
+  üzerinde akan çizimler).
+- Şu an canlıda iki görünüm var: "Silk + tek Curtis" (rastgele bir çizim ekranı kaplar) ve
+  "Silk + kolaj" (`public/flowers/collage.webp`, 5×3 büyük çizim, `pnpm flowers:collage`).
+- **Proje sahibinin son geri bildirimi (tablette baktı):**
+  1. Çok boşluk var: Curtis levhalarının **sarı kâğıt zemini** fazla yer kaplıyor.
+  2. Düz Silk'te **yansımalar ve dalgalanmalar** daha belirgindi; bunda belli olmuyor.
+  3. İstek: **olabildiğince çok çiçek, olabildiğince az sarı kâğıt zemini.**
+- **Planlanan çözüm (başlanmadı, proje sahibi onaylamıştı):**
+  - Build adımında bir script ile çiçekleri kâğıttan **kesip çıkarmak**: her levhanın kenar
+    piksellerinden kâğıt rengini bul (medyan), ona yakın pikselleri yumuşak kenarla saydam
+    yap; küçük ayrık lekeleri (yazılar, "No. 841", "Pub. by W. Curtis") alan eşiğiyle at;
+    sonuç `public/flowers/cutout/<id>.webp` (alfa kanallı). Sharp ile ham piksel + JS'de
+    bağlı bileşen taraması yeterli (Python gerekmez).
+  - Kesilmiş çiçekleri **yoğun bir buket/kolaj** olarak yerleştir: her parçayı en çok boş
+    alanı kapatacağı yere koyan açgözlü (greedy) yerleşim, örtüşmeye izin ver, hedef ~%90
+    kaplama. Çıktı alfa kanallı tek doku.
+  - Shader: alfa olmayan yerde ipek kumaş, alfa olan yerde çiçek. **İpek etkisini
+    güçlendir:** kıvrım kontrastı, gölge ve parlaklık düz Silk kadar belirgin olsun
+    (şu anki değerler: kıvrım çarpanı 0.82–1.06, parlaklık 0.32, kaydırma 0.012; artır).
+  - İki görünüm sun: yoğun kesik çiçek kolajı + tek büyük kesik çiçek (etrafı ipek).
+  - Tablet boyutlarında (1180×820 ve 820×1180) ekran görüntüsüyle kontrol et.
+- Belirsizlik: "çok boşluk var sayfada" herbaryum sayfasındaki boşluğu da kastediyor olabilir;
+  yeni sohbette kısaca teyit et.
+
+### Kalan seçimler
+
+- #9 Yazı animasyonu, #10 Hareket (Motion), #11 Özel bileşenler (dosya yükleme, galeri/tam
+  ekran görüntüleyici, tarih seçici/zaman çizelgesi, geri sayım kartı; 21st.dev, Kibo UI,
+  ayrıca React Bits'in galerileri: Dome Gallery, Circular Gallery, Masonry, bahçe/rehber için)
+- Ertelenenler: kâğıt dokusu (sonda), **uygulama içinde arka plan** (S3: donmuş ipek karesi,
+  hareketli ipek ya da sadece seçili sayfalar; "sonra karar verelim" dendi).
+- Sonunda: playbook'u tamamla, `/ui*` önizleme sayfalarının akıbetine karar ver, branch'i
+  main'e mergele (PR proje sahibi isterse).
+
+## Aşama 1: Temel + giriş (Karar 8'den sonra)
 
 1. Ortamda `CLOUDFLARE_API_TOKEN` ve `CLOUDFLARE_ACCOUNT_ID` var mı kontrol et (değerleri asla
-   yazdırma).
+   yazdırma). Bu oturumda ikisi de vardı.
 2. Cloudflare kaynaklarını oluştur: D1 `memory-garden`; R2 `memory-garden-media` (EU) ve
    `memory-garden-demo-media`; Queue `media-jobs`; R2 CORS (uygulama adresinden PUT); R2 yaşam
    döngüsü kuralı (tamamlanmamış multipart 1 gün). Kaynak oluşturmak dışarıya dönük bir işlem;
    önce proje sahibine ne oluşturulacağını söyle.
 3. `deploy.yml` (ve sonra `backup.yml`) GitHub Actions iş akışları.
-4. Aşama 1'in içeriği: `docs/architecture.md` §13.
-5. Her aşamadan sonra proje sahibine ne yapıldığını özetle ve onay al.
+4. İçerik: `docs/architecture.md` §13. Giriş sayfası hazır bileşeni kullanır
+   (`HerbariumLogin`, formu Better Auth'a bağla).
+5. Her aşamadan sonra proje sahibine özetle ve onay al.
+
+İsteğe bağlı (proje sahibi için önemli değil): `v0-nextjs` etiketi. GitHub → Releases → Draft a
+new release → tag `v0-nextjs`, target commit `1357af6` (bu ortamda tag push'u reddediliyor).
 
 ## Aşama 0: Yapılanlar
 
@@ -74,54 +151,11 @@ Aşama 3 için notlar:
 - `artwork.representative` doğruysa görselin yanında "temsilî" notu gösterilir (Y5).
 - Görsel kaynağı `artwork.sourceUrl` ile Commons sayfasına bağlanır.
 
-## Karar 8: UI — proje sahibi için rehber
+## Karar 8: UI — eski rehber
 
-Proje sahibi bu araçları ilk kez kullanıyor. Seçimlerini gönderdiğinde Claude parçaları kurar,
-hepsini temaya bağlar ve bir kitchen-sink sayfasında yan yana gösterir (Aşama 2).
-
-**Temel kavramlar:** shadcn/ui bir kütüphane değil; bileşenlerin kaynak kodunu projeye kopyalayan
-bir sistem (`npx shadcn add ...`). "Registry", bu formatta bileşen yayınlayan katalog demek
-(21st.dev ve React Bits da öyle). Tema değişkenleri (`--primary`, `--background`, `--radius`…)
-tüm bileşenleri birbirine bağlar.
-
-**Adım 0 (10 dk):** Uygulamanın hissini anlatan üç kelime seç. `public/flowers/art/`
-çizimlerine bak; renkler bu eski botanik çizimlerle uyumlu olmalı.
-
-**Adım 1: tweakcn.com/editor/theme (45 dk, zorunlu)**
-- Üstteki tema seçiciden hazır temaları gez, en yakınından başla.
-- Önizlemede "Application" ve "Cards" sekmeleri bu uygulamaya en yakın olanlar.
-- **Colors:** Base, Primary, Accent, Muted, Card, Border & Input, Sidebar önemli; Chart'ı atla.
-- **Typography:** sans ve serif. Türkçe karakter kontrolü: fontu Google Fonts'ta aç, "Ğüzel şiir
-  ışığında İstanbul" yaz. El yazısı bir başlık fontu istiyorsan adını ayrıca not et.
-- **Other:** köşe ve gölge.
-- Açık ve koyu modu ayrı ayarla.
-- Alttaki **Code** → Tailwind v4, oklch → kopyala. Ya da **Save** + **Share** ile link.
-
-**Adım 2: ui.shadcn.com/blocks (15 dk):** "Login" ve "Sidebar" bloklarından beğendiğini not et.
-
-**Adım 3: reactbits.dev (30 dk):** Backgrounds, Text Animations, Animations, Components, Micro.
-1 arka plan (giriş ekranı / rehber girişi), 1–2 yazı animasyonu, isteğe bağlı 1 bileşen.
-Ayar kontrolleriyle oyna, değerleri not al. Varyant: TS-TW. Gösterişli efekt en fazla 1–2 yerde.
-
-**Adım 4: 21st.dev (isteğe bağlı, 30 dk):** Sadece eksik parçalar için: dosya yükleme, galeri /
-tam ekran görüntüleyici, tarih seçici / zaman çizelgesi, geri sayım kartı. Sayfa linki + not.
-
-**Gönderilecek not:**
-
-```
-ÜÇ KELİME: ...
-TEMA (tweakcn): <Code çıktısı ya da Share linki>
-EL YAZISI FONT (varsa): ...
-BLOKLAR (shadcn): giriş → ..., uygulama iskeleti → ...
-ARKA PLAN (React Bits): <link> — nerede — ayarlar
-YAZI ANİMASYONU (React Bits): <link> — nerede — ayarlar
-BİLEŞEN (React Bits, varsa): <link> — nerede
-21st.dev (varsa): <link> — ne için — not
-BEĞENMEDİĞİM ŞEYLER (isteğe bağlı): ...
-```
-
-Claude seçilenlerin ağırlığını (WebGL/3D arka planlar pil tüketir) ve kontrastı kontrol eder,
-sorun varsa söyler.
+Proje sahibi için hazırlanan site site rehber (tweakcn, shadcn blokları, React Bits, 21st.dev)
+yerini yukarıdaki canlı önizleme yöntemine bıraktı. Yöntem ve seçimler
+`docs/frontend-playbook.md`'de.
 
 ## Önceki oturumda öğrenilenler
 
@@ -139,3 +173,26 @@ sorun varsa söyler.
 - Bu bulut ortamında git tag push'u reddediliyor; yalnızca çalışma branch'ine push yapılabiliyor.
 - Cloudflare token'ı env1 ortamında; değişkenler yalnızca ortama eklendikten sonra açılan
   oturumlarda görünür.
+- **Bu bulut ortamında önizleme ve ekran görüntüsü:** `cd apps/web && npx wrangler dev --port
+  4173 &` sonra Playwright (`executablePath: "/opt/pw-browsers/chromium"`, script
+  scratchpad'de `import { chromium } from "<apps/web/node_modules/@playwright/test yolu>/index.mjs"`).
+  Durdururken **`pkill -f "wrangler dev..."` kullanma**: kalıp, komutu çalıştıran kabuğun
+  kendi satırına da uyuyor ve kabuğu öldürüyor (iki kez oldu). Bunun yerine
+  `ps -eo pid,comm,args | awk '$2=="node" && /wrangler/'` ile PID bul, sonra
+  `pgrep -x workerd` ile kalan workerd'leri kapat.
+- Arkada unutulan bir `wrangler dev`/`workerd`, `pnpm build`'deki prerender adımını zaman
+  aşımına düşürüyor ("Prerender: Request failed for /"); önce onları kapat.
+- Bu tarayıcıda ekran kartı yok; WebGL yazılımla çiziliyor. Tam ekran shader sayfayı kilitler
+  (saniyede 4–5 kare). E2E testlerinde `page.emulateMedia({ reducedMotion: "reduce" })` kullan;
+  arka planlar o zaman tek kare çizip durur.
+- shadcn: `init` CSS'imize gri tema ve Inter ekliyor (geri al); `add` mevcut dosyanın üzerine
+  yazmak isterse `yes n | pnpm dlx shadcn@latest add ...` ile reddet; `components.json`
+  `iconLibrary: "phosphor"`.
+- Biome, WebGL'in `gl.useProgram` çağrısını React hook'u sanıyor; `art/gl.ts`'deki
+  `bindProgram` yardımcısında tek satırlık gerekçeli ignore var.
+- Script ile çok adımlı JSX düzenlemeleri süslü parantezleri bozabiliyor (bir kez canlıya
+  stilsiz buton gitti). Dosyayı bütün olarak yaz ya da satır aralığıyla değiştir; her görünür
+  parça için bir stil testi ekle.
+- Katalogda olumsuz anlamlı çiçekler var (anemon "terk edilmişlik" vb.) ve `path` alanı
+  Latince ile Türkçe çeşit adlarını karıştırıyor ("Rosa › kırmızı"); ekranda Latince için
+  `scientificName()` kullan.
