@@ -78,3 +78,25 @@ test("icons are Phosphor: light by default, regular in navigation", async ({ pag
     .innerHTML();
   expect(buttonPlus).toBe(light);
 });
+
+test("login background candidates render behind the sheet and keep the form usable", async ({
+  page,
+}) => {
+  // This headless browser has no GPU and draws WebGL on the CPU, so a running full-screen
+  // shader starves the page. With "reduce motion" on, all four candidates stop animating
+  // (checked in their source), which keeps the test meaningful and fast.
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ui/login");
+  await expect(page.getByTestId("background")).toHaveCount(0);
+
+  for (const name of ["Silk", "Particles", "Aurora", "Iridescence"]) {
+    await page.getByRole("button", { name, exact: true }).click();
+    const layer = page.getByTestId("background");
+    await expect(layer.locator("canvas")).toHaveCount(1);
+    await expect(layer).toHaveAttribute("aria-hidden", "true");
+    // The background must never sit on top of the form.
+    await page.getByLabel("Kullanıcı adı").click();
+    await expect(page.getByLabel("Kullanıcı adı")).toBeFocused();
+  }
+  await expect(page).toHaveURL(/bg=iridescence/);
+});
