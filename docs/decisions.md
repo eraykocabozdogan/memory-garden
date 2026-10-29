@@ -302,7 +302,7 @@ uygulamanın şemasını ve tüm sorgularını demo için karmaşıklaştırır)
 
 ## Karar 8: UI
 
-Durum: **Sürüyor (5/11, 6. kısmen).** Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek
+Durum: **Sürüyor (6/11).** Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek
 sırayla yapılıyor. Ayrıntılar, seçenekler ve yeniden kullanılabilir yöntem:
 `docs/frontend-playbook.md`. Backend aşamaları bunu beklemeden ilerleyebilir.
 
@@ -314,7 +314,7 @@ sırayla yapılıyor. Ayrıntılar, seçenekler ve yeniden kullanılabilir yönt
 | 8-4 | Şekil ve derinlik | **Paper** (8px köşe, hafif sıcak gölge, ferah); kâğıt dokusu şimdilik açık, sonda tekrar bakılacak | Soft, Archive | Dengeli; Soft telefonda fazla yer kaplıyor |
 | 8-5 | Temel bileşenler | **shadcn/ui**, motor **Base UI** (Temmuz 2026'dan beri varsayılan), stil **Vega**; tema yönetimi **next-themes** | Radix, React Aria; Untitled UI | Kurulan token'larla doğrudan uyumlu; Vega, Paper şekliyle örtüşüyor |
 | 8-6a | Uygulama iskeleti | **İçe gömülü yan menü** (shadcn sidebar-08), ikonlara daralabilir; mobilde alt menü | İkona daralan klasik yan menü (sidebar-07) | İçerik menünün üstünde bir kâğıt gibi duruyor; "paper-like" hissine en yakın |
-| 8-6b | Giriş ekranı | **Bekliyor**: login-01, -02 ve -04 denendi, hiçbiri yeterince iyi bulunmadı; yeni yönler hazırlanıyor | | |
+| 8-6b | Giriş ekranı | **Herbaryum yaprağı, yan yana**: solda kâğıt bantla tutturulmuş günün çiçeği çizimi ve altında el yazısı not ("Her anı bir çiçek…"), sağda müze tipi klasik etiket (bitki, Latince adı, anlamı, tarih, varsa levha no.) ve içinde alt çizgili form; köşede mürekkep damgası (telefonda gizli) | shadcn login-01, -02, -04; defter kapağı, mektup; foto köşeliği, dikiş; sade kart; kutulu alanlar; sabit çiçek | Şablon hissi vermiyor; Curtis çizimleri, kâğıt hissi ve arşiv havası tek ekranda. Günün çiçeği yalnızca sıcak anlamlı 10 çiçekten seçiliyor |
 
 Kalan seçimler: yerleşim blokları, ikonlar, arka plan, yazı animasyonu, hareket, özel bileşenler.
 

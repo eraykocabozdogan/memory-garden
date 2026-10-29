@@ -125,7 +125,7 @@ records the options, the pick and why, so the next project can start from it.
   (`button.tsx`, `input.tsx`); answer no (`yes n | pnpm dlx shadcn@latest add <name>`) so our
   token-bound edits survive.
 
-### 6. Layout blocks (in progress)
+### 6. Layout blocks (decided)
 
 - **App shell (decided):** shadcn **sidebar-08** pattern: `<Sidebar variant="inset"
   collapsible="icon">` + `<SidebarInset>`, so the content sits on the sidebar like a sheet of
@@ -133,15 +133,25 @@ records the options, the pick and why, so the next project can start from it.
   block's demo parts (team switcher, nested menus). Mobile: the sidebar is hidden and a fixed
   five-item bottom bar replaces it, padded with `env(safe-area-inset-bottom)` for iPhones.
   Rejected: sidebar-07 (plain sidebar collapsing to icons).
-- **Login (open):** shadcn login-01 (centred card), login-02 (two columns with a plate) and
-  login-04 (card with an image) were all judged "not good enough": generic templates do not
-  carry the mood. Next: concept directions designed from the mood words, not from blocks.
+- **Login (decided): a herbarium sheet.** Plate of the day taped to the sheet on the left with a
+  handwritten caption; a museum-style label on the right (plant, Latin name, meaning, date,
+  plate number when the source has one) holding underlined fields; an ink stamp hanging off
+  the corner (wide screens only). Component: `app/components/herbarium-login.tsx`.
+  - Rejected: shadcn login-01/02/04 ("generic"), notebook cover, letter; photo corners,
+    stitches; plain card label; boxed fields; a fixed flower.
+  - **How we got there:** the owner disliked all blocks, so four concepts were derived from the
+    mood words; the chosen one was then built with every detail switchable (layout, mounting,
+    label, fields, flower, ornaments) and kept in the URL, so the owner picked detail by detail.
+  - **Content traps found while checking screenshots:** the catalog has flowers with sad
+    meanings (abandonment, folly), so the "flower of the day" rotates only through a
+    hand-picked warm list; the catalog `path` mixes Latin with Turkish variant words ("Rosa ›
+    kırmızı"), so the label uses `scientificName()` (shared package, tested on all records)
+    instead of printing the path.
 - **Lesson:** blocks are good for structure (shells), weak for identity screens (login,
   landing). Design identity screens from the mood words instead.
 
 ## Still to decide
 
-6. Layout blocks: login screen
 7. Icons
 8. Animated background
 9. Text animation

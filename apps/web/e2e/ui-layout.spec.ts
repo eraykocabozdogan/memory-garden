@@ -9,38 +9,35 @@ test("herbarium login shows a working username + password form", async ({ page }
   await expect(page.getByRole("button", { name: "Giriş yap" })).toBeVisible();
   // No sign-up or social login (decision G1).
   await expect(page.getByText(/kayıt ol|google/i)).toHaveCount(0);
-  // The plate and its label name the same flower.
-  await expect(page.getByRole("img", { name: /Hercai menekşe/ })).toBeVisible();
-  await expect(page.getByTestId("label")).toContainText("Hercai menekşe");
 });
 
-test("every detail switch changes the page and is kept in the URL", async ({ page }) => {
+test("the label names today's plate and carries the chosen details", async ({ page }, info) => {
   await page.goto("/ui/login");
-  const main = page.locator("main");
-  const panel = page.getByRole("complementary", { name: "Ayrıntı seçenekleri" });
+  const plate = page.getByRole("img", { name: /Curtis çizimi/ });
+  await expect(plate).toBeVisible();
+  const name = ((await plate.getAttribute("alt")) ?? "").split(":")[0] ?? "";
+  expect(name.length).toBeGreaterThan(0);
+  await expect(page.getByTestId("label")).toContainText(name);
+  await expect(page.getByTestId("label")).toContainText("Memory Garden Herbaryumu");
+  await expect(page.getByText("Her anı bir çiçek…")).toBeVisible();
+  // The label never shows Turkish variant words as if they were Latin ("Rosa kırmızı").
+  await expect(page.getByTestId("label")).not.toContainText(/Rosa (kırmızı|tomurcuk|kurumuş)/);
 
-  await panel.getByRole("button", { name: "Yan yana" }).click();
-  await expect(main).toHaveAttribute("data-layout", "yan");
-  await panel.getByRole("button", { name: "Foto köşeliği" }).click();
-  await expect(main).toHaveAttribute("data-mount", "kose");
-  await panel.getByRole("button", { name: "Sade kart" }).click();
-  await expect(page.getByTestId("label")).not.toContainText("Herbaryumu");
-  await panel.getByRole("button", { name: "Kutu" }).click();
-  await expect(page.getByLabel("Kullanıcı adı")).toHaveCSS("border-top-width", "1px");
-  await panel.getByRole("button", { name: "El yazısı not" }).click();
-  await expect(page.getByText("Her anı bir çiçek…")).toHaveCount(0);
-
-  await expect(page).toHaveURL(/yer=yan/);
-  await page.reload();
-  await expect(main).toHaveAttribute("data-layout", "yan");
-  await expect(main).toHaveAttribute("data-mount", "kose");
-});
-
-test("underlined fields keep a visible bottom border", async ({ page }) => {
-  await page.goto("/ui/login");
+  // Underlined fields keep a visible bottom border.
   const field = page.getByLabel("Kullanıcı adı");
   await expect(field).toHaveCSS("border-top-width", "0px");
   await expect(field).toHaveCSS("border-bottom-width", "1px");
+
+  // Side by side on wide screens, stacked on phones.
+  const labelBox = await page.getByTestId("label").boundingBox();
+  const plateBox = await plate.boundingBox();
+  if (info.project.name.includes("mobile")) {
+    expect(labelBox?.y).toBeGreaterThan(plateBox?.y ?? 0);
+    await expect(page.getByTestId("stamp")).toBeHidden();
+  } else {
+    expect(labelBox?.x).toBeGreaterThan((plateBox?.x ?? 0) + (plateBox?.width ?? 0) - 1);
+    await expect(page.getByTestId("stamp")).toBeVisible();
+  }
 });
 
 test("inset shell: sidebar on desktop, bottom bar on mobile", async ({ page }, info) => {
