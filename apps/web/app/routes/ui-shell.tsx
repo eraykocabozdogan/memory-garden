@@ -1,5 +1,5 @@
 import { CalendarHeart, Flower2, Images, NotebookPen, Plus, Settings, Sprout } from "lucide-react";
-import { Link, useSearchParams } from "react-router";
+import { Link } from "react-router";
 
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -25,15 +25,9 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: "İskelet önizlemesi · Memory Garden" }, { name: "robots", content: "noindex" }];
 }
 
-// Design-system preview (stage 2): two app shells based on shadcn's sidebar-07 (collapses to
-// icons) and sidebar-08 (inset). Desktop gets the sidebar, mobile a bottom bar (decision G4).
-
-const VARIANTS = [
-  { id: "ikon", name: "İkona daralan (sidebar-07)" },
-  { id: "inset", name: "İçe gömülü (sidebar-08)" },
-] as const;
-
-type VariantId = (typeof VARIANTS)[number]["id"];
+// Design-system preview (stage 2): the chosen app shell, based on shadcn's sidebar-08 (inset:
+// the content sits on the sidebar like a sheet of paper; collapses to icons). Desktop gets the
+// sidebar, mobile a bottom bar (decision G4).
 
 const NAV = [
   { label: "Anılar", icon: Images, active: true },
@@ -49,9 +43,9 @@ const MEMORIES = [
   { title: "Annemin bahçesindeki gül", meta: "21 Eylül 2026 · Bursa", tags: ["aile", "gül"] },
 ];
 
-function AppSidebar({ variant }: { variant: VariantId }) {
+function AppSidebar() {
   return (
-    <Sidebar collapsible="icon" variant={variant === "inset" ? "inset" : "sidebar"}>
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -115,32 +109,16 @@ function BottomNav() {
 }
 
 export default function UiShell() {
-  const [params] = useSearchParams();
-  const variant: VariantId = VARIANTS.find((v) => v.id === params.get("v"))?.id ?? "ikon";
-
   return (
     <SidebarProvider>
-      <AppSidebar variant={variant} />
+      <AppSidebar />
       <SidebarInset>
         <header className="flex min-h-14 shrink-0 flex-wrap items-center gap-2 border-b px-4 py-2">
           <SidebarTrigger className="-ml-1 hidden md:inline-flex" />
           <h1 className="text-lg font-semibold">Anılar</h1>
-          <div className="flex w-full flex-wrap gap-1 md:ml-auto md:w-auto">
-            {VARIANTS.map((v) => (
-              <Button
-                key={v.id}
-                size="sm"
-                variant={v.id === variant ? "default" : "ghost"}
-                aria-current={v.id === variant ? "page" : undefined}
-                render={<Link to={`?v=${v.id}`} replace />}
-              >
-                {v.name}
-              </Button>
-            ))}
-            <Button size="sm" variant="ghost" render={<Link to="/ui" />}>
-              ← Önizleme
-            </Button>
-          </div>
+          <Button size="sm" variant="ghost" className="ml-auto" render={<Link to="/ui" />}>
+            ← Önizleme
+          </Button>
         </header>
         <div className="grid gap-4 p-4 pb-24 md:pb-4">
           <div className="flex items-center justify-between">

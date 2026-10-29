@@ -20,26 +20,23 @@ test("the two-column login shows the plate only on wide screens", async ({ page 
   else await expect(plate).toBeVisible();
 });
 
-for (const variant of ["ikon", "inset"]) {
-  test(`shell preview "${variant}": sidebar on desktop, bottom bar on mobile`, async ({
-    page,
-  }, info) => {
-    await page.goto(`/ui/shell?v=${variant}`);
-    const bottomBar = page.getByRole("navigation", { name: "Alt menü" });
-    const sidebar = page.locator('[data-slot="sidebar"]');
+test("inset shell: sidebar on desktop, bottom bar on mobile", async ({ page }, info) => {
+  await page.goto("/ui/shell");
+  const bottomBar = page.getByRole("navigation", { name: "Alt menü" });
+  const sidebar = page.locator('[data-slot="sidebar"]');
 
-    if (isMobile(info.project.name)) {
-      await expect(bottomBar).toBeVisible();
-      await expect(bottomBar.getByRole("button", { name: "Anılar" })).toHaveAttribute(
-        "aria-current",
-        "page",
-      );
-    } else {
-      await expect(bottomBar).toBeHidden();
-      await expect(sidebar).toHaveAttribute("data-state", "expanded");
-      await page.getByRole("button", { name: "Toggle Sidebar" }).first().click();
-      await expect(sidebar).toHaveAttribute("data-state", "collapsed");
-      await expect(sidebar).toHaveAttribute("data-collapsible", "icon");
-    }
-  });
-}
+  if (isMobile(info.project.name)) {
+    await expect(bottomBar).toBeVisible();
+    await expect(bottomBar.getByRole("button", { name: "Anılar" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+  } else {
+    await expect(bottomBar).toBeHidden();
+    await expect(sidebar).toHaveAttribute("data-state", "expanded");
+    await page.getByRole("button", { name: "Toggle Sidebar" }).first().click();
+    await expect(sidebar).toHaveAttribute("data-state", "collapsed");
+    await expect(sidebar).toHaveAttribute("data-collapsible", "icon");
+    await expect(sidebar).toHaveAttribute("data-variant", "inset");
+  }
+});
