@@ -167,9 +167,31 @@ records the options, the pick and why, so the next project can start from it.
 - **Test:** the default weight and the navigation override render different paths, and a
   button's icon matches the default.
 
+### 8. Animated background (in progress)
+
+- **Direction:** Curtis plates printed on rippling silk, hand-written WebGL2
+  (`app/components/art/silk-plate.tsx` + `gl.ts`). Rejected after live comparison: React Bits
+  Particles, Aurora, Iridescence, Grid Motion, Drift Wall, Logo Loop, plain Silk, a still plate
+  wall, and a 3D flower made of flowing plates.
+- **Next:** cut the flowers out of their yellowed paper at build time (key out the paper colour
+  sampled from the plate edges, drop small specks such as captions), pack the cut-outs densely,
+  and make the silk folds and sheen as strong as plain Silk's. See `docs/handoff.md`.
+- **Lessons so far:**
+  - React Bits' current backgrounds are raw WebGL2 with real safeguards (pause off-screen and
+    in hidden tabs, pixel-ratio cap, reduced motion), checked in their source; but Aurora kept
+    redrawing a frozen frame under reduced motion, so pass `paused` yourself.
+  - Full-screen shaders cost every pixel every frame; image-based backgrounds (moving `<img>`
+    tiles) are far cheaper. A GPU-less test browser makes this visible (4–5 fps vs ~60).
+  - Read component props before trusting names: Drift Wall's `dim` is tile opacity, so
+    `dim={0}` made it invisible.
+  - Put a background layer in an `inert`, `aria-hidden` wrapper so nothing in it takes focus.
+  - Show backgrounds with a "hide the sheet" toggle and check on the owner's real device size
+    (tablet feedback changed the result twice).
+  - Generate image derivatives in a script (`pnpm flowers:collage`) instead of loading 16 MB
+    of full plates.
+
 ## Still to decide
 
-8. Animated background
 9. Text animation
 10. Motion
 11. Special components
