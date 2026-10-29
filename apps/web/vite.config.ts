@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
@@ -7,6 +8,9 @@ import { defineConfig } from "vite";
 // app and forwards API calls to `wrangler dev`.
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter()],
+  resolve: {
+    alias: { "~": fileURLToPath(new URL("./app", import.meta.url)) },
+  },
   server: {
     proxy: {
       "/api": "http://localhost:8787",

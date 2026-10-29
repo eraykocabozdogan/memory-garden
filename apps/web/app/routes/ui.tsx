@@ -1,13 +1,49 @@
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { tr } from "react-day-picker/locale";
+import { toast } from "sonner";
 
+import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
+import { Calendar } from "~/components/ui/calendar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Textarea } from "~/components/ui/textarea";
 import type { Route } from "./+types/ui";
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: "UI kitchen sink · Memory Garden" }, { name: "robots", content: "noindex" }];
 }
 
-// Design-system preview (stage 2). Shows every token on realistic pieces so the theme can be
-// judged on real screens. Not part of the product; remove or hide once the design is settled.
+// Design-system preview (stage 2). Shows the tokens and the shadcn components on realistic
+// pieces so the design can be judged on real screens. Not part of the product.
 
 const PAIRS = [
   ["background", "foreground"],
@@ -19,87 +55,73 @@ const PAIRS = [
   ["destructive", "destructive-foreground"],
 ] as const;
 
-const STORAGE_KEY = "mg-ui-preview";
+const GRAIN_KEY = "mg-ui-grain";
 
-type Stored = { dark: boolean; grain: boolean };
-
-function readStored(): Stored {
+function readStoredGrain(): boolean {
   try {
-    const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") as Partial<Stored>;
-    // Grain is on by default for now; only an explicit "false" turns it off.
-    return { dark: parsed.dark === true, grain: parsed.grain !== false };
+    // Grain is on by default for now; only an explicit "off" turns it off.
+    return window.localStorage.getItem(GRAIN_KEY) !== "off";
   } catch {
-    // Storage can be blocked or hold junk; fall back to the defaults.
-    return { dark: false, grain: true };
+    return true;
   }
 }
 
-const button =
-  "inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-  "focus-visible:ring-offset-2 focus-visible:ring-offset-background";
-
-const choiceClass = (active: boolean) =>
-  `${button} border ${
-    active
-      ? "border-primary bg-primary text-primary-foreground"
-      : "border-input bg-card text-card-foreground"
-  }`;
+const dateFormat = new Intl.DateTimeFormat("tr-TR", { dateStyle: "long" });
 
 export default function Ui() {
-  const [dark, setDark] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [grain, setGrain] = useState(true);
+  const [date, setDate] = useState<Date | undefined>(new Date(2026, 9, 12));
 
   useEffect(() => {
-    const stored = readStored();
-    setDark(stored.dark);
-    setGrain(stored.grain);
+    setMounted(true);
+    setGrain(readStoredGrain());
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle("dark", dark);
-    root.dataset.grain = grain ? "on" : "off";
+    if (!mounted) return;
+    document.documentElement.dataset.grain = grain ? "on" : "off";
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ dark, grain }));
+      window.localStorage.setItem(GRAIN_KEY, grain ? "on" : "off");
     } catch {
       // Not critical: the choice just will not be remembered.
     }
-  }, [dark, grain]);
+  }, [grain, mounted]);
+
+  const dark = mounted && resolvedTheme === "dark";
 
   return (
     <div className="min-h-screen text-foreground">
       <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-4 py-3">
-          <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
-          <button
-            type="button"
+          <h1 className="mr-auto text-lg font-semibold">Tasarım önizlemesi</h1>
+          <Button
+            variant={grain ? "default" : "outline"}
             aria-pressed={grain}
             onClick={() => setGrain((v) => !v)}
-            className={choiceClass(grain)}
           >
-            Paper grain: {grain ? "on" : "off"}
-          </button>
-          <button
-            type="button"
+            Kâğıt dokusu: {grain ? "açık" : "kapalı"}
+          </Button>
+          <Button
+            variant="outline"
             aria-pressed={dark}
-            onClick={() => setDark((v) => !v)}
-            className={choiceClass(false)}
+            onClick={() => setTheme(dark ? "light" : "dark")}
           >
-            {dark ? "Dark (night paper)" : "Light"}
-          </button>
+            {dark ? "Koyu tema" : "Açık tema"}
+          </Button>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl space-y-12 px-4 py-10">
         <p className="text-muted-foreground" data-testid="theme-note">
-          Parchment colors, Lora + Source Sans 3 + Caveat, Paper shape (medium corners, light warm
-          shadow, airy).
+          Parchment renkleri · Lora + Source Sans 3 + Caveat · Paper şekli · shadcn/ui (Base UI,
+          Vega)
         </p>
 
         <section aria-labelledby="type" className="space-y-4">
           <h2 id="type" className="text-2xl font-semibold">
-            Type specimen
+            Yazı örneği
           </h2>
           <div className="flex flex-col gap-stack rounded-lg border bg-card p-card text-card-foreground shadow-card">
             <h3 className="text-4xl font-semibold">Bahçemizde ilk çiçek</h3>
@@ -109,7 +131,7 @@ export default function Ui() {
               çöğşüı. Bir anıyı yazmak, onu ikinci kez yaşamaktır.
             </p>
             <p className="max-w-prose text-sm text-muted-foreground">
-              Small text: 12 Ekim 2026, Kadıköy · 18°C · ₺120 çay ve simit.
+              Küçük yazı: 12 Ekim 2026, Kadıköy · 18°C · ₺120 çay ve simit.
             </p>
             <p className="font-hand text-3xl text-primary">Seni düşündüğüm bir akşam…</p>
           </div>
@@ -117,7 +139,7 @@ export default function Ui() {
 
         <section aria-labelledby="swatches" className="space-y-4">
           <h2 id="swatches" className="text-2xl font-semibold">
-            Tokens
+            Renk token'ları
           </h2>
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {PAIRS.map(([bg, fg]) => (
@@ -146,114 +168,153 @@ export default function Ui() {
           </ul>
         </section>
 
-        <section aria-labelledby="reading" className="space-y-3">
-          <h2 id="reading" className="text-2xl font-semibold">
-            Reading
+        <section aria-labelledby="buttons" className="space-y-4">
+          <h2 id="buttons" className="text-2xl font-semibold">
+            Butonlar ve rozetler
           </h2>
-          <p className="max-w-prose text-lg">
-            Bahçedeki ilk kar çiçeği, o kış sabahı yazdığımız notun hemen yanında açmıştı.
-          </p>
-          <p className="max-w-prose text-muted-foreground">
-            Secondary text sits on the same paper. Ğüzel şiir ışığında İstanbul.
-          </p>
-          <a className="text-primary underline underline-offset-4" href="#reading">
-            A link in the primary ink
-          </a>
+          <div className="flex flex-wrap gap-3" data-testid="button-row">
+            <Button>Anıyı kaydet</Button>
+            <Button variant="secondary">Vazgeç</Button>
+            <Button variant="outline">Çiçek ekle</Button>
+            <Button variant="ghost">Daha fazla</Button>
+            <Button variant="destructive">Sil</Button>
+            <Button variant="link">Tümünü gör</Button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Badge>vapur</Badge>
+            <Badge variant="secondary">yağmur</Badge>
+            <Badge variant="outline">Kadıköy</Badge>
+            <Badge variant="destructive">çöp kutusunda</Badge>
+          </div>
         </section>
 
-        <section aria-labelledby="controls" className="space-y-4">
-          <h2 id="controls" className="text-2xl font-semibold">
-            Controls
+        <section aria-labelledby="form" className="space-y-4">
+          <h2 id="form" className="text-2xl font-semibold">
+            Form
+          </h2>
+          <div className="grid max-w-md gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="ui-title">Başlık</Label>
+              <Input id="ui-title" placeholder="Bu anıya bir ad ver" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="ui-note">Not</Label>
+              <Textarea id="ui-note" placeholder="O gün neler oldu?" />
+            </div>
+            <div className="grid gap-2">
+              <span className="text-sm font-medium">Tarih</span>
+              <Popover>
+                <PopoverTrigger render={<Button variant="outline" className="justify-start" />}>
+                  {date ? dateFormat.format(date) : "Tarih seç"}
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar mode="single" selected={date} onSelect={setDate} locale={tr} />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div>
+              <Button
+                onClick={() => toast.success("Anı kaydedildi", { description: "Kadıköy, 12 Ekim" })}
+              >
+                Bildirim göster
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="overlays" className="space-y-4">
+          <h2 id="overlays" className="text-2xl font-semibold">
+            Menü, diyalog ve sekmeler
           </h2>
           <div className="flex flex-wrap gap-3">
-            <button type="button" className={`${button} bg-primary text-primary-foreground`}>
-              Save memory
-            </button>
-            <button type="button" className={`${button} bg-secondary text-secondary-foreground`}>
-              Cancel
-            </button>
-            <button type="button" className={`${button} bg-accent text-accent-foreground`}>
-              Add flower
-            </button>
-            <button type="button" className={`${button} border border-input bg-card`}>
-              Outline
-            </button>
-            <button
-              type="button"
-              className={`${button} bg-destructive text-destructive-foreground`}
-            >
-              Delete
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={<Button variant="outline" />}>
+                Seçenekler
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Anıyı düzenle</DropdownMenuItem>
+                <DropdownMenuItem>Çiçek bırak</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem variant="destructive">Çöp kutusuna taşı</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Dialog>
+              <DialogTrigger render={<Button variant="outline" />}>Anıyı sil…</DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Bu anı çöp kutusuna taşınsın mı?</DialogTitle>
+                  <DialogDescription>
+                    30 gün içinde çöp kutusundan geri alabilirsin.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose render={<Button variant="outline" />}>Vazgeç</DialogClose>
+                  <DialogClose render={<Button variant="destructive" />}>Taşı</DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
-          <div className="grid max-w-md gap-2">
-            <label htmlFor="ui-title" className="text-sm font-medium">
-              Title
-            </label>
-            <input
-              id="ui-title"
-              placeholder="A name for this memory"
-              className="h-10 rounded-md border border-input bg-card px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            />
-          </div>
-          <div
-            role="menu"
-            aria-label="Sample menu"
-            className="w-56 rounded-lg border bg-popover p-1 text-sm text-popover-foreground shadow-lift"
-          >
-            <div
-              role="menuitem"
-              tabIndex={-1}
-              className="rounded-md bg-accent px-3 py-2 text-accent-foreground"
-            >
-              Edit memory
-            </div>
-            <div role="menuitem" tabIndex={-1} className="rounded-md px-3 py-2">
-              Move to trash
-            </div>
-          </div>
+
+          <Tabs defaultValue="list" className="max-w-md">
+            <TabsList>
+              <TabsTrigger value="list">Liste</TabsTrigger>
+              <TabsTrigger value="map">Harita</TabsTrigger>
+              <TabsTrigger value="calendar">Takvim</TabsTrigger>
+            </TabsList>
+            <TabsContent value="list" className="pt-3 text-muted-foreground">
+              Anılar tarih sırasıyla.
+            </TabsContent>
+            <TabsContent value="map" className="pt-3 text-muted-foreground">
+              Anılar haritada.
+            </TabsContent>
+            <TabsContent value="calendar" className="pt-3 text-muted-foreground">
+              Anılar takvimde.
+            </TabsContent>
+          </Tabs>
         </section>
 
         <section aria-labelledby="cards" className="space-y-4">
           <h2 id="cards" className="text-2xl font-semibold">
-            Memory card and app shell
+            Anı kartı ve uygulama iskeleti
           </h2>
           <div className="grid gap-6 md:grid-cols-[16rem_1fr]">
             <nav
-              aria-label="Sample sidebar"
+              aria-label="Örnek yan menü"
               className="rounded-lg border bg-sidebar p-3 text-sidebar-foreground"
             >
               <ul className="space-y-1 text-sm">
                 <li className="rounded-md bg-sidebar-accent px-3 py-2 font-medium text-sidebar-accent-foreground">
-                  Memories
+                  Anılar
                 </li>
-                <li className="px-3 py-2">Journal</li>
-                <li className="px-3 py-2">Garden</li>
-                <li className="px-3 py-2">Special days</li>
+                <li className="px-3 py-2">Günlük</li>
+                <li className="px-3 py-2">Bahçe</li>
+                <li className="px-3 py-2">Özel günler</li>
               </ul>
             </nav>
-            <article className="grid gap-4 rounded-lg border bg-card p-card text-card-foreground shadow-card sm:grid-cols-[8rem_1fr]">
-              <img
-                src="/flowers/art/anemone.webp"
-                alt="Hand-coloured plate of an anemone"
-                className="h-44 w-full rounded-md border object-cover object-top sm:w-32"
-              />
-              <div className="flex flex-col gap-stack">
-                <p className="font-hand text-xl text-muted-foreground">12 Ekim 2026 · Kadıköy</p>
-                <h3 className="text-xl font-semibold">İlk yağmurdan sonra</h3>
-                <p>
+            <Card data-testid="memory-card">
+              <CardHeader>
+                <CardDescription className="font-hand text-xl">
+                  12 Ekim 2026 · Kadıköy
+                </CardDescription>
+                <CardTitle className="font-heading text-xl">İlk yağmurdan sonra</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4 sm:grid-cols-[8rem_1fr]">
+                <img
+                  src="/flowers/art/anemone.webp"
+                  alt="Elle boyanmış bir anemon çizimi"
+                  className="h-44 w-full rounded-md border object-cover object-top sm:w-32"
+                />
+                <p className="text-base">
                   Vapurda yan yana oturduk, çay soğuyana kadar hiç konuşmadık. Sessizlik de bir
                   anıymış.
                 </p>
-                <ul className="flex flex-wrap gap-2 text-xs">
-                  <li className="rounded-full bg-secondary px-3 py-1 text-secondary-foreground">
-                    vapur
-                  </li>
-                  <li className="rounded-full bg-accent px-3 py-1 text-accent-foreground">
-                    yağmur
-                  </li>
-                </ul>
-              </div>
-            </article>
+              </CardContent>
+              <CardFooter className="gap-2">
+                <Badge variant="secondary">vapur</Badge>
+                <Badge variant="secondary">yağmur</Badge>
+              </CardFooter>
+            </Card>
           </div>
         </section>
       </main>

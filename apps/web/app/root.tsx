@@ -1,6 +1,7 @@
 import "@fontsource-variable/caveat";
 import "@fontsource-variable/lora";
 import "@fontsource-variable/source-sans-3";
+import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 import {
   isRouteErrorResponse,
@@ -11,12 +12,14 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import { Toaster } from "~/components/ui/sonner";
 import type { Route } from "./+types/root";
 import "./app.css";
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="tr">
+    // next-themes sets the "dark" class on <html> before React hydrates.
+    <html lang="tr" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,12 +35,18 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
+// Light / dark / system theme (decision G2). The choice is stored in localStorage ("theme").
 export default function App() {
-  return <Outlet />;
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <Outlet />
+      <Toaster />
+    </ThemeProvider>
+  );
 }
 
 export function HydrateFallback() {
-  return <p className="p-8 text-sm text-neutral-500">Yükleniyor…</p>;
+  return <p className="p-8 text-sm text-muted-foreground">Yükleniyor…</p>;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -48,7 +57,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <main className="p-8">
       <h1 className="text-xl font-semibold">Bir şeyler ters gitti</h1>
-      <p className="mt-2 text-neutral-600">{message}</p>
+      <p className="mt-2 text-muted-foreground">{message}</p>
     </main>
   );
 }

@@ -90,9 +90,36 @@ records the options, the pick and why, so the next project can start from it.
   and density lives in two spacing tokens so a variant changes all cards at once. Tests assert
   the computed radius, padding and shadow so a lost token fails visibly.
 
+### 5. Base components (decided)
+
+- **Pick:** shadcn/ui with **Base UI** primitives (shadcn's default since July 2026; Radix via
+  `-b radix`, React Aria via `-b aria`) and the **Vega** style (0.5rem radius, balanced spacing,
+  the successor of "New York"), which matches the Paper shape. Theme switching via
+  **next-themes** (`attribute="class"`, light / dark / system).
+- **Install (React Router, pnpm monorepo):**
+  1. Add a path alias in both `tsconfig.json` and `tsconfig.app.json` (`"~/*": ["./app/*"]`) and
+     in `vite.config.ts`. shadcn reads `tsconfig.json`: without it there, it creates a literal
+     `~/` folder.
+  2. `pnpm dlx shadcn@latest init -b base -p vega -y --no-monorepo --no-rtl`. Without `-p` it
+     stops at an interactive preset prompt.
+  3. **init overwrites the CSS:** it appends neutral `:root`/`.dark` colours and an Inter font
+     that override your theme. Rewrite `app.css` afterwards: keep `tw-animate-css` and
+     `shadcn/tailwind.css` imports, drop its colours, font and chart tokens.
+  4. `pnpm dlx shadcn@latest add button input textarea label dialog dropdown-menu tabs sonner
+     badge card popover calendar -y`.
+- **Adapt the generated code to your tokens:** the Card ships with `rounded-xl`, `shadow-xs`
+  and 24px spacing; bind it to `rounded-lg border shadow-card` and `--pad-card`.
+- **Check new dependencies:** shadcn now writes `cn` from the `cn` npm package instead of
+  `clsx` + `tailwind-merge`. Verified: npm maintainer is shadcn and it has provenance
+  attestations.
+- **Lint:** Biome's `a11y/noLabelWithoutControl` flags shadcn's `label.tsx` (the `htmlFor` comes
+  from the caller); turned off for `app/components/ui/**` only.
+- **Turkish date picker:** `import { tr } from "react-day-picker/locale"` and pass `locale={tr}`.
+- **Tests:** buttons keep their height and paint with the theme's `--primary` (not shadcn's
+  neutral default); menu, dialog, date picker and toast open.
+
 ## Still to decide
 
-5. Base components
 6. Layout blocks
 7. Icons
 8. Animated background

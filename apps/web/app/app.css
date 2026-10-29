@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @import "./theme.css";
 @import "./typography.css";
 @import "./shape.css";
@@ -6,7 +8,9 @@
 /* Dark mode is a class on <html>, set by the theme switcher. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Design tokens (shadcn-compatible names). Values live in theme.css. */
+/* Design tokens (shadcn-compatible names). Colours live in theme.css, fonts in
+   typography.css, radius/shadow/density in shape.css. shadcn's init writes its own neutral
+   :root/.dark values and font here: keep them out, they would override ours. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -40,6 +44,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
   --shadow-card: var(--sh-card);
   --shadow-lift: var(--sh-lift);
   --spacing-card: var(--pad-card);
@@ -52,13 +59,11 @@
 
 @layer base {
   * {
-    border-color: var(--border);
+    @apply border-border outline-ring/50;
   }
 
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: var(--ff-body);
+    @apply bg-background font-sans text-foreground;
   }
 
   h1,

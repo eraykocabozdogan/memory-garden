@@ -302,9 +302,19 @@ uygulamanın şemasını ve tüm sorgularını demo için karmaşıklaştırır)
 
 ## Karar 8: UI
 
-Durum: **Bekliyor.** Proje sahibi tweakcn, shadcn blokları, React Bits ve (isteğe bağlı)
-21st.dev üzerinden seçimlerini hazırlıyor. Seçimler kodlamanın tasarım sistemi aşamasında
-kurulacak; backend aşamaları bunu beklemeden ilerleyebilir.
+Durum: **Sürüyor (5/11).** Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek
+sırayla yapılıyor. Ayrıntılar, seçenekler ve yeniden kullanılabilir yöntem:
+`docs/frontend-playbook.md`. Backend aşamaları bunu beklemeden ilerleyebilir.
+
+| # | Konu | Seçim | Değerlendirilen diğer seçenekler | Gerekçe |
+|---|---|---|---|---|
+| 8-1 | His (üç kelime) | **intimate · paper-like · gentle** | nostalgic, archival, quiet | İki kişilik bir anı defteri; çiçekler vurgu, merkez değil |
+| 8-2 | Renkler | **Parchment** (krem kâğıt, orman yeşili mürekkep); koyu mod "gece kâğıdı" | Rosewood, Faded ink | Curtis çizimleriyle en uyumlu; Rosewood'da kaydet ve sil butonları ikisi de kırmızıydı |
+| 8-3 | Yazı tipleri | **Lora** (başlık) + **Source Sans 3** (gövde) + **Caveat** (el yazısı vurgu) | Fraunces + Nunito Sans; Newsreader; Kalam; Dancing Script | En sakin ve okunaklı; Türkçe harfler font dosyalarında doğrulandı |
+| 8-4 | Şekil ve derinlik | **Paper** (8px köşe, hafif sıcak gölge, ferah); kâğıt dokusu şimdilik açık, sonda tekrar bakılacak | Soft, Archive | Dengeli; Soft telefonda fazla yer kaplıyor |
+| 8-5 | Temel bileşenler | **shadcn/ui**, motor **Base UI** (Temmuz 2026'dan beri varsayılan), stil **Vega**; tema yönetimi **next-themes** | Radix, React Aria; Untitled UI | Kurulan token'larla doğrudan uyumlu; Vega, Paper şekliyle örtüşüyor |
+
+Kalan seçimler: yerleşim blokları, ikonlar, arka plan, yazı animasyonu, hareket, özel bileşenler.
 
 ## Karar 9: Altyapı ve süreç
 
