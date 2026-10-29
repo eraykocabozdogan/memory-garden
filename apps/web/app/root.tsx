@@ -1,6 +1,7 @@
 import "@fontsource-variable/caveat";
 import "@fontsource-variable/lora";
 import "@fontsource-variable/source-sans-3";
+import { IconContext } from "@phosphor-icons/react";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 import {
@@ -36,11 +37,16 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 // Light / dark / system theme (decision G2). The choice is stored in localStorage ("theme").
+// Icons default to Phosphor's "light" weight (decision 8-7); navigation passes "regular".
+const iconDefaults = { weight: "light" } as const;
+
 export default function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      <Outlet />
-      <Toaster />
+      <IconContext.Provider value={iconDefaults}>
+        <Outlet />
+        <Toaster />
+      </IconContext.Provider>
     </ThemeProvider>
   );
 }

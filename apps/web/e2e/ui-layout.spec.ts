@@ -61,12 +61,20 @@ test("inset shell: sidebar on desktop, bottom bar on mobile", async ({ page }, i
   }
 });
 
-test("icon preview draws all eleven concepts in every candidate set", async ({ page }) => {
+test("icons are Phosphor: light by default, regular in navigation", async ({ page }) => {
   await page.goto("/ui/icons");
   const sets = page.getByTestId("icon-set");
-  await expect(sets).toHaveCount(6);
-  for (let i = 0; i < 6; i++) {
-    // 11 concept icons + 4 button icons + 5 bottom-bar icons, all rendered as SVG.
-    await expect(sets.nth(i).locator("svg")).toHaveCount(20);
-  }
+  await expect(sets).toHaveCount(2);
+  for (let i = 0; i < 2; i++) await expect(sets.nth(i).locator("svg")).toHaveCount(11);
+
+  // The global default (IconContext in root.tsx) and the navigation override really differ:
+  // Phosphor draws each weight as a different path, so compare the "Ekle" glyphs.
+  const light = await sets.nth(0).locator("svg").nth(5).innerHTML();
+  const regular = await sets.nth(1).locator("svg").nth(5).innerHTML();
+  expect(light).not.toBe(regular);
+  const buttonPlus = await page
+    .getByRole("button", { name: "Anı ekle" })
+    .locator("svg")
+    .innerHTML();
+  expect(buttonPlus).toBe(light);
 });

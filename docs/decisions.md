@@ -302,7 +302,7 @@ uygulamanın şemasını ve tüm sorgularını demo için karmaşıklaştırır)
 
 ## Karar 8: UI
 
-Durum: **Sürüyor (6/11).** Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek
+Durum: **Sürüyor (7/11).** Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek
 sırayla yapılıyor. Ayrıntılar, seçenekler ve yeniden kullanılabilir yöntem:
 `docs/frontend-playbook.md`. Backend aşamaları bunu beklemeden ilerleyebilir.
 
@@ -315,8 +315,9 @@ sırayla yapılıyor. Ayrıntılar, seçenekler ve yeniden kullanılabilir yönt
 | 8-5 | Temel bileşenler | **shadcn/ui**, motor **Base UI** (Temmuz 2026'dan beri varsayılan), stil **Vega**; tema yönetimi **next-themes** | Radix, React Aria; Untitled UI | Kurulan token'larla doğrudan uyumlu; Vega, Paper şekliyle örtüşüyor |
 | 8-6a | Uygulama iskeleti | **İçe gömülü yan menü** (shadcn sidebar-08), ikonlara daralabilir; mobilde alt menü | İkona daralan klasik yan menü (sidebar-07) | İçerik menünün üstünde bir kâğıt gibi duruyor; "paper-like" hissine en yakın |
 | 8-6b | Giriş ekranı | **Herbaryum yaprağı, yan yana**: solda kâğıt bantla tutturulmuş günün çiçeği çizimi ve altında el yazısı not ("Her anı bir çiçek…"), sağda müze tipi klasik etiket (bitki, Latince adı, anlamı, tarih) ve içinde alt çizgili form; köşede mürekkep damgası (telefonda gizli) | shadcn login-01, -02, -04; defter kapağı, mektup; levha numarası (önce seçildi, sonra kaldırıldı: kaynakların çoğunda yok); foto köşeliği, dikiş; sade kart; kutulu alanlar; sabit çiçek | Şablon hissi vermiyor; Curtis çizimleri, kâğıt hissi ve arşiv havası tek ekranda. Günün çiçeği yalnızca sıcak anlamlı 10 çiçekten seçiliyor |
+| 8-7 | İkonlar | **Phosphor**: varsayılan **hafif** (light) ağırlık, yan menü ve mobil alt menüde **normal** (regular) | Lucide (2px ve 1.5px), Phosphor normal/iki tonlu tek başına, Tabler | Hafif çizgi kâğıt ve herbaryum havasına en yakın; küçük gezinme ikonlarında silik kalmasın diye normal |
 
-Kalan seçimler: yerleşim blokları, ikonlar, arka plan, yazı animasyonu, hareket, özel bileşenler.
+Kalan seçimler: arka plan, yazı animasyonu, hareket, özel bileşenler.
 
 ## Karar 9: Altyapı ve süreç
 

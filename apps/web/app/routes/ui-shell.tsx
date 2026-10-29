@@ -1,4 +1,4 @@
-import { CalendarHeart, Flower2, Images, NotebookPen, Plus, Settings, Sprout } from "lucide-react";
+import { CalendarHeart, Flower, Gear, Images, Notebook, Plant, Plus } from "@phosphor-icons/react";
 import { Link } from "react-router";
 
 import { Badge } from "~/components/ui/badge";
@@ -25,16 +25,18 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: "İskelet önizlemesi · Memory Garden" }, { name: "robots", content: "noindex" }];
 }
 
+// Icons: Phosphor, "light" by default (set in root.tsx), "regular" for navigation, where
+// small light strokes look faint.
 // Design-system preview (stage 2): the chosen app shell, based on shadcn's sidebar-08 (inset:
 // the content sits on the sidebar like a sheet of paper; collapses to icons). Desktop gets the
 // sidebar, mobile a bottom bar (decision G4).
 
 const NAV = [
   { label: "Anılar", icon: Images, active: true },
-  { label: "Günlük", icon: NotebookPen },
-  { label: "Bahçe", icon: Flower2 },
+  { label: "Günlük", icon: Notebook },
+  { label: "Bahçe", icon: Flower },
   { label: "Özel günler", icon: CalendarHeart },
-  { label: "Ayarlar", icon: Settings },
+  { label: "Ayarlar", icon: Gear },
 ] as const;
 
 const MEMORIES = [
@@ -51,7 +53,7 @@ function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" tooltip="Memory Garden">
               <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                <Sprout className="size-4" aria-hidden="true" />
+                <Plant className="size-4" weight="regular" aria-hidden="true" />
               </span>
               <span className="font-heading text-base font-semibold">Memory Garden</span>
             </SidebarMenuButton>
@@ -65,7 +67,7 @@ function AppSidebar() {
               {NAV.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton isActive={"active" in item} tooltip={item.label}>
-                    <item.icon aria-hidden="true" />
+                    <item.icon weight="regular" aria-hidden="true" />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -98,7 +100,7 @@ function BottomNav() {
               aria-current={"active" in item ? "page" : undefined}
               className="flex w-full flex-col items-center gap-1 py-2 text-xs text-muted-foreground aria-[current=page]:text-primary"
             >
-              <item.icon className="size-5" aria-hidden="true" />
+              <item.icon className="size-5" weight="regular" aria-hidden="true" />
               {item.label}
             </button>
           </li>

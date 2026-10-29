@@ -151,9 +151,24 @@ records the options, the pick and why, so the next project can start from it.
 - **Lesson:** blocks are good for structure (shells), weak for identity screens (login,
   landing). Design identity screens from the mood words instead.
 
+### 7. Icons (decided)
+
+- **Pick:** **Phosphor**, `light` weight by default (one `IconContext.Provider` in `root.tsx`),
+  `regular` for navigation (sidebar, bottom bar), where thin strokes look faint at small sizes.
+  Rejected: Lucide 2px and 1.5px, Phosphor duotone ("+" fill looked odd), Tabler ("tool" feel).
+- **How we got there:** a comparison page drew the same eleven concepts with every candidate,
+  in buttons and in a mobile bottom bar, so the sets were judged in context, not in a gallery.
+- **Switching shadcn off Lucide:** set `"iconLibrary": "phosphor"` in `components.json` (future
+  `shadcn add` uses it), then swap the existing imports in `components/ui` (X, Check,
+  CaretRight/Down/Left, SidebarSimple, CheckCircle, Info, SpinnerGap, WarningOctagon, Warning).
+  Remove `lucide-react` and the losing candidates' packages afterwards.
+- **Check packages before installing:** `pnpm view <pkg> maintainers repository.url`; Phosphor
+  is published by its author (rektdeckard), Tabler by its author (codecalm).
+- **Test:** the default weight and the navigation override render different paths, and a
+  button's icon matches the default.
+
 ## Still to decide
 
-7. Icons
 8. Animated background
 9. Text animation
 10. Motion
