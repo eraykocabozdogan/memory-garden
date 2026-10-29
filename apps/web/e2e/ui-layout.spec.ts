@@ -88,7 +88,7 @@ test("login background candidates render behind the sheet and keep the form usab
   await page.goto("/ui/login");
   await expect(page.getByTestId("background")).toHaveCount(0);
 
-  for (const name of ["Silk", "Grid Motion", "Drift Wall", "Kayan sıralar", "Duran duvar"]) {
+  for (const name of ["Silk", "Silk + tek Curtis", "Silk + kolaj", "3D çiçek", "Grid Motion"]) {
     await page.getByRole("button", { name, exact: true }).click();
     const layer = page.getByTestId("background");
     await expect(layer).toHaveAttribute("aria-hidden", "true");
@@ -104,5 +104,9 @@ test("login background candidates render behind the sheet and keep the form usab
   for (const src of await images.evaluateAll((els) => els.map((e) => e.getAttribute("src")))) {
     expect(src).toMatch(/^\/flowers\/thumb\//);
   }
-  await expect(page).toHaveURL(/bg=duvar/);
+  await expect(page).toHaveURL(/bg=grid/);
+
+  // "Sayfayı gizle" hides the sheet so a background can be judged on its own.
+  await page.getByRole("button", { name: "Sayfayı gizle" }).click();
+  await expect(page.getByLabel("Kullanıcı adı")).toBeHidden();
 });

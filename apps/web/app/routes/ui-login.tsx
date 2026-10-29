@@ -3,9 +3,9 @@ import { useTheme } from "next-themes";
 import { type ReactNode, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 
-import DriftWall from "~/components/backgrounds/DriftWall";
+import { FlowerFlow } from "~/components/art/flower-flow";
+import { SilkPlate } from "~/components/art/silk-plate";
 import GridMotion from "~/components/backgrounds/GridMotion";
-import LogoLoop from "~/components/backgrounds/LogoLoop";
 import Silk from "~/components/backgrounds/Silk";
 import { HerbariumLogin } from "~/components/herbarium-login";
 import { Button } from "~/components/ui/button";
@@ -15,19 +15,19 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: "Giriş önizlemesi · Memory Garden" }, { name: "robots", content: "noindex" }];
 }
 
-// Design-system preview (stage 2): candidate backgrounds behind the herbarium login. The owner
-// liked Silk and wants many Curtis plates in the background, so the image candidates use small
-// thumbnails (public/flowers/thumb, ~7 KB each, `pnpm flowers:thumbs`) and are faded so the
-// sheet stays in front. The layer is `inert` + aria-hidden: nothing in it can take focus or
-// clicks (Drift Wall makes every tile a focusable button otherwise).
+// Design-system preview (stage 2): candidate backgrounds behind the herbarium login.
+// Shortlist after the owner's feedback: Silk and Grid Motion (React Bits), plus two hand-written
+// WebGL scenes: a plate printed on silk (one random plate, or a collage) and plates flowing
+// over an invisible 3D flower. The layer is `inert` + aria-hidden, so nothing in it takes focus.
+// "Sayfayı gizle" hides the herbarium sheet to see a background on its own.
 
 const BACKGROUNDS = [
   { id: "yok", name: "Yok" },
   { id: "silk", name: "Silk" },
+  { id: "silk-tek", name: "Silk + tek Curtis" },
+  { id: "silk-kolaj", name: "Silk + kolaj" },
+  { id: "cicek", name: "3D çiçek" },
   { id: "grid", name: "Grid Motion" },
-  { id: "drift", name: "Drift Wall" },
-  { id: "loop", name: "Kayan sıralar" },
-  { id: "duvar", name: "Duran duvar" },
 ] as const;
 
 type BackgroundId = (typeof BACKGROUNDS)[number]["id"];
@@ -35,43 +35,28 @@ type BackgroundId = (typeof BACKGROUNDS)[number]["id"];
 const CREAM = "#faf3e3";
 const SAND = "#edd4ab";
 
-// A fixed shuffle so neighbouring tiles differ but every visit looks the same.
-const PLATES = flowerCatalog
+// A fixed shuffle of the thumbnails for Grid Motion.
+const THUMBS = flowerCatalog
   .map((flower, i) => ({ src: `/flowers/thumb/${flower.id}.webp`, order: (i * 37) % 61 }))
   .sort((a, b) => a.order - b.order)
   .map(({ src }) => src);
-
-function rows(count: number) {
-  const size = Math.ceil(PLATES.length / count);
-  return Array.from({ length: count }, (_, r) => PLATES.slice(r * size, (r + 1) * size));
-}
-
-function PlateWall() {
-  return (
-    <div className="columns-3 gap-3 p-3 sm:columns-5 lg:columns-8">
-      {PLATES.map((src) => (
-        <img key={src} src={src} alt="" loading="lazy" className="mb-3 w-full rounded-sm" />
-      ))}
-    </div>
-  );
-}
 
 function Background({
   id,
   light,
   dpr,
   still,
+  plate,
 }: {
   id: BackgroundId;
   light: boolean;
   dpr: number;
   still: boolean;
+  plate: string;
 }) {
   let layer: ReactNode = null;
-  // Image layers are faded (and warmed slightly) so the sheet keeps the attention.
-  let faded = true;
+  let faded = false;
   if (id === "silk") {
-    faded = false;
     layer = (
       <Silk
         speed={1.5}
@@ -83,10 +68,17 @@ function Background({
         paused={still}
       />
     );
+  } else if (id === "silk-tek") {
+    layer = <SilkPlate src={plate} fit="contain" light={light} still={still} />;
+  } else if (id === "silk-kolaj") {
+    layer = <SilkPlate src="/flowers/collage.webp" fit="cover" light={light} still={still} />;
+  } else if (id === "cicek") {
+    layer = <FlowerFlow light={light} still={still} />;
   } else if (id === "grid") {
+    faded = true;
     layer = (
       <GridMotion
-        items={PLATES.map((src) => ({ src, alt: "" }))}
+        items={THUMBS.map((src) => ({ src, alt: "" }))}
         rows={5}
         aspectRatio={0.62}
         gap={14}
@@ -98,45 +90,6 @@ function Background({
         theme={light ? "light" : "dark"}
       />
     );
-  } else if (id === "drift") {
-    layer = (
-      <DriftWall
-        items={PLATES.map((image) => ({ image }))}
-        columns={6}
-        tileWidth={130}
-        tileHeight={210}
-        gap={16}
-        radius={4}
-        speed={18}
-        lift={0}
-        // Drift Wall's `dim` is the tile opacity (not a darkening amount), and each tile has
-        // a dark overlay by default; keep tiles opaque and drop the overlay, the layer fades.
-        dim={1}
-        overlayColor="transparent"
-        fade={0.3}
-      />
-    );
-  } else if (id === "loop") {
-    layer = (
-      <div className="flex h-full flex-col justify-around">
-        {rows(3).map((row, r) => (
-          <LogoLoop
-            // biome-ignore lint/suspicious/noArrayIndexKey: three fixed rows
-            key={r}
-            logos={row.map((src) => ({ src, alt: "" }))}
-            speed={r % 2 ? 18 : 24}
-            direction={r % 2 ? "right" : "left"}
-            logoHeight={180}
-            gap={20}
-            pauseOnHover={false}
-            draggable={false}
-            fadeOut={false}
-          />
-        ))}
-      </div>
-    );
-  } else if (id === "duvar") {
-    layer = <PlateWall />;
   }
   if (!layer) return null;
   return (
@@ -157,19 +110,37 @@ function Background({
 export default function UiLogin() {
   const [params, setParams] = useSearchParams();
   const bg: BackgroundId = BACKGROUNDS.find((b) => b.id === params.get("bg"))?.id ?? "yok";
+  const sheetHidden = params.get("sayfa") === "gizli";
   const { resolvedTheme } = useTheme();
   const [dpr, setDpr] = useState(1);
-  // `paused` makes the WebGL background draw one frame and stop for "reduce motion".
+  // `paused`/`still` makes the WebGL backgrounds draw one frame and stop for "reduce motion".
   const [still, setStill] = useState(false);
+  // "Silk + tek Curtis" shows a random plate on every visit (owner's choice over "flower of
+  // the day" for a single background plate).
+  const [plate] = useState(() => {
+    const flower = flowerCatalog[Math.floor(Math.random() * flowerCatalog.length)];
+    return flower?.artwork.src ?? "/flowers/art/viola-tricolor.webp";
+  });
   useEffect(() => {
     setDpr(window.matchMedia("(max-width: 767px)").matches ? 1 : 1.5);
     setStill(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
+  const update = (key: string, value: string | null) =>
+    setParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (value === null) next.delete(key);
+        else next.set(key, value);
+        return next;
+      },
+      { replace: true },
+    );
+
   return (
     <div className="relative min-h-svh" data-background={bg}>
-      <Background id={bg} light={resolvedTheme !== "dark"} dpr={dpr} still={still} />
-      <div className="relative z-10">
+      <Background id={bg} light={resolvedTheme !== "dark"} dpr={dpr} still={still} plate={plate} />
+      <div className={sheetHidden ? "invisible relative z-10" : "relative z-10"}>
         <HerbariumLogin />
       </div>
       <nav
@@ -183,11 +154,19 @@ export default function UiLogin() {
             size="xs"
             variant={b.id === bg ? "default" : "outline"}
             aria-pressed={b.id === bg}
-            onClick={() => setParams({ bg: b.id }, { replace: true })}
+            onClick={() => update("bg", b.id)}
           >
             {b.name}
           </Button>
         ))}
+        <Button
+          size="xs"
+          variant={sheetHidden ? "default" : "ghost"}
+          aria-pressed={sheetHidden}
+          onClick={() => update("sayfa", sheetHidden ? null : "gizli")}
+        >
+          Sayfayı gizle
+        </Button>
         <Button size="xs" variant="ghost" render={<Link to="/ui" />}>
           ← Önizleme
         </Button>
