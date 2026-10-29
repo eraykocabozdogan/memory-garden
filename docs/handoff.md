@@ -12,8 +12,8 @@ devam eder. Önce bu dosyayı, sonra `docs/frontend-playbook.md`'yi oku.
 | Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 7/11 seçim bitti, 8. (arka plan) üzerinde çalışılıyor** |
 | Aşama 1: Temel + giriş | Bekliyor (Karar 8 bitince ya da paralel) |
 
-Ana branch: `main`. Çalışma branch'i: **`claude/blissful-wright-yju0fk`** (her şey push'lu, son
-commit `13a01b8`; main'e **merge edilmedi**, PR açılmadı). Yeni sohbet ya bu branch'ten devam
+Ana branch: `main`. Çalışma branch'i: **`claude/blissful-wright-yju0fk`** (her şey push'lu;
+main'e **merge edilmedi**, PR açılmadı). Yeni sohbet ya bu branch'ten devam
 eder ya da önce bunu main'e mergeleyip yeni branch açar; proje sahibine sor.
 
 ## Karar 8 / Aşama 2: nerede kaldık
