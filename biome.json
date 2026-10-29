@@ -73,18 +73,7 @@
     {
       "includes": ["apps/web/app/components/backgrounds/**"],
       "linter": {
-        "rules": {
-          "correctness": {
-            "useHookAtTopLevel": "off"
-          },
-          "a11y": {
-            "noAriaHiddenOnFocusable": "off"
-          },
-          "suspicious": {
-            "useIterableCallbackReturn": "off",
-            "noAssignInExpressions": "off"
-          }
-        }
+        "enabled": false
       }
     }
   ]

@@ -83,20 +83,26 @@ test("login background candidates render behind the sheet and keep the form usab
   page,
 }) => {
   // This headless browser has no GPU and draws WebGL on the CPU, so a running full-screen
-  // shader starves the page. With "reduce motion" on, all four candidates stop animating
-  // (checked in their source), which keeps the test meaningful and fast.
+  // shader starves the page. With "reduce motion" on, the backgrounds stop animating.
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ui/login");
   await expect(page.getByTestId("background")).toHaveCount(0);
 
-  for (const name of ["Silk", "Particles", "Aurora", "Iridescence"]) {
+  for (const name of ["Silk", "Grid Motion", "Drift Wall", "Kayan sıralar", "Duran duvar"]) {
     await page.getByRole("button", { name, exact: true }).click();
     const layer = page.getByTestId("background");
-    await expect(layer.locator("canvas")).toHaveCount(1);
     await expect(layer).toHaveAttribute("aria-hidden", "true");
+    // Nothing in the background can take focus (Drift Wall tiles are buttons otherwise).
+    await expect(layer).toHaveAttribute("inert", "");
     // The background must never sit on top of the form.
     await page.getByLabel("Kullanıcı adı").click();
     await expect(page.getByLabel("Kullanıcı adı")).toBeFocused();
   }
-  await expect(page).toHaveURL(/bg=iridescence/);
+  // The image backgrounds use the small thumbnails, never the full-size plates.
+  const images = page.getByTestId("background").locator("img");
+  expect(await images.count()).toBeGreaterThan(20);
+  for (const src of await images.evaluateAll((els) => els.map((e) => e.getAttribute("src")))) {
+    expect(src).toMatch(/^\/flowers\/thumb\//);
+  }
+  await expect(page).toHaveURL(/bg=duvar/);
 });
