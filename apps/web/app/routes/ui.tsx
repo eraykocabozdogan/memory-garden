@@ -19,29 +19,18 @@ const PAIRS = [
   ["destructive", "destructive-foreground"],
 ] as const;
 
-const SHAPES = [
-  { id: "paper", name: "Paper", note: "medium corners, light warm shadow, airy" },
-  { id: "soft", name: "Soft", note: "round corners, larger soft shadow, roomiest" },
-  { id: "archive", name: "Archive", note: "crisp corners, flat with borders, denser" },
-] as const;
-
-type ShapeId = (typeof SHAPES)[number]["id"];
-
 const STORAGE_KEY = "mg-ui-preview";
 
-type Stored = { dark: boolean; shape: ShapeId; grain: boolean };
+type Stored = { dark: boolean; grain: boolean };
 
 function readStored(): Stored {
   try {
     const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") as Partial<Stored>;
-    return {
-      dark: parsed.dark === true,
-      shape: SHAPES.find((s) => s.id === parsed.shape)?.id ?? "paper",
-      grain: parsed.grain === true,
-    };
+    // Grain is on by default for now; only an explicit "false" turns it off.
+    return { dark: parsed.dark === true, grain: parsed.grain !== false };
   } catch {
     // Storage can be blocked or hold junk; fall back to the defaults.
-    return { dark: false, shape: "paper", grain: false };
+    return { dark: false, grain: true };
   }
 }
 
@@ -59,72 +48,53 @@ const choiceClass = (active: boolean) =>
 
 export default function Ui() {
   const [dark, setDark] = useState(false);
-  const [shape, setShape] = useState<ShapeId>("paper");
-  const [grain, setGrain] = useState(false);
+  const [grain, setGrain] = useState(true);
 
   useEffect(() => {
     const stored = readStored();
     setDark(stored.dark);
-    setShape(stored.shape);
     setGrain(stored.grain);
   }, []);
 
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("dark", dark);
-    root.dataset.shape = shape;
     root.dataset.grain = grain ? "on" : "off";
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ dark, shape, grain }));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ dark, grain }));
     } catch {
       // Not critical: the choice just will not be remembered.
     }
-  }, [dark, shape, grain]);
+  }, [dark, grain]);
 
   return (
     <div className="min-h-screen text-foreground">
       <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
-        <div className="mx-auto max-w-5xl space-y-2 px-4 py-3">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
-            <button
-              type="button"
-              aria-pressed={dark}
-              onClick={() => setDark((v) => !v)}
-              className={choiceClass(false)}
-            >
-              {dark ? "Dark (night paper)" : "Light"}
-            </button>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm text-muted-foreground">Shape</span>
-            {SHAPES.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                aria-pressed={shape === s.id}
-                onClick={() => setShape(s.id)}
-                className={choiceClass(shape === s.id)}
-              >
-                {s.name}
-              </button>
-            ))}
-            <button
-              type="button"
-              aria-pressed={grain}
-              onClick={() => setGrain((v) => !v)}
-              className={`${choiceClass(grain)} ml-2`}
-            >
-              Paper grain: {grain ? "on" : "off"}
-            </button>
-          </div>
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-4 py-3">
+          <h1 className="mr-auto text-lg font-semibold">Theme preview</h1>
+          <button
+            type="button"
+            aria-pressed={grain}
+            onClick={() => setGrain((v) => !v)}
+            className={choiceClass(grain)}
+          >
+            Paper grain: {grain ? "on" : "off"}
+          </button>
+          <button
+            type="button"
+            aria-pressed={dark}
+            onClick={() => setDark((v) => !v)}
+            className={choiceClass(false)}
+          >
+            {dark ? "Dark (night paper)" : "Light"}
+          </button>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl space-y-12 px-4 py-10">
         <p className="text-muted-foreground" data-testid="theme-note">
-          Parchment colors, Lora + Source Sans 3 + Caveat. Shape:{" "}
-          {SHAPES.find((s) => s.id === shape)?.note}.
+          Parchment colors, Lora + Source Sans 3 + Caveat, Paper shape (medium corners, light warm
+          shadow, airy).
         </p>
 
         <section aria-labelledby="type" className="space-y-4">

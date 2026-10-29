@@ -73,9 +73,25 @@ records the options, the pick and why, so the next project can start from it.
   checker did not catch it. Rewrite files whole instead of patching by string offsets, and add
   a test per visible piece (a size or style assertion) so a silent style loss fails.
 
+### 4. Shape and depth (decided)
+
+- **Pick:** Paper: 8px base radius, a light warm-tinted shadow, airy spacing (20px card padding,
+  12px stack gap). Candidates were Soft (16px, larger shadow, 24px padding) and Archive (4px,
+  flat with borders only, 16px padding).
+- **Why:** balanced; Soft's larger cards cost too much space on phones in list-heavy screens,
+  Archive felt the least "gentle".
+- **Paper grain:** on for now, revisit at the end. A tiny inline SVG noise (feTurbulence) on the
+  page background only, so no battery cost; `data-grain="off"` on `<html>` turns it off.
+- **Where:** `apps/web/app/shape.css` (`--radius`, `--sh-card`, `--sh-lift`, `--pad-card`,
+  `--gap-stack`), mapped in `app.css` to Tailwind `rounded-sm/md/lg/xl`, `shadow-card`,
+  `shadow-lift`, `p-card`, `gap-stack`.
+- **How we got there (reusable):** one radius token drives every corner size (sm/md/lg/xl are
+  offsets of it), shadows are tinted with the foreground hue instead of black so they look warm,
+  and density lives in two spacing tokens so a variant changes all cards at once. Tests assert
+  the computed radius, padding and shadow so a lost token fails visibly.
+
 ## Still to decide
 
-4. Shape and depth
 5. Base components
 6. Layout blocks
 7. Icons
