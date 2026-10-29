@@ -43,8 +43,3 @@ export function loginFlowerOfTheDay(date: Date) {
   );
   return flower(LOGIN_FLOWER_IDS[day % LOGIN_FLOWER_IDS.length] ?? DEFAULT_LOGIN_FLOWER_ID);
 }
-
-/** The Curtis plate number when the source title carries one ("No. 841", "Plate 246"). */
-export function plateNumber(entry: LoginFlower) {
-  return entry.artwork.sourceTitle.match(/(?:No\.|Plate)\s*(\d+)/)?.[1];
-}

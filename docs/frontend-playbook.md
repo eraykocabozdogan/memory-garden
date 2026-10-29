@@ -134,11 +134,12 @@ records the options, the pick and why, so the next project can start from it.
   five-item bottom bar replaces it, padded with `env(safe-area-inset-bottom)` for iPhones.
   Rejected: sidebar-07 (plain sidebar collapsing to icons).
 - **Login (decided): a herbarium sheet.** Plate of the day taped to the sheet on the left with a
-  handwritten caption; a museum-style label on the right (plant, Latin name, meaning, date,
-  plate number when the source has one) holding underlined fields; an ink stamp hanging off
+  handwritten caption; a museum-style label on the right (plant, Latin name, meaning,
+  date) holding underlined fields; an ink stamp hanging off
   the corner (wide screens only). Component: `app/components/herbarium-login.tsx`.
   - Rejected: shadcn login-01/02/04 ("generic"), notebook cover, letter; photo corners,
-    stitches; plain card label; boxed fields; a fixed flower.
+    stitches; plain card label; boxed fields; a fixed flower; a plate-number row (picked, then
+    dropped: only 4 of the 10 rotating flowers' sources carry one, so it came and went).
   - **How we got there:** the owner disliked all blocks, so four concepts were derived from the
     mood words; the chosen one was then built with every detail switchable (layout, mounting,
     label, fields, flower, ornaments) and kept in the URL, so the owner picked detail by detail.

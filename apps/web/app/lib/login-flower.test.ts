@@ -1,11 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  defaultLoginFlower,
-  LOGIN_FLOWER_IDS,
-  loginFlowerOfTheDay,
-  plateNumber,
-} from "./login-flower";
+import { defaultLoginFlower, LOGIN_FLOWER_IDS, loginFlowerOfTheDay } from "./login-flower";
 
 describe("login flower", () => {
   it("every rotating flower exists in the catalog with artwork", () => {
@@ -30,11 +25,7 @@ describe("login flower", () => {
     }
   });
 
-  it("reads plate numbers from the source title when present", () => {
+  it("falls back to the hercai menekşe", () => {
     expect(defaultLoginFlower().name).toBe("Hercai menekşe");
-    const numbers = LOGIN_FLOWER_IDS.map((_, i) =>
-      plateNumber(loginFlowerOfTheDay(new Date(2026, 0, 1 + i))),
-    );
-    for (const n of numbers) if (n !== undefined) expect(n).toMatch(/^\d+$/);
   });
 });

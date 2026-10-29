@@ -4,7 +4,7 @@ import { type FormEvent, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { loginFlowerOfTheDay, plateNumber } from "~/lib/login-flower";
+import { loginFlowerOfTheDay } from "~/lib/login-flower";
 import { cn } from "~/lib/utils";
 
 // The login screen (decision 8-6b): a herbarium sheet. Today's flower plate is taped to the
@@ -65,7 +65,6 @@ export function HerbariumLogin({ onSubmit }: { onSubmit?: (event: FormEvent) => 
   // The login route is client-rendered (SPA), so "today" is known on the first render.
   const [today] = useState(() => new Date());
   const flower = loginFlowerOfTheDay(today);
-  const plate = plateNumber(flower);
 
   return (
     <main className="flex min-h-svh items-start justify-center p-4 md:items-center md:p-10">
@@ -104,13 +103,6 @@ export function HerbariumLogin({ onSubmit }: { onSubmit?: (event: FormEvent) => 
               <dd>{flower.meaning}</dd>
               <dt className="text-muted-foreground">Tarih</dt>
               <dd>{longDate.format(today)}</dd>
-              {/* Only some sources carry a plate number; the row is left out when there is none. */}
-              {plate && (
-                <>
-                  <dt className="text-muted-foreground">Levha</dt>
-                  <dd>No. {plate}</dd>
-                </>
-              )}
             </dl>
             <form
               className="grid gap-4 border-t border-foreground/40 pt-4"
