@@ -6,4 +6,5 @@ export default [
   route("ui", "routes/ui.tsx"),
   route("ui/login", "routes/ui-login.tsx"),
   route("ui/shell", "routes/ui-shell.tsx"),
+  route("ui/icons", "routes/ui-icons.tsx"),
 ] satisfies RouteConfig;

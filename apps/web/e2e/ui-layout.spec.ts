@@ -60,3 +60,13 @@ test("inset shell: sidebar on desktop, bottom bar on mobile", async ({ page }, i
     await expect(sidebar).toHaveAttribute("data-variant", "inset");
   }
 });
+
+test("icon preview draws all eleven concepts in every candidate set", async ({ page }) => {
+  await page.goto("/ui/icons");
+  const sets = page.getByTestId("icon-set");
+  await expect(sets).toHaveCount(6);
+  for (let i = 0; i < 6; i++) {
+    // 11 concept icons + 4 button icons + 5 bottom-bar icons, all rendered as SVG.
+    await expect(sets.nth(i).locator("svg")).toHaveCount(20);
+  }
+});
