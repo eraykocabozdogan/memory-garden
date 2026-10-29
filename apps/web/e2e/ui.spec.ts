@@ -93,3 +93,38 @@ test("paper grain is on by default and can be turned off", async ({ page }) => {
   await page.getByRole("button", { name: /Kâğıt dokusu/ }).click();
   await expect(body).toHaveCSS("background-image", "none");
 });
+
+// The token check (scripts/contrast-check.mjs) cannot see shadcn's tinted variants, such as
+// the destructive button's 10–20% red wash, so measure the rendered pixels in both modes.
+const RENDERED_CONTRAST = `(() => {
+  const button = [...document.querySelectorAll('[data-testid="button-row"] button')]
+    .find((b) => b.textContent.trim() === 'Sil');
+  const style = getComputedStyle(button);
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 1;
+  const ctx = canvas.getContext('2d');
+  const paint = (color, under) => {
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = under; ctx.fillRect(0, 0, 1, 1);
+    ctx.fillStyle = color; ctx.fillRect(0, 0, 1, 1);
+    return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3);
+  };
+  const bg = paint(style.backgroundColor, getComputedStyle(document.body).backgroundColor);
+  const fg = paint(style.color, 'rgb(' + bg.join(',') + ')');
+  const lum = (c) => {
+    const [r, g, b] = c.map((v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const [hi, lo] = [lum(fg), lum(bg)].sort((a, b) => b - a);
+  return (hi + 0.05) / (lo + 0.05);
+})()`;
+
+test("the tinted destructive button stays readable in light and dark", async ({ page }) => {
+  await page.goto("/ui");
+  await page.getByTestId("button-row").waitFor();
+  expect(await page.evaluate(RENDERED_CONTRAST)).toBeGreaterThanOrEqual(4.5);
+
+  await page.getByRole("button", { name: "Açık tema" }).click();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  expect(await page.evaluate(RENDERED_CONTRAST)).toBeGreaterThanOrEqual(4.5);
+});

@@ -117,6 +117,13 @@ records the options, the pick and why, so the next project can start from it.
 - **Turkish date picker:** `import { tr } from "react-day-picker/locale"` and pass `locale={tr}`.
 - **Tests:** buttons keep their height and paint with the theme's `--primary` (not shadcn's
   neutral default); menu, dialog, date picker and toast open.
+- **Tinted variants escape the token check:** shadcn's destructive button is a 10–20% red wash
+  with red text, not a solid fill. In dark mode it measured 4.18:1 (below 4.5) although every
+  token pair passed. Fixed by lightening the dark `--destructive` to `oklch(0.74 0.15 28)`
+  (now 4.97:1) and added a browser test that measures the rendered pixels in both modes.
+- **Adding more components later:** `shadcn add` asks before overwriting existing files
+  (`button.tsx`, `input.tsx`); answer no (`yes n | pnpm dlx shadcn@latest add <name>`) so our
+  token-bound edits survive.
 
 ## Still to decide
 

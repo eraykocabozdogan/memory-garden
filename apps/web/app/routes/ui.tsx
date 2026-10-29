@@ -1,6 +1,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { tr } from "react-day-picker/locale";
+import { Link } from "react-router";
 import { toast } from "sonner";
 
 import { Badge } from "~/components/ui/badge";
@@ -96,6 +97,12 @@ export default function Ui() {
       <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-4 py-3">
           <h1 className="mr-auto text-lg font-semibold">Tasarım önizlemesi</h1>
+          <Button variant="ghost" render={<Link to="/ui/login" />}>
+            Giriş ekranları
+          </Button>
+          <Button variant="ghost" render={<Link to="/ui/shell" />}>
+            Uygulama iskeleti
+          </Button>
           <Button
             variant={grain ? "default" : "outline"}
             aria-pressed={grain}

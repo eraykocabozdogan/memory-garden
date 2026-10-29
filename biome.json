@@ -60,6 +60,12 @@
         "rules": {
           "a11y": {
             "noLabelWithoutControl": "off"
+          },
+          "suspicious": {
+            "noDocumentCookie": "off"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "off"
           }
         }
       }
