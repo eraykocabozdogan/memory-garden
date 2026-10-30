@@ -3,7 +3,7 @@ import "@fontsource-variable/lora";
 import "@fontsource-variable/source-sans-3";
 import { IconContext } from "@phosphor-icons/react";
 import { ThemeProvider } from "next-themes";
-import type { ReactNode } from "react";
+import { type ReactNode, ViewTransition } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -38,13 +38,18 @@ export function Layout({ children }: { children: ReactNode }) {
 
 // Light / dark / system theme (decision G2). The choice is stored in localStorage ("theme").
 // Icons default to Phosphor's "light" weight (decision 8-7); navigation passes "regular".
+// Every page change crosses with the browser's own view transition (decision 10): React Router
+// already runs navigations inside a Transition, so wrapping the outlet is all it takes. Browsers
+// without the API simply swap the page, and "reduce motion" turns it off (app/view-transition.css).
 const iconDefaults = { weight: "light" } as const;
 
 export default function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <IconContext.Provider value={iconDefaults}>
-        <Outlet />
+        <ViewTransition>
+          <Outlet />
+        </ViewTransition>
         <Toaster />
       </IconContext.Provider>
     </ThemeProvider>

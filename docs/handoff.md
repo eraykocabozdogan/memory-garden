@@ -9,7 +9,7 @@ devam eder. Önce bu dosyayı, sonra `docs/frontend-playbook.md`'yi oku.
 |---|---|
 | Karar 1–7, 9 ve mimari | **Kararlaştırıldı** (`docs/decisions.md`, `docs/architecture.md`) |
 | Aşama 0: Hazırlık | **Onaylandı** |
-| Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 9/11 seçim bitti, sıradaki 10 (Motion)** |
+| Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 10/11 seçim bitti, sıradaki 11 (özel bileşenler)** |
 | Aşama 1: Temel + giriş | Bekliyor (Karar 8 bitince ya da paralel) |
 
 Ana branch: `main`. Önceki çalışma branch'i (`claude/blissful-wright-yju0fk`) PR #4 ile main'e
@@ -45,7 +45,7 @@ açar ve işi bitince main'e merge eder.
 - `/ui/shell`: içe gömülü yan menü (masaüstü) / alt menü (mobil).
 - `/ui/icons`: Phosphor hafif ve normal.
 - `/ui/yazi`: Karar 9'un üç kazanan efekti, "Tekrar oynat" ile baştan oynar.
-- `/ui/gecis`: Karar 10'un üç adayı (yok / View Transitions / Motion), aynı iki etkileşim üzerinde.
+- `/ui/gecis`: Karar 10'un geçişleri — anı kartından tam ekrana ve listeye ekleme/silme.
 - Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
 
 ### Bitmiş seçimler (ayrıntı: `docs/decisions.md` 8-1…8-7, playbook §1–7)
@@ -61,6 +61,7 @@ açar ve işi bitince main'e merge eder.
 7. İkonlar: Phosphor, varsayılan hafif, gezinmede normal (`root.tsx` IconContext)
 8. Hareketli arka plan: kesilmiş Curtis çiçeklerinden yoğun buket, ipeğe basılmış gibi
 9. Yazı: yumuşak beliriş + el yazısının yazılması + sayaç (`app/text-anim.css`)
+10. Hareket: tarayıcının View Transitions'ı, kütüphane yok (`app/view-transition.css`)
 
 ### Biten: #8 hareketli arka plan (giriş ekranı) — yoğun buket
 
@@ -93,23 +94,22 @@ açar ve işi bitince main'e merge eder.
 - `/ui/yazi` sayfası üç kazanan efekti gösteriyor; tasarım bitince diğer `/ui*` sayfalarıyla
   birlikte akıbetine karar verilecek.
 
-### Şu an açık: #10 hareket (Motion)
+### Biten: #10 hareket
 
-- Üç aday `/ui/gecis` sayfasında canlı, aynı iki etkileşim üzerinde: **anı kartından tam ekrana**
-  (paylaşılan öğe) ve **listeye ekleme/silme**.
-  - **Yok:** durum anında değişir. Base UI bileşenleri (diyalog, menü, sheet) zaten
-    `tw-animate-css` ile animasyonlu; eksik olan sayfa ve paylaşılan öğe geçişleri.
-  - **View Transitions:** tarayıcının kendi geçişi, React 19.3'ün `<ViewTransition>` bileşeniyle.
-    Paket yok. Güncelleme `startTransition` içinde olmalı. Ayar: `app/view-transition.css`.
-    Destek: Safari/iOS 18+, Chrome/Edge 111+, Firefox 144+; desteklemeyen tarayıcıda geçiş
-    olmaz, hata da olmaz.
-  - **Motion** (14.8.0): paylaşılan öğe için `layoutId`, liste için `AnimatePresence`.
-    Yalnızca bu rota import ettiği için uygulama paketine girmiyor; `/ui/gecis` parçası
-    140 KB (47 KB gzip) oldu. Seçilmezse paket kaldırılacak.
-- Claude'un önerisi: **View Transitions**; Motion kararı #11'e bırakılsın, oradaki galeri ve
-  dosya yükleme bileşenleri gerçekten istiyorsa bilinçli olarak eklensin.
-- Cevaplanmamış soru: proje sahibinin partnerinin iPhone'u hangi iOS sürümünde (18+ ise
-  View Transitions'ı o da görür).
+- **Seçim:** tarayıcının kendi View Transitions'ı, React 19.3'ün `<ViewTransition>` bileşeniyle.
+  Animasyon kütüphanesi yok; bileşen animasyonları Base UI + `tw-animate-css` ile sürüyor.
+- **Nerede:** `root.tsx`'te `<Outlet>` sarmalandığı için **her sayfa geçişi** çapraz geçiyor;
+  `/ui/gecis`'te anı kartı aynı isimle ayrıntıya dönüşüyor ve liste satırları yer değiştiriyor.
+  Süre ve yumuşama `app/view-transition.css`'te (320 ms, yazı animasyonuyla aynı eğri).
+- **Kullanırken:** React yalnızca Transition içindeki güncellemeler için geçiş çalıştırır;
+  React Router gezinmeleri zaten sarmalıyor, kendi `setState`'in `startTransition` ister.
+  Geçiş adı sayfada benzersiz ve geçerli bir tanımlayıcı olmalı — Türkçe harfler geçersiz,
+  metinden türetiyorsan sadeleştir.
+- **Destek:** Safari/iOS 18+, Chrome/Edge 111+, Firefox 144+. Desteklemeyen tarayıcıda geçiş
+  olmaz, sayfa çalışır. Proje sahibinin partnerinin iPhone 11'i iOS 18 alıyor; cihaz
+  değişebileceği ve Android olabileceği için "her cihazda çalışsın" koşulu bu yüzden önemliydi.
+- **Silinen:** Motion (14.8.0) ve `/ui/gecis`'teki üç modlu karşılaştırma. Motion kararı
+  **#11'e bırakıldı**: oradaki galeri/dosya yükleme bileşenleri gerçekten isterse bilinçli eklenecek.
 
 ### Kalan seçimler
 

@@ -252,7 +252,30 @@ records the options, the pick and why, so the next project can start from it.
   - Keep each effect to a class the real screens can wear, so locking a decision is a matter of
     adding `anim-beliris` to a container rather than rewriting a component.
 
+### 10. Motion
+
+- **Chosen:** the browser's own View Transitions, through React 19.3's `<ViewTransition>`. No
+  animation library. Page changes cross because the outlet is wrapped in root; a memory card
+  opens into its detail because both sides share a transition name. Timing is one file,
+  `app/view-transition.css`, on the same easing as the text reveal.
+- **Rejected:** no movement at all, and the Motion library (compared live on the same two
+  interactions, then removed). The Motion question is left to the special-components step: if a
+  gallery or an upload widget genuinely needs it, it gets added then, on purpose.
+- **How to compare an animation library fairly:** put the real interactions on the page, not a
+  gallery of effects. Here it was a memory card opening into its detail and a list gaining and
+  losing a row — the two movements the product actually needs. Import the candidate library from
+  that route only: it lands in that route's chunk (140 kB raw, 47 kB gzipped here) and the cost
+  is measured rather than argued about.
+- **Notes for using it:**
+  - React only runs a view transition for updates inside a Transition. React Router already
+    wraps navigations, so page changes need nothing; your own `setState` needs `startTransition`.
+  - A transition name must be unique on the page and a valid identifier, so slugify anything
+    derived from text — Turkish letters are not valid.
+  - React Router's own `viewTransition` prop and `useViewTransitionState` are deprecated in
+    favour of React's component; enabling both interrupts the animation.
+  - Support: Safari/iOS 18+, Chrome/Edge 111+, Firefox 144+. Elsewhere the page simply swaps,
+    which is what makes this safe to ship for "it should work on every device".
+
 ## Still to decide
 
-10. Motion
 11. Special components
