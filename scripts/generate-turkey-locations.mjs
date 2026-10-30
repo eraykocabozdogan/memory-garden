@@ -1,3 +1,13 @@
+// Generates packages/shared/src/locations/turkey-locations.json (do not edit that file by hand).
+//
+// Sources, pinned to the revisions below:
+// - Administrative names: onurusluca/turkey-geo-api (MIT)
+//   https://github.com/onurusluca/turkey-geo-api
+// - Province and district center coordinates: open-admin-data/turkey-administrative-divisions
+//   (CC BY 4.0, attribution required)
+//   https://github.com/open-admin-data/turkey-administrative-divisions
+//
+// Run with: pnpm locations:generate
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";

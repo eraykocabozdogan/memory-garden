@@ -1,8 +1,8 @@
 # Çiçek kataloğunun yöntemi
 
 Uygulamadaki çiçek kataloğunun (`packages/shared/src/flowers/`) nasıl kurulduğu ve yeni bir
-kaydın hangi kurallarla ekleneceği. Karar kaydı: `docs/decisions.md` → "Çiçek kataloğunun
-yöntemi ve doğrulaması".
+kaydın hangi kurallarla ekleneceği. Kararlar: `SPEC.md` → §3.8 ve
+§7 "Kararlar" (katalog).
 
 ## İki katman
 
@@ -79,7 +79,7 @@ katmanında var, katalogda kullanılmıyor.
 
 ## 4. Görseller
 
-Karar kaydı: `docs/decisions.md` → "Çiçek görselleri" (G1–G5).
+Kararlar: `SPEC.md` → §3.8 "Görsel seçim kuralları".
 
 1. **Tür düzeyinde eşleşme.** Görsel, kaydın gösterdiği bitkinin kendisidir. Cins tutması
    yetmez: haşhaş *Papaver somniferum* olmalı, Doğu gelinciği değil. Bitkinin adı zamanla

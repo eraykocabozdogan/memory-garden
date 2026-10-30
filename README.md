@@ -9,10 +9,8 @@ Botanical Magazine. Runs entirely on Cloudflare.
 
 ## Documentation (Turkish)
 
-- [`docs/decisions.md`](docs/decisions.md): every product and technical decision, the options
-  considered and the reasoning
-- [`docs/architecture.md`](docs/architecture.md): the system design
-- [`docs/handoff.md`](docs/handoff.md): current status and next steps
+- [`SPEC.md`](SPEC.md): what the product should do, guarantees and decisions with their reasoning
+- [`SYSTEM.md`](SYSTEM.md): what exists in the code today, test coverage, costs and technical notes
 
 ## Stack
 
