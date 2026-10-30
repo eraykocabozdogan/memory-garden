@@ -115,14 +115,16 @@ açar ve işi bitince main'e merge eder.
 
 ### Şu an açık: #11 özel bileşenler
 
-- Dört taslak `/ui/bilesenler` sayfasında **çalışır hâlde**, hepsi elde yazıldı, yeni paket yok:
-  - **Yükleme:** sürükle-bırak (bırakma alanı dosya girdisinin kendi etiketi), kuyruk, aynı anda
-    2 dosya, 100 MB üstü için parça sayısı, iptal. Transfer taklit ediliyor; gerçeği Aşama 5.
-  - **Galeri:** Izgara ↔ Masonry düğmesi (`columns` ile, paket yok).
-  - **Görüntüleyici:** tam ekran diyalog + View Transitions ile kartın büyümesi; ok tuşları,
-    kaydırma, Esc. Yakınlaştırma **yok** (gerekirse ayrıca karar).
-  - **Zaman çizelgesi:** aya göre gruplama, yapışkan ay başlığı, yan nokta şeridi.
-  - **Geri sayım:** Karar 9-5'in sayacıyla.
+- Taslaklar `/ui/bilesenler` sayfasında **çalışır hâlde**, hepsi elde yazıldı, yeni paket yok:
+  - **Yükleme:** sürükle-bırak, kuyruk, aynı anda 2 dosya, 100 MB üstü için parça sayısı, iptal,
+    seçilen dosyanın küçük görseli. Transfer taklit ediliyor; gerçeği Aşama 5. Proje sahibi
+    "bitti dedi ama fotoğraf galeriye gelmedi" diye sordu: taslak olduğu artık ekranda yazıyor.
+  - **Galeri:** masonry sabitlendi (proje sahibi seçti); **aylar çizgiyle ayrılıyor**, her ay
+    kendi masonry bloğu. Ayrı zaman çizelgesi **kaldırıldı** ("saçma olmuş").
+  - **Görüntüleyici:** tam ekran diyalog + View Transitions; ok tuşları, kaydırma, Esc ve
+    **yakınlaştırma** (çift dokunma, iki parmak, +/− düğmeleri, tekerlek; yakınken parmakla gezme).
+  - **Geri sayım:** üç varyant yan yana (a sade, b herbaryum etiketi, c ince şerit); ilk hâli
+    beğenilmedi, seçim bekliyor.
 - Claude'un önerisi: hepsini elde yazmak (11a-1, 11b-2, 11c-1, 11d-1, 11e-1); böylece Motion'a
   da gerek kalmaz ve #10'daki erteleme "hayır" olarak kapanır. Riskli parça görüntüleyici:
   yakınlaştırma ve kenar durumları iş çıkarırsa `yet-another-react-lightbox`'a dönülebilir.

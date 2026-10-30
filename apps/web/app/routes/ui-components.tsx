@@ -3,6 +3,7 @@ import { differenceInCalendarDays, format } from "date-fns";
 import { tr } from "date-fns/locale";
 import {
   type DragEvent,
+  type PointerEvent as ReactPointerEvent,
   startTransition,
   useEffect,
   useRef,
@@ -24,10 +25,13 @@ export function meta(_: Route.MetaArgs) {
   ];
 }
 
-// Design-system preview (stage 2, decision 11): working drafts of the four components shadcn
-// does not cover, all hand-written on what earlier decisions already gave us — no new package.
-// They are drafts to judge by touch, not the finished screens: the upload here fakes the
-// transfer (the real one is stage 5, signed PUTs straight to R2), and the data is stand-in.
+// Design-system preview (stage 2, decision 11): working drafts of the components shadcn does not
+// cover, hand-written on what the earlier decisions gave us — no new package. Drafts to judge by
+// touch, not finished screens: the upload fakes the transfer (the real one is stage 5, signed
+// PUTs straight to R2) and the data is stand-in.
+// The owner's second round: masonry stays and the separate timeline goes, with the months
+// dividing the gallery instead; the viewer gains zoom; the countdown is shown as three shapes to
+// choose from.
 
 const PHOTOS = flowerCatalog
   .filter((flower) => flower.artwork)
@@ -36,7 +40,7 @@ const PHOTOS = flowerCatalog
     id: flower.id,
     name: flower.name,
     src: flower.artwork?.src ?? "",
-    // Stand-in dates, newest first, three to a month, so the grouping is visible.
+    // Stand-in dates, newest first, three to a month, so the month rules are visible.
     date: new Date(2026, 9 - Math.floor(i / 3), 26 - (i % 3) * 9),
   }));
 
@@ -46,15 +50,14 @@ export default function UiComponents() {
       <header className="grid gap-2">
         <h1 className="font-heading text-3xl">Özel bileşen taslakları</h1>
         <p className="text-muted-foreground">
-          Karar 11. Dördü de elde yazıldı, yeni paket yok: sürükle-bırak yükleme, galeri, tam ekran
-          görüntüleyici, zaman çizelgesi ve geri sayım. Dokunarak dene.
+          Karar 11. Hepsi elde yazıldı, yeni paket yok: sürükle-bırak yükleme, aylara bölünmüş
+          galeri, yakınlaştırmalı tam ekran görüntüleyici ve geri sayım kartının üç hâli.
         </p>
       </header>
 
       <Uploader />
       <Gallery />
-      <Timeline />
-      <Countdown />
+      <Countdowns />
 
       <div>
         <Button size="sm" variant="ghost" render={<Link to="/ui" />}>
@@ -71,6 +74,7 @@ type Upload = {
   id: number;
   name: string;
   size: number;
+  preview?: string;
   progress: number;
   state: "bekliyor" | "yükleniyor" | "bitti" | "iptal";
 };
@@ -119,12 +123,21 @@ function Uploader() {
     );
   }, [queue]);
 
+  // The object URLs are only for this preview; let them go with the page.
+  useEffect(() => {
+    return () => {
+      for (const file of queue) if (file.preview) URL.revokeObjectURL(file.preview);
+    };
+  }, [queue]);
+
   const add = (files: FileList | null) => {
     if (!files?.length) return;
     const added = [...files].map((file) => ({
       id: next.current++,
       name: file.name,
       size: file.size,
+      // A thumbnail of what was chosen, so a finished row shows the actual photo.
+      preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
       progress: 0,
       state: "bekliyor" as const,
     }));
@@ -143,7 +156,11 @@ function Uploader() {
         <CardTitle className="text-base">1 · Dosya yükleme</CardTitle>
         <p className="text-sm text-muted-foreground">
           Sürükle bırak ya da seç. Aynı anda en çok {PARALLEL} dosya yüklenir; 100 MB üstü dosyalar
-          16 MB'lık parçalara bölünür. Burada transfer taklit ediliyor.
+          16 MB'lık parçalara bölünür.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          <strong>Taslak:</strong> transfer taklit ediliyor, dosyalar hiçbir yere gitmiyor ve
+          aşağıdaki galeriye eklenmiyor. Gerçek yükleme Aşama 5'te.
         </p>
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -175,38 +192,51 @@ function Uploader() {
         {queue.length > 0 && (
           <ul className="grid gap-2">
             {queue.map((file) => (
-              <li key={file.id} className="grid gap-1 rounded-md border bg-card px-3 py-2">
-                <div className="flex items-baseline gap-3 text-sm">
-                  <span className="truncate">{file.name}</span>
-                  <span className="text-muted-foreground">{human(file.size)}</span>
-                  {file.size > SINGLE && (
-                    <span className="text-xs text-muted-foreground">
-                      {Math.ceil(file.size / PART)} parça
-                    </span>
-                  )}
-                  <span className="ml-auto text-xs text-muted-foreground">{file.state}</span>
-                  {file.state !== "bitti" && file.state !== "iptal" && (
-                    <Button
-                      size="xs"
-                      variant="ghost"
-                      aria-label={`${file.name} iptal`}
-                      onClick={() =>
-                        setQueue((list) =>
-                          list.map((item) =>
-                            item.id === file.id ? { ...item, state: "iptal" as const } : item,
-                          ),
-                        )
-                      }
-                    >
-                      İptal
-                    </Button>
-                  )}
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full bg-primary transition-[width] duration-150"
-                    style={{ width: `${file.state === "iptal" ? 0 : file.progress}%` }}
+              <li key={file.id} className="flex items-center gap-3 rounded-md border bg-card p-2">
+                {file.preview ? (
+                  <img
+                    src={file.preview}
+                    alt=""
+                    className="size-10 shrink-0 rounded border object-cover"
                   />
+                ) : (
+                  <span className="grid size-10 shrink-0 place-items-center rounded border text-xs text-muted-foreground">
+                    video
+                  </span>
+                )}
+                <div className="grid min-w-0 flex-1 gap-1">
+                  <div className="flex items-baseline gap-3 text-sm">
+                    <span className="truncate">{file.name}</span>
+                    <span className="text-muted-foreground">{human(file.size)}</span>
+                    {file.size > SINGLE && (
+                      <span className="text-xs text-muted-foreground">
+                        {Math.ceil(file.size / PART)} parça
+                      </span>
+                    )}
+                    <span className="ml-auto text-xs text-muted-foreground">{file.state}</span>
+                    {file.state !== "bitti" && file.state !== "iptal" && (
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        aria-label={`${file.name} iptal`}
+                        onClick={() =>
+                          setQueue((list) =>
+                            list.map((item) =>
+                              item.id === file.id ? { ...item, state: "iptal" as const } : item,
+                            ),
+                          )
+                        }
+                      >
+                        İptal
+                      </Button>
+                    )}
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary transition-[width] duration-150"
+                      style={{ width: `${file.state === "iptal" ? 0 : file.progress}%` }}
+                    />
+                  </div>
                 </div>
               </li>
             ))}
@@ -220,7 +250,6 @@ function Uploader() {
 // ------------------------------------------------- 11b/11c · gallery and viewer
 
 function Gallery() {
-  const [masonry, setMasonry] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
   const index = PHOTOS.findIndex((photo) => photo.id === open);
   const photo = PHOTOS[index];
@@ -234,56 +263,50 @@ function Gallery() {
     if (target) setOpen(target.id);
   };
 
+  // One masonry block per month, so a rule and a month name separate them (the owner's choice
+  // over a timeline of its own).
+  const months = new Map<string, typeof PHOTOS>();
+  for (const item of PHOTOS) {
+    const key = format(item.date, "LLLL yyyy", { locale: tr });
+    months.set(key, [...(months.get(key) ?? []), item]);
+  }
+
   return (
     <Card data-testid="galeri">
       <CardHeader>
         <CardTitle className="text-base">2 · Galeri ve tam ekran görüntüleyici</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Bir anıya dokununca tam ekrana açılır; ok tuşları, kaydırma ve Esc çalışır. Izgara ile
-          masonry arasında geçiş yapıp hangisinin daha iyi durduğuna bak.
+          Fotoğraflar kendi oranlarını korur (masonry) ve aylar bir çizgiyle ayrılır. Bir anıya
+          dokununca tam ekrana açılır: çift dokunarak ya da parmakla sıkıştırarak yakınlaştır,
+          kaydırarak gez, Esc ile kapat.
         </p>
       </CardHeader>
-      <CardContent className="grid gap-3">
-        <nav aria-label="Galeri düzeni" className="flex gap-2">
-          <Button
-            size="sm"
-            variant={masonry ? "outline" : "default"}
-            aria-pressed={!masonry}
-            onClick={() => setMasonry(false)}
-          >
-            Izgara
-          </Button>
-          <Button
-            size="sm"
-            variant={masonry ? "default" : "outline"}
-            aria-pressed={masonry}
-            onClick={() => setMasonry(true)}
-          >
-            Masonry
-          </Button>
-        </nav>
-
-        <div
-          className={
-            masonry ? "columns-2 gap-3 sm:columns-3" : "grid grid-cols-2 gap-3 sm:grid-cols-3"
-          }
-        >
-          {PHOTOS.map((item) =>
-            // While the viewer holds this photo's transition name, the tile must not also carry
-            // it: a name has to be unique in the document or the browser drops the transition.
-            open === item.id ? (
-              <div key={item.id}>
-                <Tile item={item} masonry={masonry} onOpen={() => show(item.id)} />
-              </div>
-            ) : (
-              <ViewTransition key={item.id} name={`foto-${item.id}`}>
-                <div>
-                  <Tile item={item} masonry={masonry} onOpen={() => show(item.id)} />
-                </div>
-              </ViewTransition>
-            ),
-          )}
-        </div>
+      <CardContent className="grid gap-6">
+        {[...months].map(([month, items]) => (
+          <section key={month} className="grid gap-3">
+            <h3 className="flex items-center gap-3 font-heading text-sm tracking-wide text-muted-foreground uppercase">
+              {month}
+              <span aria-hidden="true" className="h-px flex-1 bg-border" />
+            </h3>
+            <div className="columns-2 gap-3 sm:columns-3">
+              {items.map((item) =>
+                // While the viewer holds this photo's transition name, the tile must not also
+                // carry it: a name has to be unique or the browser drops the transition.
+                open === item.id ? (
+                  <div key={item.id}>
+                    <Tile item={item} onOpen={() => show(item.id)} />
+                  </div>
+                ) : (
+                  <ViewTransition key={item.id} name={`foto-${item.id}`}>
+                    <div>
+                      <Tile item={item} onOpen={() => show(item.id)} />
+                    </div>
+                  </ViewTransition>
+                ),
+              )}
+            </div>
+          </section>
+        ))}
       </CardContent>
 
       <Dialog open={Boolean(photo)} onOpenChange={(next) => !next && show(null)}>
@@ -306,33 +329,19 @@ function Gallery() {
   );
 }
 
-function Tile({
-  item,
-  masonry,
-  onOpen,
-}: {
-  item: (typeof PHOTOS)[number];
-  masonry: boolean;
-  onOpen: () => void;
-}) {
+function Tile({ item, onOpen }: { item: (typeof PHOTOS)[number]; onOpen: () => void }) {
   return (
     <button
       type="button"
       onClick={onOpen}
-      className={
-        masonry
-          ? "mb-3 block w-full overflow-hidden rounded-md border bg-card shadow-card"
-          : "block w-full overflow-hidden rounded-md border bg-card shadow-card"
-      }
+      className="mb-3 block w-full overflow-hidden rounded-md border bg-card shadow-card"
     >
-      <img
-        src={item.src}
-        alt={item.name}
-        className={masonry ? "w-full" : "aspect-square w-full object-cover object-top"}
-      />
+      <img src={item.src} alt={item.name} className="w-full" />
     </button>
   );
 }
+
+const ZOOM_IN = 2.5;
 
 function Viewer({
   photo,
@@ -343,37 +352,135 @@ function Viewer({
   onStep: (by: number) => void;
   onClose: () => void;
 }) {
-  const start = useRef<number | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  // Live pointers, so one finger pans or swipes and two fingers pinch.
+  const pointers = useRef(new Map<number, { x: number; y: number }>());
+  const pinch = useRef<{ distance: number; zoom: number } | null>(null);
+  const drag = useRef<{ x: number; y: number; offset: { x: number; y: number } } | null>(null);
+
+  // A new photo starts unzoomed and centred.
+  useEffect(() => {
+    setZoom(1);
+    setOffset({ x: 0, y: 0 });
+  }, []);
+
+  const reset = () => {
+    setZoom(1);
+    setOffset({ x: 0, y: 0 });
+  };
+
+  const toggleZoom = () => {
+    if (zoom > 1) reset();
+    else setZoom(ZOOM_IN);
+  };
+
+  const spread = () => {
+    const [a, b] = [...pointers.current.values()];
+    return a && b ? Math.hypot(a.x - b.x, a.y - b.y) : 0;
+  };
+
+  const down = (event: ReactPointerEvent) => {
+    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    event.currentTarget.setPointerCapture(event.pointerId);
+    if (pointers.current.size === 2) {
+      pinch.current = { distance: spread(), zoom };
+      drag.current = null;
+    } else {
+      drag.current = { x: event.clientX, y: event.clientY, offset };
+    }
+  };
+
+  const move = (event: ReactPointerEvent) => {
+    if (!pointers.current.has(event.pointerId)) return;
+    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+
+    if (pinch.current && pointers.current.size === 2) {
+      const next = (spread() / pinch.current.distance) * pinch.current.zoom;
+      setZoom(Math.min(6, Math.max(1, next)));
+      return;
+    }
+    // Panning only matters once the photo is bigger than the screen.
+    if (drag.current && zoom > 1) {
+      setOffset({
+        x: drag.current.offset.x + (event.clientX - drag.current.x),
+        y: drag.current.offset.y + (event.clientY - drag.current.y),
+      });
+    }
+  };
+
+  const up = (event: ReactPointerEvent) => {
+    const start = drag.current;
+    pointers.current.delete(event.pointerId);
+    if (pointers.current.size < 2) pinch.current = null;
+    if (pointers.current.size === 0) drag.current = null;
+
+    // Unzoomed, a flick of more than a tenth of the screen moves to the next photo.
+    if (start && zoom === 1) {
+      const dx = event.clientX - start.x;
+      if (Math.abs(dx) > window.innerWidth / 10) onStep(dx < 0 ? 1 : -1);
+    }
+    if (zoom <= 1) setOffset({ x: 0, y: 0 });
+  };
 
   return (
-    <div
-      className="grid h-svh w-full grid-rows-[auto_1fr_auto]"
-      onPointerDown={(event) => {
-        start.current = event.clientX;
-      }}
-      onPointerUp={(event) => {
-        // A flick of more than a tenth of the screen moves to the next photo.
-        if (start.current === null) return;
-        const dx = event.clientX - start.current;
-        start.current = null;
-        if (Math.abs(dx) > window.innerWidth / 10) onStep(dx < 0 ? 1 : -1);
-      }}
-    >
+    <div className="grid h-svh w-full grid-rows-[auto_1fr_auto]">
       <div className="flex items-center gap-3 p-3">
         <DialogTitle className="font-heading text-lg">{photo.name}</DialogTitle>
         <span className="text-sm text-muted-foreground">
           {format(photo.date, "d MMMM yyyy", { locale: tr })}
         </span>
-        <Button size="sm" variant="ghost" className="ml-auto" onClick={onClose}>
-          Kapat
-        </Button>
+        <div className="ml-auto flex items-center gap-1">
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-label="Uzaklaştır"
+            onClick={() => setZoom((z) => Math.max(1, z - 0.75))}
+          >
+            −
+          </Button>
+          <span className="w-12 text-center text-sm text-muted-foreground" data-testid="zoom">
+            {Math.round(zoom * 100)}%
+          </span>
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-label="Yakınlaştır"
+            onClick={() => setZoom((z) => Math.min(6, z + 0.75))}
+          >
+            +
+          </Button>
+          <Button size="sm" variant="ghost" onClick={onClose}>
+            Kapat
+          </Button>
+        </div>
       </div>
 
       {/* Flex, not grid: a percentage max-height on a grid item resolves against an auto-sized
           track, which is indefinite, so the photo would ignore it and overflow the row. */}
-      <div className="flex min-h-0 items-center justify-center overflow-hidden px-3">
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: pointer gestures over the photo; the zoom and step controls below are the keyboard path. */}
+      <div
+        className="flex min-h-0 touch-none items-center justify-center overflow-hidden px-3"
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={up}
+        onPointerCancel={up}
+        onDoubleClick={toggleZoom}
+        onWheel={(event) =>
+          setZoom((z) => Math.min(6, Math.max(1, z - Math.sign(event.deltaY) * 0.25)))
+        }
+      >
         <ViewTransition name={`foto-${photo.id}`}>
-          <img src={photo.src} alt={photo.name} className="max-h-full max-w-full object-contain" />
+          <img
+            src={photo.src}
+            alt={photo.name}
+            draggable={false}
+            className="max-h-full max-w-full object-contain"
+            style={{
+              transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+              cursor: zoom > 1 ? "grab" : "zoom-in",
+            }}
+          />
         </ViewTransition>
       </div>
 
@@ -381,7 +488,9 @@ function Viewer({
         <Button size="sm" variant="outline" onClick={() => onStep(-1)} aria-label="Önceki anı">
           ←
         </Button>
-        <p className="text-sm text-muted-foreground">Kaydır ya da ok tuşlarını kullan</p>
+        <p className="text-sm text-muted-foreground">
+          Çift dokun ya da parmaklarını aç: yakınlaşır. Kaydır: gezer.
+        </p>
         <Button size="sm" variant="outline" onClick={() => onStep(1)} aria-label="Sonraki anı">
           →
         </Button>
@@ -390,82 +499,78 @@ function Viewer({
   );
 }
 
-// ------------------------------------------------------------- 11d · timeline
-
-function Timeline() {
-  // Group by month, newest first: the shape the memories page will have.
-  const months = new Map<string, typeof PHOTOS>();
-  for (const photo of PHOTOS) {
-    const key = format(photo.date, "LLLL yyyy", { locale: tr });
-    months.set(key, [...(months.get(key) ?? []), photo]);
-  }
-
-  return (
-    <Card data-testid="zaman-cizelgesi">
-      <CardHeader>
-        <CardTitle className="text-base">3 · Zaman çizelgesi</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Anılar aya göre gruplanır; ay başlığı kaydırırken üstte kalır.
-        </p>
-      </CardHeader>
-      <CardContent className="max-h-96 overflow-y-auto">
-        {[...months].map(([month, items]) => (
-          <section key={month}>
-            <h3 className="sticky top-0 bg-card/95 py-2 font-heading text-sm tracking-wide text-muted-foreground uppercase backdrop-blur">
-              {month}
-            </h3>
-            <ul className="grid gap-2 border-l border-border pb-4 pl-4">
-              {items.map((item) => (
-                <li key={item.id} className="relative flex items-center gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="absolute top-1/2 -left-[1.3rem] size-2 -translate-y-1/2 rounded-full bg-primary"
-                  />
-                  <img
-                    src={item.src}
-                    alt=""
-                    className="size-12 rounded-md border object-cover object-top"
-                  />
-                  <span className="mr-auto">{item.name}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {format(item.date, "d MMM", { locale: tr })}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
-
 // ------------------------------------------------------------ 11e · countdown
 
-function Countdown() {
+function Countdowns() {
   const [today] = useState(() => new Date());
   const target = new Date(today.getFullYear(), 11, 31);
   const days = Math.max(0, differenceInCalendarDays(target, today));
+  const when = format(target, "d MMMM yyyy", { locale: tr });
+  const flower = PHOTOS[0];
 
   return (
     <Card data-testid="geri-sayim">
       <CardHeader>
-        <CardTitle className="text-base">4 · Geri sayım kartı</CardTitle>
+        <CardTitle className="text-base">3 · Geri sayım kartı — üç hâli</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Özel günler sayfasındaki kart. Sayı Karar 9-5'in sayacıyla akıyor.
+          İlkini beğenmedin; aynı bilgiyi üç ayrı biçimde koydum. Hangisi?
         </p>
       </CardHeader>
-      <CardContent>
-        <div className="grid justify-items-center gap-1 rounded-lg border bg-card p-6 shadow-card">
-          <p className="font-hand text-2xl text-muted-foreground">Yıl dönümüne</p>
+      <CardContent className="grid gap-4 md:grid-cols-3">
+        {/* a · the plain big number, as it was */}
+        <figure
+          data-testid="sayim-a"
+          className="grid justify-items-center gap-1 rounded-lg border bg-card p-6 shadow-card"
+        >
+          <figcaption className="font-hand text-2xl text-muted-foreground">Yıl dönümüne</figcaption>
           <p className="font-heading text-6xl font-semibold">
             <CountUp to={days} />
           </p>
           <p className="text-muted-foreground">gün</p>
-          <p className="pt-2 text-sm text-muted-foreground">
-            {format(target, "d MMMM yyyy", { locale: tr })}
+          <p className="pt-2 text-sm text-muted-foreground">{when}</p>
+          <p className="pt-3 text-xs text-muted-foreground">a · sade</p>
+        </figure>
+
+        {/* b · a herbarium label: the day is written on the sheet beside its flower */}
+        <figure
+          data-testid="sayim-b"
+          className="grid gap-3 rounded-lg border bg-card p-4 shadow-card"
+        >
+          <img
+            src={flower?.src}
+            alt=""
+            className="h-28 w-full rounded border object-cover object-top"
+          />
+          <div className="border-2 border-foreground/70 p-3">
+            <p className="border-b border-foreground/40 pb-1 text-center text-[0.65rem] tracking-[0.2em] uppercase">
+              Yıl dönümü
+            </p>
+            <p className="pt-2 text-center font-heading text-4xl font-semibold">
+              <CountUp to={days} /> <span className="text-base font-normal">gün</span>
+            </p>
+            <p className="text-center text-sm text-muted-foreground">{when}</p>
+          </div>
+          <p className="text-center text-xs text-muted-foreground">b · herbaryum etiketi</p>
+        </figure>
+
+        {/* c · a quiet line that could sit at the top of any page */}
+        <figure
+          data-testid="sayim-c"
+          className="grid content-center gap-2 rounded-lg border bg-card p-4 shadow-card"
+        >
+          <p className="font-hand text-xl text-muted-foreground">Yıl dönümüne</p>
+          <p className="font-heading text-2xl">
+            <CountUp to={days} /> gün kaldı
           </p>
-        </div>
+          <div className="h-1 overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-primary"
+              style={{ width: `${Math.round((1 - days / 365) * 100)}%` }}
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">{when}</p>
+          <p className="pt-2 text-xs text-muted-foreground">c · ince şerit</p>
+        </figure>
       </CardContent>
     </Card>
   );

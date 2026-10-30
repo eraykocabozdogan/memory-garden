@@ -216,15 +216,35 @@ test("the gallery opens a photo full screen and walks through with the keyboard"
   await expect(viewer).toHaveCount(0);
 });
 
-test("the timeline groups by month and the countdown reaches its number", async ({ page }) => {
+test("the gallery is divided by month and the countdowns reach their number", async ({ page }) => {
   await page.goto("/ui/bilesenler");
 
-  const months = page.locator('[data-testid="zaman-cizelgesi"] h3');
+  const months = page.locator('[data-testid="galeri"] h3');
   // The page is a SPA, so wait for it to render before counting.
   await expect(months.first()).toBeVisible();
   expect(await months.count()).toBeGreaterThan(1);
   await expect(months.first()).toHaveText(/\d{4}/);
 
-  // The counter settles on a real number of days, not on zero.
-  await expect(page.getByTestId("geri-sayim")).toContainText(/\d+/);
+  // All three shapes of the countdown settle on a real number of days, not on zero.
+  for (const id of ["sayim-a", "sayim-b", "sayim-c"]) {
+    await expect(page.getByTestId(id)).toContainText(/[1-9]\d*/);
+  }
+});
+
+test("the viewer zooms in and back out", async ({ page }) => {
+  await page.goto("/ui/bilesenler");
+
+  await page.locator('[data-testid="galeri"] button img').first().click();
+  const viewer = page.locator('[data-slot="dialog-content"]');
+  await expect(viewer).toBeVisible();
+  await expect(viewer.getByTestId("zoom")).toHaveText("100%");
+
+  await viewer.getByRole("button", { name: "Yakınlaştır" }).click();
+  await expect(viewer.getByTestId("zoom")).not.toHaveText("100%");
+
+  // Double-clicking the photo toggles: once back to actual size, once in again.
+  await viewer.locator("img").dblclick();
+  await expect(viewer.getByTestId("zoom")).toHaveText("100%");
+  await viewer.locator("img").dblclick();
+  await expect(viewer.getByTestId("zoom")).not.toHaveText("100%");
 });
