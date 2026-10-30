@@ -8,4 +8,5 @@ export default [
   route("ui/shell", "routes/ui-shell.tsx"),
   route("ui/icons", "routes/ui-icons.tsx"),
   route("ui/yazi", "routes/ui-text.tsx"),
+  route("ui/gecis", "routes/ui-motion.tsx"),
 ] satisfies RouteConfig;

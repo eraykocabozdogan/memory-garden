@@ -45,6 +45,7 @@ açar ve işi bitince main'e merge eder.
 - `/ui/shell`: içe gömülü yan menü (masaüstü) / alt menü (mobil).
 - `/ui/icons`: Phosphor hafif ve normal.
 - `/ui/yazi`: Karar 9'un üç kazanan efekti, "Tekrar oynat" ile baştan oynar.
+- `/ui/gecis`: Karar 10'un üç adayı (yok / View Transitions / Motion), aynı iki etkileşim üzerinde.
 - Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
 
 ### Bitmiş seçimler (ayrıntı: `docs/decisions.md` 8-1…8-7, playbook §1–7)
@@ -92,9 +93,27 @@ açar ve işi bitince main'e merge eder.
 - `/ui/yazi` sayfası üç kazanan efekti gösteriyor; tasarım bitince diğer `/ui*` sayfalarıyla
   birlikte akıbetine karar verilecek.
 
+### Şu an açık: #10 hareket (Motion)
+
+- Üç aday `/ui/gecis` sayfasında canlı, aynı iki etkileşim üzerinde: **anı kartından tam ekrana**
+  (paylaşılan öğe) ve **listeye ekleme/silme**.
+  - **Yok:** durum anında değişir. Base UI bileşenleri (diyalog, menü, sheet) zaten
+    `tw-animate-css` ile animasyonlu; eksik olan sayfa ve paylaşılan öğe geçişleri.
+  - **View Transitions:** tarayıcının kendi geçişi, React 19.3'ün `<ViewTransition>` bileşeniyle.
+    Paket yok. Güncelleme `startTransition` içinde olmalı. Ayar: `app/view-transition.css`.
+    Destek: Safari/iOS 18+, Chrome/Edge 111+, Firefox 144+; desteklemeyen tarayıcıda geçiş
+    olmaz, hata da olmaz.
+  - **Motion** (14.8.0): paylaşılan öğe için `layoutId`, liste için `AnimatePresence`.
+    Yalnızca bu rota import ettiği için uygulama paketine girmiyor; `/ui/gecis` parçası
+    140 KB (47 KB gzip) oldu. Seçilmezse paket kaldırılacak.
+- Claude'un önerisi: **View Transitions**; Motion kararı #11'e bırakılsın, oradaki galeri ve
+  dosya yükleme bileşenleri gerçekten istiyorsa bilinçli olarak eklensin.
+- Cevaplanmamış soru: proje sahibinin partnerinin iPhone'u hangi iOS sürümünde (18+ ise
+  View Transitions'ı o da görür).
+
 ### Kalan seçimler
 
-- #10 Hareket (Motion), #11 Özel bileşenler (dosya yükleme, galeri/tam
+- #11 Özel bileşenler (dosya yükleme, galeri/tam
   ekran görüntüleyici, tarih seçici/zaman çizelgesi, geri sayım kartı; 21st.dev, Kibo UI,
   ayrıca React Bits'in galerileri: Dome Gallery, Circular Gallery, Masonry, bahçe/rehber için)
 - Ertelenenler: kâğıt dokusu (sonda), **uygulama içinde arka plan** (S3: donmuş ipek karesi,

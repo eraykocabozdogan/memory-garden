@@ -143,3 +143,25 @@ test("text animations are skipped when the visitor asks for less motion", async 
   expect(running).toBe(0);
   await expect(page.getByTestId("aday-9-5")).toContainText("47");
 });
+
+test("each motion candidate opens a memory and changes the list", async ({ page }) => {
+  await page.goto("/ui/gecis");
+
+  for (const mode of ["Yok", "View Transitions", "Motion"]) {
+    await page.getByRole("button", { name: mode, exact: true }).click();
+
+    // The shared-element scenario: a card opens into its detail and closes again.
+    await page.locator('[data-testid="senaryo-kart"] button').first().click();
+    await expect(page.getByRole("button", { name: "Kapat" })).toBeVisible();
+    await page.getByRole("button", { name: "Kapat" }).click();
+    await expect(page.getByRole("button", { name: "Kapat" })).toHaveCount(0);
+
+    // The list scenario: adding and removing really change the list in every mode.
+    const rows = page.locator('[data-testid="senaryo-liste"] li');
+    const before = await rows.count();
+    await page.getByRole("button", { name: "Anı ekle" }).click();
+    await expect(rows).toHaveCount(before + 1);
+    await page.locator('[data-testid="senaryo-liste"] li').first().getByRole("button").click();
+    await expect(rows).toHaveCount(before);
+  }
+});
