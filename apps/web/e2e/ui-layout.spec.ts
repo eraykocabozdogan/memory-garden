@@ -104,11 +104,10 @@ test("the silk background sits behind the sheet and keeps the form usable", asyn
   await expect(page.getByLabel("Kullanıcı adı")).toBeHidden();
 });
 
-test("every text animation candidate renders and can be replayed", async ({ page }) => {
+test("the three chosen text motions render and can be replayed", async ({ page }) => {
   await page.goto("/ui/yazi");
 
-  const ids = ["9-1", "9-2", "9-3", "9-3b", "9-4a", "9-4b", "9-4c", "9-4d", "9-4e", "9-5"];
-  for (const id of ids) {
+  for (const id of ["9-2", "9-3", "9-5"]) {
     await expect(page.getByTestId(`aday-${id}`)).toBeVisible();
   }
 
@@ -116,26 +115,31 @@ test("every text animation candidate renders and can be replayed", async ({ page
   await expect(page.getByTestId("aday-9-2")).toContainText("Bahçende 47 anı açtı");
   // The counter reaches its target rather than stopping somewhere along the way.
   await expect(page.getByTestId("aday-9-5")).toContainText("47");
-  await expect(page.getByTestId("aday-9-5")).toContainText("128 gün");
+  await expect(page.getByTestId("aday-9-5")).toContainText("128");
 
   await page.getByRole("button", { name: "Tekrar oynat" }).click();
   await expect(page.getByTestId("aday-9-2")).toContainText("Bahçende 47 anı açtı");
+});
+
+test("the login sheet carries the chosen text motion", async ({ page }) => {
+  await page.goto("/ui/login");
+
+  await expect(page.locator(".anim-elyazisi")).toHaveText("Her anı bir çiçek…");
+  await expect(page.getByTestId("label")).toHaveClass(/anim-beliris/);
+  // The form is usable while the reveal runs: nothing is hidden once the animation ends.
+  await page.getByLabel("Kullanıcı adı").click();
+  await expect(page.getByLabel("Kullanıcı adı")).toBeFocused();
 });
 
 test("text animations are skipped when the visitor asks for less motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ui/yazi");
 
-  // No animation runs at all: the text is simply there, including the typewriter's full line.
+  // No animation runs at all: the text is simply there.
   // (Evaluated as a string: the e2e tsconfig has no DOM types.)
   const running = (await page.evaluate(
     `document.getAnimations().filter((a) => a.playState === "running").length`,
   )) as number;
   expect(running).toBe(0);
-  await expect(page.getByTestId("aday-9-4c")).toContainText("Bahçende 47 anı açtı");
-  // The written line is an image, so its text has to reach a screen reader through its label.
-  await expect(page.getByTestId("aday-9-3b").getByRole("img")).toHaveAttribute(
-    "aria-label",
-    "Her anı bir çiçek…",
-  );
+  await expect(page.getByTestId("aday-9-5")).toContainText("47");
 });

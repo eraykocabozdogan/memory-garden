@@ -224,26 +224,33 @@ records the options, the pick and why, so the next project can start from it.
     rejected as larger than the canvas; composite offsets must also be non-negative, so crop
     whatever hangs over an edge yourself.
 
-### 9. Text animation (in progress)
+### 9. Text animation
 
-- Ten candidates live at `/ui/yazi`, all plain CSS (`app/text-anim.css`): nothing is installed
-  before the Motion decision. Each effect ends on the plain text, which is also what
-  `prefers-reduced-motion` shows, and a test asserts no animation runs in that case.
-- **A left-to-right wipe is not handwriting.** Asked for "a pen drawing each letter", a mask
-  sweep is the cheap answer and the owner saw through it immediately. Real writing needs the
-  glyph outlines: extract them at build time, split them per contour, and let a thick mask
-  stroke travel along each in turn (`scripts/handwriting-path.mjs`, `components/handwriting.tsx`).
-  It only works for fixed lines; text a visitor types has no path to follow.
-- Four traps on the way there, each one silent:
+- **Chosen:** a soft word-by-word reveal (380 ms) for headings and body text, a left-to-right
+  "being written" sweep for the handwritten Caveat lines, and a count-up for headline numbers.
+  Plain CSS and one small component (`app/text-anim.css`, `components/count-up.tsx`); nothing
+  was installed, so the Motion decision stays open.
+- Rejected after seeing all of them live: no animation at all, letter by letter, blur in,
+  typewriter, sheen, rotating word, and a pen that draws the glyph outlines.
+- **A left-to-right wipe is not handwriting, and the owner saw that at once.** Real writing
+  needs the glyph outlines: extracted at build time, split per contour, with a thick mask stroke
+  travelling along each in turn. It worked, it only works for fixed lines, and he did not like
+  it — so it went. Four traps were on the way there, each one silent, and they are worth knowing
+  before anyone tries this again:
   - opentype.js reads a *variable* font's outlines as `.notdef` boxes. Use the static face.
   - Fontsource splits a face into subsets: basic Latin and the Turkish letters are in different
     files, so compose the line character by character from whichever subset has each one.
   - A dash pattern restarts at every `M`, so one path for a whole line cannot be drawn
-    progressively; give each contour its own path and its own delay.
+    progressively; give each contour its own path and its own delay, shared out by length.
   - A round line cap paints a blob on a zero-length dash, which showed every dot and cedilla
     before the pen reached it. Butt caps, and start the offset just past the end of the dash.
-- Share the time between contours by their length, or the pen spends as long on a dot as on a
-  letter.
+- **Lessons:**
+  - Build the effect the person described, not the effect that is easy to reach for. The cheap
+    stand-in was spotted on first viewing.
+  - Every effect should end on the plain, readable text. Then `prefers-reduced-motion` is not a
+    separate design, it is just the end state, and a test can assert that nothing is running.
+  - Keep each effect to a class the real screens can wear, so locking a decision is a matter of
+    adding `anim-beliris` to a container rather than rewriting a component.
 
 ## Still to decide
 

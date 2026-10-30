@@ -9,7 +9,7 @@ devam eder. Önce bu dosyayı, sonra `docs/frontend-playbook.md`'yi oku.
 |---|---|
 | Karar 1–7, 9 ve mimari | **Kararlaştırıldı** (`docs/decisions.md`, `docs/architecture.md`) |
 | Aşama 0: Hazırlık | **Onaylandı** |
-| Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 8/11 seçim bitti, sıradaki 9 (yazı animasyonu)** |
+| Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 9/11 seçim bitti, sıradaki 10 (Motion)** |
 | Aşama 1: Temel + giriş | Bekliyor (Karar 8 bitince ya da paralel) |
 
 Ana branch: `main`. Önceki çalışma branch'i (`claude/blissful-wright-yju0fk`) PR #4 ile main'e
@@ -44,7 +44,7 @@ açar ve işi bitince main'e merge eder.
   Adres parametreleri: `bg` (yok / ipek-buket), `sayfa=gizli`.
 - `/ui/shell`: içe gömülü yan menü (masaüstü) / alt menü (mobil).
 - `/ui/icons`: Phosphor hafif ve normal.
-- `/ui/yazi`: Karar 9'un dokuz yazı animasyonu adayı yan yana, "Tekrar oynat" ile baştan oynar.
+- `/ui/yazi`: Karar 9'un üç kazanan efekti, "Tekrar oynat" ile baştan oynar.
 - Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
 
 ### Bitmiş seçimler (ayrıntı: `docs/decisions.md` 8-1…8-7, playbook §1–7)
@@ -59,6 +59,7 @@ açar ve işi bitince main'e merge eder.
    `app/lib/login-flower.ts`; Latince ad `scientificName()` ile; levha numarası kaldırıldı)
 7. İkonlar: Phosphor, varsayılan hafif, gezinmede normal (`root.tsx` IconContext)
 8. Hareketli arka plan: kesilmiş Curtis çiçeklerinden yoğun buket, ipeğe basılmış gibi
+9. Yazı: yumuşak beliriş + el yazısının yazılması + sayaç (`app/text-anim.css`)
 
 ### Biten: #8 hareketli arka plan (giriş ekranı) — yoğun buket
 
@@ -78,25 +79,18 @@ açar ve işi bitince main'e merge eder.
 - **Herbaryum yaprağı (8-6c):** iç boşluk ölçülüp seçenekler sunuldu; proje sahibi
   **"böyle kalsın"** dedi. Yaprağa dokunulmadı.
 
-### Şu an açık: #9 yazı animasyonu
+### Biten: #9 yazı animasyonu
 
-- On aday `/ui/yazi` sayfasında canlı: 9-1 animasyon yok, 9-2 yumuşak beliriş,
-  9-3 el yazısı (maske süpürmesi), **9-3b kalemle çiziliyor**, 9-4a harf harf,
-  9-4b bulanıktan netleşme, 9-4c daktilo, 9-4d parlama, 9-4e dönen kelime, 9-5 sayaç.
-- Hepsi sade CSS (`app/text-anim.css`); hiçbir paket kurulmadı. Motion kararı (#10) henüz
-  verilmedi, verilirse bunlar oraya taşınabilir.
-- **9-3b nasıl çalışıyor:** `pnpm handwriting` (`scripts/handwriting-path.mjs`) Caveat
-  harflerinin yollarını çıkarıp `app/lib/handwriting.json`'a yazar; `components/handwriting.tsx`
-  her konturu ayrı bir maske çizgisi olarak sırayla çizdirir. Yalnızca **sabit** metinler için;
-  kullanıcının yazdığı metnin yolu olmadığı için bu efekt onlara uygulanamaz.
-  - Tuzaklar: değişken (variable) Caveat'i opentype.js okuyamıyor, statik sürüm gerekiyor;
-    Fontsource temel Latin ile Türkçe harfleri ayrı dosyalara bölüyor, ikisi birleştirilmeli;
-    kesik çizgi deseni her `M`'de sıfırlandığı için konturlar ayrı yollara bölünmeli;
-    yuvarlak kalem ucu sıfır uzunlukta bile iz bıraktığından uç düz (`butt`) olmalı.
-- Claude'un önerisi: genel dil **9-2**, giriş ekranındaki el yazısı için **9-3**, geri sayım
-  kartı için **9-5**; 9-4 ailesi "paper-like" hissine ters düştüğü için önerilmedi.
-- Seçim yapılınca: kazanan efektleri gerçek ekranlara bağla, kaybedenleri
-  `app/text-anim.css` ve `/ui/yazi` ile birlikte sil, `decisions.md` ve playbook'a işle.
+- **Seçim:** başlık ve metinlerde yumuşak beliriş (`.anim-beliris`, kelime başına 70 ms gecikme),
+  el yazısı notlarda yazılma (`.anim-elyazisi`, maske süpürmesi), öne çıkan sayılarda sayaç
+  (`components/count-up.tsx`). Hiçbir paket kurulmadı; Motion kararı (#10) hâlâ açık.
+- **Bağlandığı yerler:** giriş ekranında müze etiketinin satırları sırayla beliriyor,
+  "Her anı bir çiçek…" yazılıyor. Diğer ekranlar yazıldıkça aynı sınıflar kullanılacak.
+- **Silinenler:** harf harf, bulanıktan netleşme, daktilo, parlama, dönen kelime ve kalemle
+  çizme (SVG kontur animasyonu; çalışıyordu ama proje sahibi beğenmedi). Kalem denemesinin
+  bağımlılıkları (opentype.js, wawoff2, statik Caveat) ve `pnpm handwriting` script'i de kaldırıldı.
+- `/ui/yazi` sayfası üç kazanan efekti gösteriyor; tasarım bitince diğer `/ui*` sayfalarıyla
+  birlikte akıbetine karar verilecek.
 
 ### Kalan seçimler
 
