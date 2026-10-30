@@ -85,7 +85,7 @@ test("the silk background sits behind the sheet and keeps the form usable", asyn
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ui/login");
 
-  for (const name of ["Silk + tek Curtis", "Silk + kolaj"]) {
+  for (const name of ["İpek + yoğun buket", "İpek + seyrek buket", "İpek + tek çiçek"]) {
     await page.getByRole("button", { name, exact: true }).click();
     const layer = page.getByTestId("background");
     await expect(layer.locator("canvas")).toHaveCount(1);

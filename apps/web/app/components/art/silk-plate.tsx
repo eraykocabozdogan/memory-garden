@@ -2,9 +2,11 @@ import { useEffect, useRef } from "react";
 
 import { bindProgram, createProgram, loadTexture, runLoop } from "./gl";
 
-// A Curtis plate (or a collage of plates) printed on slowly rippling silk, covering the screen. The fold pattern and
-// lighting follow React Bits' Silk; the folds also bend the print and the sheen passes over it.
-// One full-screen triangle, one texture.
+// Curtis flowers, cut out of their paper, printed on slowly rippling silk and covering the screen.
+// The fold pattern and lighting follow React Bits' Silk; the folds also bend the print and the
+// sheen passes over it. Where the image is transparent, the silk itself shows: that is why the
+// flowers are cut out (`pnpm flowers:cutout`, `pnpm flowers:bouquet`) instead of printed on their
+// yellow plate paper. One full-screen triangle, one texture.
 
 const VERTEX = `#version 300 es
 in vec2 aPosition;
@@ -19,6 +21,7 @@ uniform float uImageAspect;
 uniform float uReady;
 uniform vec3 uSilk;
 uniform float uLight;
+uniform float uContain;
 out vec4 outColor;
 
 float silk(vec2 p) {
@@ -27,13 +30,24 @@ float silk(vec2 p) {
   return 0.6 + 0.4 * sin(5.0 * (tex.x + tex.y + cos(3.0 * tex.x + 5.0 * tex.y) + 0.02 * uTime));
 }
 
-// Screen UV to image UV, "cover": the image fills the screen, cropped to its centre.
-vec2 imageUv(vec2 uv) {
+// Screen UV to image UV. "Cover" fills the screen and crops the image; "contain" fits the whole
+// image on screen with silk around it, which is what a single flower needs so its head is not cut
+// off. The "inside" output is 0 outside the image, where only silk is drawn.
+const float MARGIN = 0.86; // how much of the screen a contained flower may take
+
+vec2 imageUv(vec2 uv, out float inside) {
   float va = uView.x / uView.y;
   float ia = uImageAspect;
   vec2 c = uv - 0.5;
-  if (va > ia) { c.y *= ia / va; } else { c.x *= va / ia; }
-  return c + 0.5;
+  if (uContain > 0.5) {
+    if (va > ia) { c.x *= va / ia; } else { c.y *= ia / va; }
+    c /= MARGIN;
+  } else {
+    if (va > ia) { c.y *= ia / va; } else { c.x *= va / ia; }
+  }
+  vec2 r = c + 0.5;
+  inside = (r.x > 0.0 && r.x < 1.0 && r.y > 0.0 && r.y < 1.0) ? 1.0 : 0.0;
+  return r;
 }
 
 void main() {
@@ -52,25 +66,33 @@ void main() {
   vec3 halfway = normalize(toLight + vec3(0.0, 0.0, 1.0));
   float gloss = pow(max(dot(normal, halfway), 0.0), 48.0) * smoothstep(0.25, 0.85, n01);
 
-  vec3 cloth = mix(uSilk * 0.78, min(uSilk * 1.15, vec3(1.0)), fold) * mix(1.0, relief, 0.6);
+  vec3 cloth = mix(uSilk * 0.58, uSilk * 1.12, fold) * mix(1.0, relief, 0.85);
 
   // The print rides the folds: sample the image slightly displaced along the fold's slope.
-  vec2 iuv = imageUv(uv + normal.xy * 0.012);
-  vec3 ink = texture(uImage, clamp(iuv, 0.0, 1.0)).rgb;
-  vec3 printed = ink * mix(0.82, 1.06, fold) * mix(1.0, relief, 0.7) * mix(0.55, 1.0, uLight);
+  float inside;
+  vec2 iuv = imageUv(uv + normal.xy * 0.022, inside);
+  vec4 sampled = texture(uImage, clamp(iuv, 0.0, 1.0));
+  vec3 printed = sampled.rgb * mix(0.66, 1.1, fold) * mix(1.0, relief, 0.85) * mix(0.55, 1.0, uLight);
 
-  vec3 color = mix(cloth, printed, uReady * 0.96);
-  color += vec3(1.0) * (gloss * 0.32 + pow(n01, 5.0) * 0.06) * mix(0.45, 1.0, uLight);
+  // Transparent parts of the image are bare silk, so the cloth keeps its own depth between the
+  // flowers. The cut-outs have a feathered edge, and a straight mix would leave a pale halo
+  // around every flower, so the edge is tightened here.
+  float ink = smoothstep(0.2, 0.7, sampled.a) * inside;
+  vec3 color = mix(cloth, printed, uReady * ink * 0.97);
+  color += vec3(1.0) * (gloss * 0.34 + pow(n01, 5.0) * 0.07) * mix(0.45, 1.0, uLight);
   outColor = vec4(clamp(color, 0.0, 1.0), 1.0);
 }`;
 
 export function SilkPlate({
   src,
   light,
+  fit = "cover",
   still = false,
 }: {
   src: string;
   light: boolean;
+  /** "contain" shows the whole image with silk around it; "cover" fills the screen. */
+  fit?: "cover" | "contain";
   still?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -94,6 +116,7 @@ export function SilkPlate({
       ready: u("uReady"),
       silk: u("uSilk"),
       light: u("uLight"),
+      contain: u("uContain"),
     };
 
     let aspect = 1;
@@ -117,6 +140,7 @@ export function SilkPlate({
         gl.uniform1f(uniforms.ready, ready);
         gl.uniform3fv(uniforms.silk, silkColor);
         gl.uniform1f(uniforms.light, light ? 1 : 0);
+        gl.uniform1f(uniforms.contain, fit === "contain" ? 1 : 0);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
       },
       { still },
@@ -134,7 +158,7 @@ export function SilkPlate({
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
     };
-  }, [src, light, still]);
+  }, [src, light, fit, still]);
 
   return <canvas ref={canvasRef} className="block h-full w-full" />;
 }

@@ -1,6 +1,6 @@
 # Devir notu: nerede kaldık
 
-Son güncelleme: 2026-10-29 (Karar 8 / Aşama 2 tasarım seçimleri sürerken). Yeni bir sohbet buradan
+Son güncelleme: 2026-10-30 (Karar 8 / Aşama 2 tasarım seçimleri sürerken). Yeni bir sohbet buradan
 devam eder. Önce bu dosyayı, sonra `docs/frontend-playbook.md`'yi oku.
 
 ## Durum
@@ -12,9 +12,9 @@ devam eder. Önce bu dosyayı, sonra `docs/frontend-playbook.md`'yi oku.
 | Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 7/11 seçim bitti, 8. (arka plan) üzerinde çalışılıyor** |
 | Aşama 1: Temel + giriş | Bekliyor (Karar 8 bitince ya da paralel) |
 
-Ana branch: `main`. Çalışma branch'i: **`claude/blissful-wright-yju0fk`** (her şey push'lu;
-main'e **merge edilmedi**, PR açılmadı). Yeni sohbet ya bu branch'ten devam
-eder ya da önce bunu main'e mergeleyip yeni branch açar; proje sahibine sor.
+Ana branch: `main`. Önceki çalışma branch'i (`claude/blissful-wright-yju0fk`) PR #4 ile main'e
+**merge edildi**; o branch artık kullanılmıyor. Her oturum main'den yeni bir çalışma branch'i
+açar ve işi bitince main'e merge eder.
 
 ## Karar 8 / Aşama 2: nerede kaldık
 
@@ -40,7 +40,9 @@ eder ya da önce bunu main'e mergeleyip yeni branch açar; proje sahibine sor.
 
 - `/ui`: token'lar, yazı, butonlar, form, menü/diyalog/sekmeler, Türkçe tarih seçici, bildirim,
   anı kartı. Üstte kâğıt dokusu ve açık/koyu tema düğmeleri.
-- `/ui/login`: herbaryum giriş ekranı + arka plan seçici + "Sayfayı gizle".
+- `/ui/login`: herbaryum giriş ekranı + arka plan seçici + "Başka çiçek" + "Sayfayı gizle".
+  Adres parametreleri: `bg` (yok / ipek-buket / ipek-seyrek / ipek-tek), `cicek=<id>`,
+  `sayfa=gizli`.
 - `/ui/shell`: içe gömülü yan menü (masaüstü) / alt menü (mobil).
 - `/ui/icons`: Phosphor hafif ve normal.
 - Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
@@ -60,34 +62,32 @@ eder ya da önce bunu main'e mergeleyip yeni branch açar; proje sahibine sor.
 ### Şu an açık: #8 hareketli arka plan (giriş ekranı)
 
 - **Yön kararı:** "Silk + Curtis": Curtis çizimleri dalgalanan ipek kumaşa basılmış gibi.
-  Bileşen: `app/components/art/silk-plate.tsx` (kendi yazdığımız WebGL2 shader, harici
-  kütüphane yok) + `app/components/art/gl.ts` (döngü: ekran dışında/gizli sekmede/"hareketi
-  azalt"ta durur, çözünürlük telefonda 1, diğerlerinde 1.5 ile sınırlı).
-- Reddedilenler (kodları silindi): React Bits Particles, Aurora, Iridescence, Grid Motion,
-  Drift Wall, Logo Loop (kayan sıralar), duran duvar, düz Silk, 3D çiçek (görünmez çiçek
-  üzerinde akan çizimler).
-- Şu an canlıda iki görünüm var: "Silk + tek Curtis" (rastgele bir çizim ekranı kaplar) ve
-  "Silk + kolaj" (`public/flowers/collage.webp`, 5×3 büyük çizim, `pnpm flowers:collage`).
-- **Proje sahibinin son geri bildirimi (tablette baktı):**
-  1. Çok boşluk var: Curtis levhalarının **sarı kâğıt zemini** fazla yer kaplıyor.
-  2. Düz Silk'te **yansımalar ve dalgalanmalar** daha belirgindi; bunda belli olmuyor.
-  3. İstek: **olabildiğince çok çiçek, olabildiğince az sarı kâğıt zemini.**
-- **Planlanan çözüm (başlanmadı, proje sahibi onaylamıştı):**
-  - Build adımında bir script ile çiçekleri kâğıttan **kesip çıkarmak**: her levhanın kenar
-    piksellerinden kâğıt rengini bul (medyan), ona yakın pikselleri yumuşak kenarla saydam
-    yap; küçük ayrık lekeleri (yazılar, "No. 841", "Pub. by W. Curtis") alan eşiğiyle at;
-    sonuç `public/flowers/cutout/<id>.webp` (alfa kanallı). Sharp ile ham piksel + JS'de
-    bağlı bileşen taraması yeterli (Python gerekmez).
-  - Kesilmiş çiçekleri **yoğun bir buket/kolaj** olarak yerleştir: her parçayı en çok boş
-    alanı kapatacağı yere koyan açgözlü (greedy) yerleşim, örtüşmeye izin ver, hedef ~%90
-    kaplama. Çıktı alfa kanallı tek doku.
-  - Shader: alfa olmayan yerde ipek kumaş, alfa olan yerde çiçek. **İpek etkisini
-    güçlendir:** kıvrım kontrastı, gölge ve parlaklık düz Silk kadar belirgin olsun
-    (şu anki değerler: kıvrım çarpanı 0.82–1.06, parlaklık 0.32, kaydırma 0.012; artır).
-  - İki görünüm sun: yoğun kesik çiçek kolajı + tek büyük kesik çiçek (etrafı ipek).
-  - Tablet boyutlarında (1180×820 ve 820×1180) ekran görüntüsüyle kontrol et.
-- Belirsizlik: "çok boşluk var sayfada" herbaryum sayfasındaki boşluğu da kastediyor olabilir;
-  yeni sohbette kısaca teyit et.
+  Bileşen: `app/components/art/silk-plate.tsx` (kendi yazdığımız WebGL2 shader, harici kütüphane
+  yok) + `app/components/art/gl.ts` (döngü: ekran dışında/gizli sekmede/"hareketi azalt"ta durur,
+  çözünürlük telefonda 1, diğerlerinde 1.5 ile sınırlı).
+- **Çiçekler artık kâğıttan kesiliyor** (proje sahibinin "çok çiçek, az sarı kâğıt" isteği):
+  - `pnpm flowers:cutout` → `public/flowers/cutout/<id>.webp` (alfa kanallı, 61 levha, ~31 sn).
+    Yöntem ve sınırları `docs/frontend-playbook.md` §8'de.
+  - `pnpm flowers:bouquet` → `public/flowers/bouquet.webp` (63 çiçek, %93 kaplama) ve
+    `pnpm flowers:bouquet 0.72 seyrek` → `bouquet-seyrek.webp` (31 çiçek, %73).
+    Aynı komut `packages/shared/src/flowers/cutouts.json`'u da yazar (temiz çıkan 43 çiçek;
+    beyaz çiçekler ve çerçeveli taramalar `SKIP` listesinde).
+  - Shader alfayı okuyor: çiçeğin olmadığı yerde ipek görünüyor. İpek kontrastı, gölge ve
+    parlaklık artırıldı.
+- **Proje sahibinin kararı (30 Ekim):** üç görünüm sunuldu (yoğun buket, seyrek buket, tek
+  çiçek); **tek çiçek seçildi**. Buketlerde çiçekler ekranı kapattığı için ipeğin dalgalanması
+  görünmüyordu.
+- **Herbaryum yaprağı (8-6c):** iç boşluk ölçülüp seçenekler sunuldu; proje sahibi
+  **"böyle kalsın"** dedi. Yaprağa dokunulmayacak.
+- **Açık soru (sıradaki adım):** tek çiçek görünümünde çiçek ekranın ortasında duruyor ve
+  herbaryum yaprağı neredeyse tamamını kapatıyor; sadece uçları görünüyor. Seçenekler proje
+  sahibine sorulacak: (a) böyle kalsın, (b) çiçek büyüsün ve iki yandan taşsın, (c) çiçek
+  ortadan kayıp yaprağın yanında dursun, (d) çiçek yaprağın arkasından geçecek şekilde
+  yerleşsin. Ayrıca hangi çiçek(ler)in görüneceği de açık: şu an `cutouts.json`'dan rastgele
+  seçiliyor, `/ui/login?bg=ipek-tek&cicek=<id>` ile sabitlenebiliyor, "Başka çiçek" düğmesi
+  sırayla geziyor.
+- **Önizlemede kaldırılacaklar (seçim kesinleşince):** buket görünümleri ve `bouquet*.webp`
+  dosyaları; kesimler (`cutout/`) tek çiçek görünümü için gerekli, kalacak.
 
 ### Kalan seçimler
 

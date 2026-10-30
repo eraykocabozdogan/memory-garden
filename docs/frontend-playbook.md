@@ -173,9 +173,29 @@ records the options, the pick and why, so the next project can start from it.
   (`app/components/art/silk-plate.tsx` + `gl.ts`). Rejected after live comparison: React Bits
   Particles, Aurora, Iridescence, Grid Motion, Drift Wall, Logo Loop, plain Silk, a still plate
   wall, and a 3D flower made of flowing plates.
-- **Next:** cut the flowers out of their yellowed paper at build time (key out the paper colour
-  sampled from the plate edges, drop small specks such as captions), pack the cut-outs densely,
-  and make the silk folds and sheen as strong as plain Silk's. See `docs/handoff.md`.
+- **Cutting the flowers out of the paper** (`pnpm flowers:cutout`, `scripts/flower-cutout.mjs`):
+  read the paper colour as the median of the plate's border pixels; drop every pixel within a
+  Chebyshev distance of 34 of it, which takes the paper trapped between leaves as well; flood
+  from the border with a looser distance of 52, limited to pixels as yellow as the paper, for
+  stains and shadows; label what is left and drop islands under 2% of the largest, which removes
+  the engraved captions; feather the mask by about a pixel and trim. 31s for 61 plates.
+- **What the method cannot do:** near-white flowers on cream paper (white rose, white lilac,
+  white lily, narcissus, tulip) differ from the paper only by their outlines, and a hue guard
+  that saves them leaves paper blobs on other plates. Scans with a printed frame keep the frame.
+  Both are listed in a `SKIP` set in `scripts/flower-bouquet.mjs` rather than special-cased:
+  43 clean cut-outs out of 61 is plenty.
+- **Packing** (`pnpm flowers:bouquet`): keep a coverage grid at 1/8 scale; walk the catalogue in
+  rounds of decreasing size (50%, 36%, 26%, 18% of the sheet height); for each flower try a
+  coarse lattice of positions and keep the one that covers the most still-empty ground; stop at
+  the target coverage. 63 flowers reach 93%, 31 flowers 73%. Starting too large (95%) filled the
+  sheet with four flowers, so the scale ladder matters more than the placement rule.
+- **Transparency in the shader:** mix cloth and print by the image's alpha, so the silk shows
+  between the flowers. A straight `mix` leaves a pale halo around each cut-out's feathered edge;
+  `smoothstep(0.2, 0.7, alpha)` tightens it. For a single flower, "contain" with a margin beats
+  "cover", which crops the flower's head off screen.
+- **Density has a cost:** at 93% coverage the flowers hide the silk the owner asked to see more
+  of. The single large flower on bare silk reads best, and that is what he picked. See
+  `docs/handoff.md`.
 - **Lessons so far:**
   - React Bits' current backgrounds are raw WebGL2 with real safeguards (pause off-screen and
     in hidden tabs, pixel-ratio cap, reduced motion), checked in their source; but Aurora kept
@@ -187,8 +207,15 @@ records the options, the pick and why, so the next project can start from it.
   - Put a background layer in an `inert`, `aria-hidden` wrapper so nothing in it takes focus.
   - Show backgrounds with a "hide the sheet" toggle and check on the owner's real device size
     (tablet feedback changed the result twice).
-  - Generate image derivatives in a script (`pnpm flowers:collage`) instead of loading 16 MB
-    of full plates.
+  - Generate image derivatives in a script (`pnpm flowers:cutout`, `pnpm flowers:bouquet`)
+    instead of loading 16 MB of full plates.
+  - A backtick inside a comment in a GLSL template literal ends the string; TypeScript then
+    reports a syntax error on the next line of shader code.
+  - `sharp` hands a blurred one-channel raw buffer back as three channels: read the returned
+    `info.channels` as a stride instead of assuming one.
+  - `sharp` resizes before it composites, so resize in a second pass or the composite is
+    rejected as larger than the canvas; composite offsets must also be non-negative, so crop
+    whatever hangs over an edge yourself.
 
 ## Still to decide
 
