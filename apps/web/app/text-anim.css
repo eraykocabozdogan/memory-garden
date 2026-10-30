@@ -141,3 +141,25 @@
     transform: translateY(-8px);
   }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 9-3b Pen: each contour's mask stroke is drawn in turn; the duration and delay of each one
+     come from its length, set inline by the component, so the pen keeps a steady speed. */
+  .anim-kalem {
+    stroke-dasharray: 1;
+    animation-name: anim-pen;
+    animation-timing-function: linear;
+    animation-fill-mode: backwards;
+  }
+}
+
+/* Starts just past the end of the dash so a contour that has not had its turn yet cannot leave
+   a hairline where the pattern begins. */
+@keyframes anim-pen {
+  from {
+    stroke-dashoffset: 1.02;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

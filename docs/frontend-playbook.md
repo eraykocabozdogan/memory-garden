@@ -224,8 +224,28 @@ records the options, the pick and why, so the next project can start from it.
     rejected as larger than the canvas; composite offsets must also be non-negative, so crop
     whatever hangs over an edge yourself.
 
+### 9. Text animation (in progress)
+
+- Ten candidates live at `/ui/yazi`, all plain CSS (`app/text-anim.css`): nothing is installed
+  before the Motion decision. Each effect ends on the plain text, which is also what
+  `prefers-reduced-motion` shows, and a test asserts no animation runs in that case.
+- **A left-to-right wipe is not handwriting.** Asked for "a pen drawing each letter", a mask
+  sweep is the cheap answer and the owner saw through it immediately. Real writing needs the
+  glyph outlines: extract them at build time, split them per contour, and let a thick mask
+  stroke travel along each in turn (`scripts/handwriting-path.mjs`, `components/handwriting.tsx`).
+  It only works for fixed lines; text a visitor types has no path to follow.
+- Four traps on the way there, each one silent:
+  - opentype.js reads a *variable* font's outlines as `.notdef` boxes. Use the static face.
+  - Fontsource splits a face into subsets: basic Latin and the Turkish letters are in different
+    files, so compose the line character by character from whichever subset has each one.
+  - A dash pattern restarts at every `M`, so one path for a whole line cannot be drawn
+    progressively; give each contour its own path and its own delay.
+  - A round line cap paints a blob on a zero-length dash, which showed every dot and cedilla
+    before the pen reached it. Butt caps, and start the offset just past the end of the dash.
+- Share the time between contours by their length, or the pen spends as long on a dot as on a
+  letter.
+
 ## Still to decide
 
-9. Text animation
 10. Motion
 11. Special components

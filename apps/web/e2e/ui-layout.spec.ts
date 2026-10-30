@@ -107,7 +107,7 @@ test("the silk background sits behind the sheet and keeps the form usable", asyn
 test("every text animation candidate renders and can be replayed", async ({ page }) => {
   await page.goto("/ui/yazi");
 
-  const ids = ["9-1", "9-2", "9-3", "9-4a", "9-4b", "9-4c", "9-4d", "9-4e", "9-5"];
+  const ids = ["9-1", "9-2", "9-3", "9-3b", "9-4a", "9-4b", "9-4c", "9-4d", "9-4e", "9-5"];
   for (const id of ids) {
     await expect(page.getByTestId(`aday-${id}`)).toBeVisible();
   }
@@ -133,4 +133,9 @@ test("text animations are skipped when the visitor asks for less motion", async 
   )) as number;
   expect(running).toBe(0);
   await expect(page.getByTestId("aday-9-4c")).toContainText("Bahçende 47 anı açtı");
+  // The written line is an image, so its text has to reach a screen reader through its label.
+  await expect(page.getByTestId("aday-9-3b").getByRole("img")).toHaveAttribute(
+    "aria-label",
+    "Her anı bir çiçek…",
+  );
 });

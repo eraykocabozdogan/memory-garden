@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 
+import { Handwriting } from "~/components/handwriting";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import type { Route } from "./+types/ui-text";
@@ -112,6 +113,12 @@ const CANDIDATES: Candidate[] = [
     title: "9-3 · El yazısı yazılıyor",
     note: "Kalem soldan sağa yazıyormuş gibi. Yalnızca el yazısı notlar için.",
     render: () => <p className="anim-elyazisi font-hand text-4xl text-muted-foreground">{HAND}</p>,
+  },
+  {
+    id: "9-3b",
+    title: "9-3b · Kalemle çiziliyor",
+    note: "Harflerin kendi yolu takip ediliyor: kalem harf harf çiziyor. Yalnızca sabit metinler.",
+    render: () => <Handwriting className="h-20 w-full max-w-md text-muted-foreground" />,
   },
   {
     id: "9-4a",

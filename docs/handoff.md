@@ -80,11 +80,19 @@ açar ve işi bitince main'e merge eder.
 
 ### Şu an açık: #9 yazı animasyonu
 
-- Dokuz aday `/ui/yazi` sayfasında canlı: 9-1 animasyon yok, 9-2 yumuşak beliriş,
-  9-3 el yazısı yazılıyor, 9-4a harf harf, 9-4b bulanıktan netleşme, 9-4c daktilo,
-  9-4d parlama, 9-4e dönen kelime, 9-5 sayaç.
+- On aday `/ui/yazi` sayfasında canlı: 9-1 animasyon yok, 9-2 yumuşak beliriş,
+  9-3 el yazısı (maske süpürmesi), **9-3b kalemle çiziliyor**, 9-4a harf harf,
+  9-4b bulanıktan netleşme, 9-4c daktilo, 9-4d parlama, 9-4e dönen kelime, 9-5 sayaç.
 - Hepsi sade CSS (`app/text-anim.css`); hiçbir paket kurulmadı. Motion kararı (#10) henüz
   verilmedi, verilirse bunlar oraya taşınabilir.
+- **9-3b nasıl çalışıyor:** `pnpm handwriting` (`scripts/handwriting-path.mjs`) Caveat
+  harflerinin yollarını çıkarıp `app/lib/handwriting.json`'a yazar; `components/handwriting.tsx`
+  her konturu ayrı bir maske çizgisi olarak sırayla çizdirir. Yalnızca **sabit** metinler için;
+  kullanıcının yazdığı metnin yolu olmadığı için bu efekt onlara uygulanamaz.
+  - Tuzaklar: değişken (variable) Caveat'i opentype.js okuyamıyor, statik sürüm gerekiyor;
+    Fontsource temel Latin ile Türkçe harfleri ayrı dosyalara bölüyor, ikisi birleştirilmeli;
+    kesik çizgi deseni her `M`'de sıfırlandığı için konturlar ayrı yollara bölünmeli;
+    yuvarlak kalem ucu sıfır uzunlukta bile iz bıraktığından uç düz (`butt`) olmalı.
 - Claude'un önerisi: genel dil **9-2**, giriş ekranındaki el yazısı için **9-3**, geri sayım
   kartı için **9-5**; 9-4 ailesi "paper-like" hissine ters düştüğü için önerilmedi.
 - Seçim yapılınca: kazanan efektleri gerçek ekranlara bağla, kaybedenleri
