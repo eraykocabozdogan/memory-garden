@@ -44,6 +44,7 @@ açar ve işi bitince main'e merge eder.
   Adres parametreleri: `bg` (yok / ipek-buket), `sayfa=gizli`.
 - `/ui/shell`: içe gömülü yan menü (masaüstü) / alt menü (mobil).
 - `/ui/icons`: Phosphor hafif ve normal.
+- `/ui/yazi`: Karar 9'un dokuz yazı animasyonu adayı yan yana, "Tekrar oynat" ile baştan oynar.
 - Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
 
 ### Bitmiş seçimler (ayrıntı: `docs/decisions.md` 8-1…8-7, playbook §1–7)
@@ -77,9 +78,21 @@ açar ve işi bitince main'e merge eder.
 - **Herbaryum yaprağı (8-6c):** iç boşluk ölçülüp seçenekler sunuldu; proje sahibi
   **"böyle kalsın"** dedi. Yaprağa dokunulmadı.
 
+### Şu an açık: #9 yazı animasyonu
+
+- Dokuz aday `/ui/yazi` sayfasında canlı: 9-1 animasyon yok, 9-2 yumuşak beliriş,
+  9-3 el yazısı yazılıyor, 9-4a harf harf, 9-4b bulanıktan netleşme, 9-4c daktilo,
+  9-4d parlama, 9-4e dönen kelime, 9-5 sayaç.
+- Hepsi sade CSS (`app/text-anim.css`); hiçbir paket kurulmadı. Motion kararı (#10) henüz
+  verilmedi, verilirse bunlar oraya taşınabilir.
+- Claude'un önerisi: genel dil **9-2**, giriş ekranındaki el yazısı için **9-3**, geri sayım
+  kartı için **9-5**; 9-4 ailesi "paper-like" hissine ters düştüğü için önerilmedi.
+- Seçim yapılınca: kazanan efektleri gerçek ekranlara bağla, kaybedenleri
+  `app/text-anim.css` ve `/ui/yazi` ile birlikte sil, `decisions.md` ve playbook'a işle.
+
 ### Kalan seçimler
 
-- #9 Yazı animasyonu, #10 Hareket (Motion), #11 Özel bileşenler (dosya yükleme, galeri/tam
+- #10 Hareket (Motion), #11 Özel bileşenler (dosya yükleme, galeri/tam
   ekran görüntüleyici, tarih seçici/zaman çizelgesi, geri sayım kartı; 21st.dev, Kibo UI,
   ayrıca React Bits'in galerileri: Dome Gallery, Circular Gallery, Masonry, bahçe/rehber için)
 - Ertelenenler: kâğıt dokusu (sonda), **uygulama içinde arka plan** (S3: donmuş ipek karesi,

@@ -4,6 +4,7 @@
 @import "./theme.css";
 @import "./typography.css";
 @import "./shape.css";
+@import "./text-anim.css";
 
 /* Dark mode is a class on <html>, set by the theme switcher. */
 @custom-variant dark (&:where(.dark, .dark *));

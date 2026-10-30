@@ -103,3 +103,34 @@ test("the silk background sits behind the sheet and keeps the form usable", asyn
   await page.getByRole("button", { name: "Sayfayı gizle" }).click();
   await expect(page.getByLabel("Kullanıcı adı")).toBeHidden();
 });
+
+test("every text animation candidate renders and can be replayed", async ({ page }) => {
+  await page.goto("/ui/yazi");
+
+  const ids = ["9-1", "9-2", "9-3", "9-4a", "9-4b", "9-4c", "9-4d", "9-4e", "9-5"];
+  for (const id of ids) {
+    await expect(page.getByTestId(`aday-${id}`)).toBeVisible();
+  }
+
+  // The animations end on the plain text, so the heading reads the same however it arrived.
+  await expect(page.getByTestId("aday-9-2")).toContainText("Bahçende 47 anı açtı");
+  // The counter reaches its target rather than stopping somewhere along the way.
+  await expect(page.getByTestId("aday-9-5")).toContainText("47");
+  await expect(page.getByTestId("aday-9-5")).toContainText("128 gün");
+
+  await page.getByRole("button", { name: "Tekrar oynat" }).click();
+  await expect(page.getByTestId("aday-9-2")).toContainText("Bahçende 47 anı açtı");
+});
+
+test("text animations are skipped when the visitor asks for less motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ui/yazi");
+
+  // No animation runs at all: the text is simply there, including the typewriter's full line.
+  // (Evaluated as a string: the e2e tsconfig has no DOM types.)
+  const running = (await page.evaluate(
+    `document.getAnimations().filter((a) => a.playState === "running").length`,
+  )) as number;
+  expect(running).toBe(0);
+  await expect(page.getByTestId("aday-9-4c")).toContainText("Bahçende 47 anı açtı");
+});
