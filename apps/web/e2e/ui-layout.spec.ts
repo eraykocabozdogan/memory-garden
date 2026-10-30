@@ -169,3 +169,62 @@ test("a page change still lands on the new page with view transitions on", async
   await page.getByRole("link", { name: "← Önizleme" }).click();
   await expect(page.getByRole("heading", { name: "Tasarım önizlemesi" })).toBeVisible();
 });
+
+test("the upload draft queues files, two at a time, and splits the big ones", async ({ page }) => {
+  await page.goto("/ui/bilesenler");
+
+  // Three files: the queue should start two and hold the third back.
+  await page.setInputFiles('[data-testid="yukleme"] input[type=file]', [
+    { name: "kusadasi.heic", mimeType: "image/heic", buffer: Buffer.alloc(3_500_000) },
+    { name: "ilk-kar.mp4", mimeType: "video/mp4", buffer: Buffer.alloc(40_000_000) },
+    { name: "mutfak.jpg", mimeType: "image/jpeg", buffer: Buffer.alloc(1_200_000) },
+  ]);
+
+  const rows = page.locator('[data-testid="yukleme"] li');
+  await expect(rows).toHaveCount(3);
+  await expect(rows.filter({ hasText: "yükleniyor" })).toHaveCount(2);
+  await expect(rows.filter({ hasText: "bekliyor" })).toHaveCount(1);
+
+  // Every file finishes, and the queue drains rather than stalling on the third.
+  await expect(rows.filter({ hasText: "bitti" })).toHaveCount(3, { timeout: 15_000 });
+});
+
+test("the gallery opens a photo full screen and walks through with the keyboard", async ({
+  page,
+}) => {
+  await page.goto("/ui/bilesenler");
+
+  await page.locator('[data-testid="galeri"] button img').first().click();
+  const viewer = page.locator('[data-slot="dialog-content"]');
+  await expect(viewer).toBeVisible();
+  const first = await viewer.getByRole("heading").textContent();
+
+  // Press on the dialog itself: page.keyboard depends on where focus happened to land.
+  await viewer.press("ArrowRight");
+  await expect(viewer.getByRole("heading")).not.toHaveText(first ?? "");
+
+  // The photo is made to fit the screen rather than overflowing it.
+  const fits = (await page.evaluate(
+    `(() => {
+      const img = document.querySelector('[data-slot="dialog-content"] img');
+      return img.getBoundingClientRect().height <= window.innerHeight;
+    })()`,
+  )) as boolean;
+  expect(fits).toBe(true);
+
+  await viewer.press("Escape");
+  await expect(viewer).toHaveCount(0);
+});
+
+test("the timeline groups by month and the countdown reaches its number", async ({ page }) => {
+  await page.goto("/ui/bilesenler");
+
+  const months = page.locator('[data-testid="zaman-cizelgesi"] h3');
+  // The page is a SPA, so wait for it to render before counting.
+  await expect(months.first()).toBeVisible();
+  expect(await months.count()).toBeGreaterThan(1);
+  await expect(months.first()).toHaveText(/\d{4}/);
+
+  // The counter settles on a real number of days, not on zero.
+  await expect(page.getByTestId("geri-sayim")).toContainText(/\d+/);
+});

@@ -46,6 +46,8 @@ açar ve işi bitince main'e merge eder.
 - `/ui/icons`: Phosphor hafif ve normal.
 - `/ui/yazi`: Karar 9'un üç kazanan efekti, "Tekrar oynat" ile baştan oynar.
 - `/ui/gecis`: Karar 10'un geçişleri — anı kartından tam ekrana ve listeye ekleme/silme.
+- `/ui/bilesenler`: Karar 11'in dört taslağı — yükleme, galeri + görüntüleyici, zaman
+  çizelgesi, geri sayım. Yükleme burada taklit; gerçek transfer Aşama 5.
 - Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
 
 ### Bitmiş seçimler (ayrıntı: `docs/decisions.md` 8-1…8-7, playbook §1–7)
@@ -111,9 +113,23 @@ açar ve işi bitince main'e merge eder.
 - **Silinen:** Motion (14.8.0) ve `/ui/gecis`'teki üç modlu karşılaştırma. Motion kararı
   **#11'e bırakıldı**: oradaki galeri/dosya yükleme bileşenleri gerçekten isterse bilinçli eklenecek.
 
-### Kalan seçimler
+### Şu an açık: #11 özel bileşenler
 
-- #11 Özel bileşenler (dosya yükleme, galeri/tam
+- Dört taslak `/ui/bilesenler` sayfasında **çalışır hâlde**, hepsi elde yazıldı, yeni paket yok:
+  - **Yükleme:** sürükle-bırak (bırakma alanı dosya girdisinin kendi etiketi), kuyruk, aynı anda
+    2 dosya, 100 MB üstü için parça sayısı, iptal. Transfer taklit ediliyor; gerçeği Aşama 5.
+  - **Galeri:** Izgara ↔ Masonry düğmesi (`columns` ile, paket yok).
+  - **Görüntüleyici:** tam ekran diyalog + View Transitions ile kartın büyümesi; ok tuşları,
+    kaydırma, Esc. Yakınlaştırma **yok** (gerekirse ayrıca karar).
+  - **Zaman çizelgesi:** aya göre gruplama, yapışkan ay başlığı, yan nokta şeridi.
+  - **Geri sayım:** Karar 9-5'in sayacıyla.
+- Claude'un önerisi: hepsini elde yazmak (11a-1, 11b-2, 11c-1, 11d-1, 11e-1); böylece Motion'a
+  da gerek kalmaz ve #10'daki erteleme "hayır" olarak kapanır. Riskli parça görüntüleyici:
+  yakınlaştırma ve kenar durumları iş çıkarırsa `yet-another-react-lightbox`'a dönülebilir.
+- Seçim yapılınca: beğenilmeyenleri sil, kazananları `components/` altına taşı ve
+  `decisions.md` + playbook'a işle.
+
+### Kalan seçimler (dosya yükleme, galeri/tam
   ekran görüntüleyici, tarih seçici/zaman çizelgesi, geri sayım kartı; 21st.dev, Kibo UI,
   ayrıca React Bits'in galerileri: Dome Gallery, Circular Gallery, Masonry, bahçe/rehber için)
 - Ertelenenler: kâğıt dokusu (sonda), **uygulama içinde arka plan** (S3: donmuş ipek karesi,
