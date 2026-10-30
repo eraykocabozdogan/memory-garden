@@ -167,9 +167,10 @@ records the options, the pick and why, so the next project can start from it.
 - **Test:** the default weight and the navigation override render different paths, and a
   button's icon matches the default.
 
-### 8. Animated background (in progress)
+### 8. Animated background
 
-- **Direction:** Curtis plates printed on rippling silk, hand-written WebGL2
+- **Chosen:** a dense bouquet of cut-out Curtis flowers (63 of them, 93% of the sheet covered)
+  printed on rippling silk, hand-written WebGL2
   (`app/components/art/silk-plate.tsx` + `gl.ts`). Rejected after live comparison: React Bits
   Particles, Aurora, Iridescence, Grid Motion, Drift Wall, Logo Loop, plain Silk, a still plate
   wall, and a 3D flower made of flowing plates.
@@ -193,9 +194,13 @@ records the options, the pick and why, so the next project can start from it.
   between the flowers. A straight `mix` leaves a pale halo around each cut-out's feathered edge;
   `smoothstep(0.2, 0.7, alpha)` tightens it. For a single flower, "contain" with a margin beats
   "cover", which crops the flower's head off screen.
-- **Density has a cost:** at 93% coverage the flowers hide the silk the owner asked to see more
-  of. The single large flower on bare silk reads best, and that is what he picked. See
-  `docs/handoff.md`.
+- **Density has a cost, and the owner may still want it:** at 93% coverage the flowers hide the
+  silk he had asked to see more of. Shown all three, he first picked the single large flower on
+  bare silk, then came back to the dense bouquet. Build the cheap variants and let the person
+  decide on their own device; do not reason the choice out for them.
+- **Keep the intermediates out of the repo:** the 61 cut-outs are 11 MB and only feed the sheet,
+  so they are written to a gitignored `.cache/` instead of the served `public/` folder. Only the
+  1.1 MB sheet ships.
 - **Lessons so far:**
   - React Bits' current backgrounds are raw WebGL2 with real safeguards (pause off-screen and
     in hidden tabs, pixel-ratio cap, reduced motion), checked in their source; but Aurora kept
@@ -206,7 +211,9 @@ records the options, the pick and why, so the next project can start from it.
     `dim={0}` made it invisible.
   - Put a background layer in an `inert`, `aria-hidden` wrapper so nothing in it takes focus.
   - Show backgrounds with a "hide the sheet" toggle and check on the owner's real device size
-    (tablet feedback changed the result twice).
+    (tablet feedback changed the result three times).
+  - Measure before offering layout options: outlining the sheet's columns in a screenshot turned
+    "there is too much empty space" into two numbers, and the answer was "leave it as it is".
   - Generate image derivatives in a script (`pnpm flowers:cutout`, `pnpm flowers:bouquet`)
     instead of loading 16 MB of full plates.
   - A backtick inside a comment in a GLSL template literal ends the string; TypeScript then

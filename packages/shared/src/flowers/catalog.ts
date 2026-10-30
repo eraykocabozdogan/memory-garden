@@ -1,5 +1,4 @@
 import catalogData from "./catalog-data.json";
-import cutoutIds from "./cutouts.json";
 import flowerArtwork from "./flower-artwork.json";
 
 export type FlowerArtwork = {
@@ -86,9 +85,3 @@ export function scientificName(flower: Pick<FlowerCatalogEntry, "path">) {
   const latin = parts.slice(0, 2).filter((part) => !VARIANT_DESCRIPTORS.has(part));
   return latin.join(" ");
 }
-
-/**
- * Flowers whose cut-out (`pnpm flowers:cutout`) came out clean enough to show on its own, written
- * by `pnpm flowers:bouquet`. Near-white flowers and framed scans are left out there.
- */
-export const cutoutFlowerIds: readonly string[] = cutoutIds;

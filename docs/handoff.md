@@ -9,7 +9,7 @@ devam eder. Önce bu dosyayı, sonra `docs/frontend-playbook.md`'yi oku.
 |---|---|
 | Karar 1–7, 9 ve mimari | **Kararlaştırıldı** (`docs/decisions.md`, `docs/architecture.md`) |
 | Aşama 0: Hazırlık | **Onaylandı** |
-| Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 7/11 seçim bitti, 8. (arka plan) üzerinde çalışılıyor** |
+| Karar 8: UI = Aşama 2 (tasarım sistemi) | **Sürüyor: 8/11 seçim bitti, sıradaki 9 (yazı animasyonu)** |
 | Aşama 1: Temel + giriş | Bekliyor (Karar 8 bitince ya da paralel) |
 
 Ana branch: `main`. Önceki çalışma branch'i (`claude/blissful-wright-yju0fk`) PR #4 ile main'e
@@ -40,9 +40,8 @@ açar ve işi bitince main'e merge eder.
 
 - `/ui`: token'lar, yazı, butonlar, form, menü/diyalog/sekmeler, Türkçe tarih seçici, bildirim,
   anı kartı. Üstte kâğıt dokusu ve açık/koyu tema düğmeleri.
-- `/ui/login`: herbaryum giriş ekranı + arka plan seçici + "Başka çiçek" + "Sayfayı gizle".
-  Adres parametreleri: `bg` (yok / ipek-buket / ipek-seyrek / ipek-tek), `cicek=<id>`,
-  `sayfa=gizli`.
+- `/ui/login`: herbaryum giriş ekranı + arka plan seçici + "Sayfayı gizle".
+  Adres parametreleri: `bg` (yok / ipek-buket), `sayfa=gizli`.
 - `/ui/shell`: içe gömülü yan menü (masaüstü) / alt menü (mobil).
 - `/ui/icons`: Phosphor hafif ve normal.
 - Kod: `apps/web/app/routes/ui*.tsx`. Ürün değil; tasarım bitince kaldırılacak ya da gizlenecek.
@@ -58,36 +57,25 @@ açar ve işi bitince main'e merge eder.
    (`app/components/herbarium-login.tsx`: günün çiçeği yalnız sıcak anlamlı 10 çiçekten,
    `app/lib/login-flower.ts`; Latince ad `scientificName()` ile; levha numarası kaldırıldı)
 7. İkonlar: Phosphor, varsayılan hafif, gezinmede normal (`root.tsx` IconContext)
+8. Hareketli arka plan: kesilmiş Curtis çiçeklerinden yoğun buket, ipeğe basılmış gibi
 
-### Şu an açık: #8 hareketli arka plan (giriş ekranı)
+### Biten: #8 hareketli arka plan (giriş ekranı) — yoğun buket
 
-- **Yön kararı:** "Silk + Curtis": Curtis çizimleri dalgalanan ipek kumaşa basılmış gibi.
-  Bileşen: `app/components/art/silk-plate.tsx` (kendi yazdığımız WebGL2 shader, harici kütüphane
-  yok) + `app/components/art/gl.ts` (döngü: ekran dışında/gizli sekmede/"hareketi azalt"ta durur,
-  çözünürlük telefonda 1, diğerlerinde 1.5 ile sınırlı).
-- **Çiçekler artık kâğıttan kesiliyor** (proje sahibinin "çok çiçek, az sarı kâğıt" isteği):
-  - `pnpm flowers:cutout` → `public/flowers/cutout/<id>.webp` (alfa kanallı, 61 levha, ~31 sn).
-    Yöntem ve sınırları `docs/frontend-playbook.md` §8'de.
-  - `pnpm flowers:bouquet` → `public/flowers/bouquet.webp` (63 çiçek, %93 kaplama) ve
-    `pnpm flowers:bouquet 0.72 seyrek` → `bouquet-seyrek.webp` (31 çiçek, %73).
-    Aynı komut `packages/shared/src/flowers/cutouts.json`'u da yazar (temiz çıkan 43 çiçek;
-    beyaz çiçekler ve çerçeveli taramalar `SKIP` listesinde).
-  - Shader alfayı okuyor: çiçeğin olmadığı yerde ipek görünüyor. İpek kontrastı, gölge ve
-    parlaklık artırıldı.
-- **Proje sahibinin kararı (30 Ekim):** üç görünüm sunuldu (yoğun buket, seyrek buket, tek
-  çiçek); **tek çiçek seçildi**. Buketlerde çiçekler ekranı kapattığı için ipeğin dalgalanması
-  görünmüyordu.
+- **Seçim:** Curtis çiçekleri kâğıttan kesilip tek bir yaprakta yoğun biçimde dizildi ve
+  dalgalanan ipeğe basılmış gibi gösteriliyor. Kendi yazdığımız WebGL2 shader
+  (`app/components/art/silk-plate.tsx` + `app/components/art/gl.ts`; döngü ekran dışında, gizli
+  sekmede ve "hareketi azalt"ta durur, çözünürlük telefonda 1, diğerlerinde 1.5 ile sınırlı).
+- **Üretim zinciri** (ikisi de elle çalıştırılır, çıktı commit'lenir):
+  1. `pnpm flowers:cutout` → `.cache/flowers/cutout/<id>.webp` (alfa kanallı, 61 levha, ~31 sn).
+     `.cache/` gitignore'da: bu dosyalar 11 MB ve yalnızca buketi beslediği için repoya girmiyor.
+  2. `pnpm flowers:bouquet` → `apps/web/public/flowers/bouquet.webp` (2200×1600, 63 çiçek,
+     %93 kaplama, 1,1 MB). Yöntem ve sınırları `docs/frontend-playbook.md` §8'de.
+  - Kesimi temiz çıkmayan 18 levha (beyaz çiçekler, çerçeveli taramalar, hazır kırpılmış gül
+    fotoğrafları) `scripts/flower-bouquet.mjs` içindeki `SKIP` listesinde; gerekçesi orada yazılı.
+- **Silinenler:** seyrek buket, tek büyük çiçek görünümü ve shader'ın "contain" modu, eski levha
+  kolajı (`collage.webp` + script), `cutouts.json` ve `cutoutFlowerIds`.
 - **Herbaryum yaprağı (8-6c):** iç boşluk ölçülüp seçenekler sunuldu; proje sahibi
-  **"böyle kalsın"** dedi. Yaprağa dokunulmayacak.
-- **Açık soru (sıradaki adım):** tek çiçek görünümünde çiçek ekranın ortasında duruyor ve
-  herbaryum yaprağı neredeyse tamamını kapatıyor; sadece uçları görünüyor. Seçenekler proje
-  sahibine sorulacak: (a) böyle kalsın, (b) çiçek büyüsün ve iki yandan taşsın, (c) çiçek
-  ortadan kayıp yaprağın yanında dursun, (d) çiçek yaprağın arkasından geçecek şekilde
-  yerleşsin. Ayrıca hangi çiçek(ler)in görüneceği de açık: şu an `cutouts.json`'dan rastgele
-  seçiliyor, `/ui/login?bg=ipek-tek&cicek=<id>` ile sabitlenebiliyor, "Başka çiçek" düğmesi
-  sırayla geziyor.
-- **Önizlemede kaldırılacaklar (seçim kesinleşince):** buket görünümleri ve `bouquet*.webp`
-  dosyaları; kesimler (`cutout/`) tek çiçek görünümü için gerekli, kalacak.
+  **"böyle kalsın"** dedi. Yaprağa dokunulmadı.
 
 ### Kalan seçimler
 

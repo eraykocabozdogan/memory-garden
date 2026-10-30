@@ -27,3 +27,6 @@ test-results/
 *.tsbuildinfo
 npm-debug.log*
 pnpm-debug.log*
+
+# generated image intermediates (pnpm flowers:cutout)
+.cache/

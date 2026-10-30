@@ -1,21 +1,15 @@
 // Packs the cut-out flowers into one sheet for the login background: as much flower and as little
-// empty space as possible (the owner's request). Overlap is allowed; each flower goes where it
-// covers the most still-empty ground.
-// Usage: pnpm flowers:bouquet            dense, 93% covered -> bouquet.webp
-//        pnpm flowers:bouquet 0.72 seyrek  looser, so the silk shows between the flowers
-import { existsSync, readdirSync, writeFileSync } from "node:fs";
+// empty space as possible (the owner's request, decision 8-8). Overlap is allowed; each flower
+// goes where it covers the most still-empty ground.
+// Usage: pnpm flowers:cutout && pnpm flowers:bouquet
+import { existsSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import sharp from "sharp";
 
 const root = new URL("../apps/web/public/flowers/", import.meta.url);
-const cutDir = fileURLToPath(new URL("cutout/", root));
-const target = Number(process.argv[2] ?? 0.93);
-const suffix = process.argv[3] ? `-${process.argv[3]}` : "";
-const out = fileURLToPath(new URL(`bouquet${suffix}.webp`, root));
-const idsOut = fileURLToPath(
-  new URL("../packages/shared/src/flowers/cutouts.json", import.meta.url),
-);
+const cutDir = fileURLToPath(new URL("../.cache/flowers/cutout/", import.meta.url));
+const out = fileURLToPath(new URL("bouquet.webp", root));
 
 // Plates whose cut-out is poor, so they would show as pale ghosts or leftover paper blobs:
 // near-white flowers the paper threshold cannot separate (white rose, white lilac, white lily,
@@ -46,7 +40,7 @@ const SKIP = new Set([
 const WIDTH = 2200;
 const HEIGHT = 1600;
 const GRID = 8; // the coverage map runs at 1/8 scale
-const TARGET = target; // stop once this much of the sheet is covered
+const TARGET = 0.93; // stop once this much of the sheet is covered
 const ROUNDS = 4; // passes over the catalogue, each one smaller than the last
 const SCALES = [0.5, 0.36, 0.26, 0.18]; // flower height as a share of the sheet height
 const TILT = [-14, -7, 0, 7, 14];
@@ -157,9 +151,7 @@ const info = await sharp({
   .webp({ quality: 80, alphaQuality: 90 })
   .toFile(out);
 
-if (!existsSync(out)) throw new Error(`bouquet${suffix}.webp yazılamadı`);
-// The login background's other view shows a single cut-out, drawn from this same list.
-writeFileSync(idsOut, `${JSON.stringify(ids, null, 2)}\n`);
+if (!existsSync(out)) throw new Error("bouquet.webp yazılamadı");
 console.log(
-  `bouquet${suffix}.webp: ${WIDTH}×${HEIGHT}, ${placements.length} çiçek, kaplama %${((coveredCount / covered.length) * 100).toFixed(1)}, ${Math.round(info.size / 1024)} KB`,
+  `bouquet.webp: ${WIDTH}×${HEIGHT}, ${placements.length} çiçek, kaplama %${((coveredCount / covered.length) * 100).toFixed(1)}, ${Math.round(info.size / 1024)} KB`,
 );

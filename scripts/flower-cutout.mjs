@@ -1,5 +1,6 @@
 // Cuts each Curtis plate's flower out of its paper, so the login background can show flowers
-// instead of yellow paper. Writes alpha-channel WebP files to apps/web/public/flowers/cutout/.
+// instead of yellow paper. The cut-outs are an intermediate step towards the bouquet sheet, not
+// something the app serves, so they are written to the gitignored .cache/flowers/cutout/.
 // Usage: pnpm flowers:cutout [id ...]   (no ids = the whole catalog)
 //
 // How it works, per plate:
@@ -17,7 +18,7 @@ import sharp from "sharp";
 
 const root = new URL("../apps/web/public/flowers/", import.meta.url);
 const artDir = fileURLToPath(new URL("art/", root));
-const outDir = fileURLToPath(new URL("cutout/", root));
+const outDir = fileURLToPath(new URL("../.cache/flowers/cutout/", import.meta.url));
 const catalog = JSON.parse(
   readFileSync(
     fileURLToPath(new URL("../packages/shared/src/flowers/catalog-data.json", import.meta.url)),
