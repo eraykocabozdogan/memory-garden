@@ -131,6 +131,36 @@ açar ve işi bitince main'e merge eder.
 - Seçim yapılınca: beğenilmeyenleri sil, kazananları `components/` altına taşı ve
   `decisions.md` + playbook'a işle.
 
+### Açık ve önemli: tasarım seçimlerini nasıl yapacağız
+
+Proje sahibi 30 Ekim'de süreçten memnun olmadığını söyledi: **"Componentler, layout falan nasıl
+seçebiliriz kötü böyle"** ve ardından **"sadece geri sayım değil, genel içerikler işte"**.
+
+Claude'un teşhisi (yeni sohbet buradan devam etsin):
+
+- Şimdiye kadar **bağlamsız bileşenler** ve **uydurma içerik** gösterildi (Curtis çizimleri
+  fotoğraf yerine, "Yeni anı 1" satırları). Yerleşim ancak gerçek ekranda, gerçek içerikle
+  değerlendirilebilir.
+- Her adımda tek bir taslak sunulup "beğendin mi?" diye soruldu; bu seçim değil, onay/ret.
+- Süreçteki en iyi sonuç **giriş ekranıydı (8-6b)**: çünkü tek tek bileşen değil, gerçek
+  içerikli bütün bir ekrandı.
+
+Sunulan seçenekler (cevap bekliyor):
+
+- **Y1** Bileşen vitrinini bırakıp gerçek ekranları kurmak (bahçe, anılar, anı detayı, özel
+  günler) — gerçekçi Türkçe içerikle.
+- **Y2** Her ekranın 2–3 yerleşim varyantını yan yana sunmak.
+- **Y3** Önce proje sahibinden referans toplamak (beğendiği uygulama/site ekran görüntüleri),
+  sonra onları Parchment temasına uyarlamak.
+- **Y4** Önce ucuz statik maket, sonra sadece kazananın kodu.
+- Claude'un önerisi: **Y3 + Y1**, kritik ekranlarda Y2.
+
+Ayrıca sorulan ama cevaplanmayan soru: "genel içerikler kötü" derken kastedilen **(a)** örnek
+metinlerin kendisi mi, **(b)** yerleşim ve boşluklar mı, **(c)** dil ve ton mu, yoksa hepsi mi.
+
+**Yeni sohbet önce bu iki soruyu sormalı; Karar 11'in kalanı (geri sayımın üç varyantı ve
+yükleme/galeri/görüntüleyicinin onayı) buna göre şekillenecek.**
+
 ### Kalan seçimler (dosya yükleme, galeri/tam
   ekran görüntüleyici, tarih seçici/zaman çizelgesi, geri sayım kartı; 21st.dev, Kibo UI,
   ayrıca React Bits'in galerileri: Dome Gallery, Circular Gallery, Masonry, bahçe/rehber için)
