@@ -218,6 +218,7 @@ Ertelenenler: kâğıt dokusunun son hali; uygulama içi arka plan (donmuş ipek
 
 En yenisi üstte. Seçeneklerin ayrıntılı karşılaştırması git geçmişinde (`docs/decisions.md`, 2026-10-31 öncesi).
 
+- **2026-10-31 (ekran tasarımı):** Görsel dil oturdu; ekranların içeriği, yerleşimi ve özellikleri henüz oturmadı. Yöntem: her ekran için 2–3 statik maket yan yana (yapıda ayrışan: içerik, gezinme, filtreler); seçilenin kodu yazılır, reddedilen maketler silinir. `/ui*` sayfaları gerçek ekranlar bileşenleri kullanana kadar kalır. Maketler gri kutulu taslak; önce bütün ekranların kaba haritası.
 - **2026-10-31 (tasarım):** #11 kilitlendi, tasarım listesi bitti; galeri en kısa sütuna yerleşir, ay çizgisi basamaklı; geri sayım herbaryum etiketi; Motion'a sonra tekrar bakılacak; yerleşim ekranın tamamını kullanır.
 - **2026-10-31:** Dokümanlar ortak şablona taşındı; `docs/`, proje içi CLAUDE.md ve `frontend-playbook.md` kaldırıldı (playbook'un özü §6'ya, teknik tuzakları SYSTEM'e). **`research/` istisna:** içindeki .md dosyalarıyla birlikte olduğu gibi kalır, araştırma emeği bilerek görünür tutuluyor. Yalnızca `_tmp_*` betikleri silindi.
 - **2026-10-30:** Tasarım seçimleri: 6c iç boşluk değişmiyor; 8 yoğun buket; 9 yumuşak beliriş + yazılma + sayaç; 10 View Transitions, kütüphane yok.

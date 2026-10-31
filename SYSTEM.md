@@ -22,11 +22,10 @@
 
 Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım sistemi gelince giydirilir.
 
-### Sıradaki: açık süreç sorusu, sonra Aşama 1
+### Sıradaki: ekran haritası (gri kutulu), Aşama 1'in ekrandan bağımsız kısmı paralel
 
-- **Önce cevaplanacak (30 Ekim'de kullanıcı: "componentler, layout nasıl seçebiliriz, kötü böyle"; "sadece geri sayım değil, genel içerikler").** Teşhis: şimdiye kadar bağlamsız bileşenler ve uydurma içerik gösterildi, her adımda tek taslak sunulup onay istendi; en iyi sonuç (giriş ekranı) gerçek içerikli bütün bir ekrandı.
-  - Yollar: **Y1** vitrini bırakıp gerçek ekranları gerçekçi Türkçe içerikle kurmak · **Y2** her ekranın 2–3 yerleşim varyantı yan yana · **Y3** önce kullanıcıdan referans ekran görüntüleri, sonra Parchment'e uyarlamak · **Y4** önce ucuz statik maket, sonra yalnızca kazananın kodu.
-  - "Genel içerikler kötü" ne demek: (a) örnek metinler, (b) yerleşim ve boşluklar, (c) dil ve ton, ya da hepsi?
+- **Ekran tasarımı (SPEC §7, 2026-10-31):** önce bütün uygulama ekranları için tek sayfalık gri kutulu yapı taslağı, sonra ekran ekran 2–3 varyant. Sorun görsel dil değil; içerik, yerleşim, filtre gibi özellikler.
+- **Aşama 1 bölünüyor:** giriş, hesap betiği, oturum tabloları, giriş sınırı, Cloudflare kaynakları ve deploy hattı ekrandan bağımsız, başlanabilir. Anı/medya/etiket tabloları ve uygulama iskeletinin menüsü ekran haritasına bağlı, harita oturunca.
 - **#11 taslakları** `/ui/bilesenler`'de: yükleme (transfer taklit), galeri (oranlar şimdilik görsel yüklenince ölçülüyor, gerçekte `media_asset` boyutlarından gelecek), görüntüleyici, geri sayım. Motion'a sonra tekrar bakılacak; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
 - Kazananlar gerçek ekranlar yazılırken `components/` altına taşınır. `/ui*` sayfalarının akıbeti açık.
 
