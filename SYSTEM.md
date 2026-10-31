@@ -9,7 +9,7 @@
 | Aşama | İçerik | Durum |
 |---|---|---|
 | 0 | Hazırlık: monorepo, Biome, TypeScript, CI iskeleti, korunan verilerin taşınması | ✅ Onaylandı |
-| 2 | Tasarım sistemi (SPEC 6) | ⏳ 7/11; #8 arka plan üzerinde çalışılıyor |
+| 2 | Tasarım sistemi (SPEC 6) | ⏳ 10/11; #11 özel bileşenler açık |
 | 1 | Temel + giriş: D1 şeması, Better Auth, hesap betiği, iskelet, ilk gerçek deploy | ⬜ Aşama 2'den sonra ya da paralel |
 | 3 | Herkese açık rehber: TR/EN prerender, çiçek sayfaları, anlam araması, kaynaklar, Lighthouse | ⬜ Katalog doğrulandı, hazır |
 | 4 | Anılar: not, görünümler, konumlar ve harita, düzenleme, filtreler, çöp kutusu, "geçen yıl bugün" | ⬜ |
@@ -22,17 +22,13 @@
 
 Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım sistemi gelince giydirilir.
 
-### Sıradaki: tasarım #8, giriş ekranı arka planı
+### Sıradaki: tasarım #11 ve açık süreç sorusu
 
-- **Şu an canlıda iki görünüm:** "Silk + tek Curtis" ve "Silk + kolaj" (`public/flowers/collage.webp`, `pnpm flowers:collage`).
-- **Son geri bildirim (tablet):** sarı kâğıt zemini çok yer kaplıyor; düz Silk'teki yansıma ve dalgalanma bunda belli olmuyor; istek: olabildiğince çok çiçek, az kâğıt.
-- **Onaylı, başlanmamış plan:**
-  1. Build'de çiçekleri kâğıttan kes: levha kenarından kâğıt rengini bul (medyan), yakın pikselleri yumuşak kenarla saydam yap, küçük ayrık lekeleri (yazılar, plaka no) alan eşiğiyle at → `public/flowers/cutout/<id>.webp`. Sharp + JS bağlı bileşen taraması yeter.
-  2. Kesikleri açgözlü yerleşimle yoğun kolaja diz (örtüşme serbest, hedef ~%90 kaplama), alfa kanallı tek doku.
-  3. Shader: alfasız yerde ipek, alfalı yerde çiçek; ipek etkisini güçlendir (şu an kıvrım 0.82–1.06, parlaklık 0.32, kaydırma 0.012 → artır).
-  4. İki görünüm sun: yoğun kolaj + tek büyük kesik çiçek. Tablet boyutunda (1180×820, 820×1180) ekran görüntüsüyle kontrol et.
-- **Açık soru:** "sayfada çok boşluk var" herbaryum sayfasındaki boşluğu da kastediyor olabilir; başlamadan teyit et.
-- Sonra: #9–#11; tasarım bitince `/ui*` sayfalarının akıbeti.
+- **Önce cevaplanacak (30 Ekim'de kullanıcı: "componentler, layout nasıl seçebiliriz, kötü böyle"; "sadece geri sayım değil, genel içerikler").** Teşhis: şimdiye kadar bağlamsız bileşenler ve uydurma içerik gösterildi, her adımda tek taslak sunulup onay istendi; en iyi sonuç (giriş ekranı) gerçek içerikli bütün bir ekrandı.
+  - Yollar: **Y1** vitrini bırakıp gerçek ekranları gerçekçi Türkçe içerikle kurmak · **Y2** her ekranın 2–3 yerleşim varyantı yan yana · **Y3** önce kullanıcıdan referans ekran görüntüleri, sonra Parchment'e uyarlamak · **Y4** önce ucuz statik maket, sonra yalnızca kazananın kodu. Öneri: Y3 + Y1, kritik ekranlarda Y2.
+  - "Genel içerikler kötü" ne demek: (a) örnek metinler, (b) yerleşim ve boşluklar, (c) dil ve ton, ya da hepsi?
+- **#11 taslakları** `/ui/bilesenler`'de çalışır hâlde, hepsi elde yazıldı: yükleme (sürükle-bırak, kuyruk, 2 eşzamanlı, 100 MB üstü parça sayısı, iptal; transfer taklit), galeri (masonry, aylar çizgiyle), görüntüleyici (ok tuşu, kaydırma, Esc, yakınlaştırma), geri sayım (a sade, b herbaryum etiketi, c ince şerit; seçim bekliyor). Öneri: hepsi elde yazılsın, Motion'a gerek kalmasın; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
+- Seçim yapılınca: reddedilenler silinir, kazananlar `components/` altına taşınır, SPEC 6'ya yazılır. Tasarım bitince `/ui*` sayfalarının akıbeti.
 
 ### Kullanıcının yapacakları
 
@@ -101,9 +97,12 @@ Henüz şema yok (Aşama 1). Planlanan tablolar §8'de.
 | `/` | Geçici rehber ana sayfası (prerender) |
 | `/app` | Geçici uygulama kabuğu |
 | `/ui` | Tasarım vitrini: token'lar, yazı, butonlar, form, menü/diyalog/sekmeler, Türkçe tarih seçici, bildirim, anı kartı; kâğıt dokusu ve tema düğmeleri |
-| `/ui/login` | Herbaryum giriş ekranı + arka plan seçici + "Sayfayı gizle" |
+| `/ui/login` | Herbaryum giriş ekranı + arka plan seçici + "Sayfayı gizle" (`?bg=`, `?sayfa=gizli`) |
 | `/ui/shell` | İçe gömülü yan menü / mobil alt menü |
 | `/ui/icons` | Phosphor hafif ve normal |
+| `/ui/yazi` | #9'un üç efekti, "Tekrar oynat" |
+| `/ui/gecis` | #10: anı kartından tam ekrana, listeye ekleme/silme |
+| `/ui/bilesenler` | #11'in taslakları: yükleme, galeri + görüntüleyici, geri sayım |
 
 ## 6. Eksik ve geçici
 
@@ -136,7 +135,7 @@ Henüz şema yok (Aşama 1). Planlanan tablolar §8'de.
 ### Yığın ve repo
 - Workers (Paid), React Router v8 (`ssr: false` + `prerender`), Vite, Tailwind 4, shadcn/ui (Base UI, Vega), TanStack Query, Hono + Hono RPC, Zod, D1 + Drizzle, Better Auth, R2, Queues, Cloudflare Images, Containers (ffmpeg), Durable Objects (demo). TypeScript 7 strict, Biome, Vitest 4, Playwright, pnpm monorepo, Node 22.22+.
 - `apps/web`: React Router uygulaması + Hono API Worker (`memory-garden`, `memory-garden-demo`). `apps/media`: medya Worker'ı + ffmpeg container'ı (`memory-garden-media`). `packages/shared`: alan mantığı, çiçek kataloğu, Türkiye konumları, imzalı token'lar. `research/`: çiçek dili kaynak çalışması. `scripts/`: veri üretimi.
-- Komutlar: `pnpm dev` (Vite :5173 + `wrangler dev` :8787), `pnpm check` (Biome), `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm build`, `pnpm flowers:assets`, `pnpm flowers:collage`, `pnpm locations:generate`.
+- Komutlar: `pnpm dev` (Vite :5173 + `wrangler dev` :8787), `pnpm check` (Biome), `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm build`, `pnpm flowers:assets`, `pnpm flowers:cutout`, `pnpm flowers:bouquet`, `pnpm locations:generate`.
 - Veri kaynakları: çiçek görsellerinin listesi `packages/shared/src/flowers/flower-artwork.json`; il/ilçe verisinin kaynağı ve lisansı (biri CC BY 4.0) `scripts/generate-turkey-locations.mjs` başında.
 
 ### Onaylı mimari (henüz büyük kısmı kodda yok)
@@ -187,6 +186,9 @@ Kimlikler UUID, zamanlar UTC ms, gün hesabı `Europe/Istanbul`.
 - Tema `apps/web/app/theme.css` (`:root` açık, `.dark` koyu; shadcn token adları, `app.css`'te `@theme inline`), yazı `typography.css`, şekil `shape.css` (tek `--radius` tüm köşeleri sürer; gölgeler siyah yerine ön plan tonuyla).
 - Kontrast: `node scripts/contrast-check.mjs <theme.css>`; eşikler 7:1 gövde, 4.5:1 diğer yazı, 3:1 alan kenarı ve odak halkası. Giriş alanı kenarı kart kenarından bilerek koyu.
 - Türkçe font kontrolü font dosyalarında yapılır (`latin` + `latin-ext` cmap'inde ç ğ ı İ ö ş ü â î û ₺); tarayıcı testi `document.fonts.check` ile.
+- Giriş arka planı iki adımda üretilir, çıktı commit'lenir: `pnpm flowers:cutout` (61 levhayı kâğıttan keser → `.cache/flowers/cutout/`, gitignore'da, 11 MB) → `pnpm flowers:bouquet` (`apps/web/public/flowers/bouquet.webp`, 2200×1600, 63 çiçek, %93, 1,1 MB). Kesimi temiz çıkmayan 18 levha (beyaz çiçekler, çerçeveli taramalar) `scripts/flower-bouquet.mjs` → `SKIP`'te, gerekçesiyle.
+- Kesim yöntemi: kâğıt rengi levha kenarının medyanı; ona Chebyshev 34 içindeki pikseller atılır, kenardan 52 ile sararmış lekeler; en büyük parçanın %2'sinden küçük adacıklar (yazılar) atılır; maske ~1 px yumuşatılır. Yerleşim: 1/8 ölçekli kaplama ızgarası, azalan boy turları (%50, %36, %26, %18), en çok boş alanı kaplayan konum. Shader'da `smoothstep(0.2, 0.7, alpha)` kesik kenarındaki soluk haleyi alır.
+- Yazı animasyonu `app/text-anim.css` (`.anim-beliris`, `.anim-elyazisi`) ve `components/count-up.tsx`; geçişler `app/view-transition.css` (320 ms, yazıyla aynı eğri), `root.tsx`'te `<Outlet>` sarmalı.
 - Giriş ekranı `app/components/herbarium-login.tsx`; günün çiçeği `app/lib/login-flower.ts`. Arka plan `app/components/art/silk-plate.tsx` + `gl.ts` (ekran dışında, gizli sekmede ve "hareketi azalt"ta durur; piksel oranı telefonda 1, diğerlerinde 1.5).
 
 ### Tuzaklar
@@ -202,4 +204,8 @@ Kimlikler UUID, zamanlar UTC ms, gün hesabı `Europe/Istanbul`.
 - Arkada kalan `wrangler dev`/`workerd`, `pnpm build`'in prerender adımını zaman aşımına düşürür; önce kapat. `pkill -f "wrangler dev..."` kullanma: kalıp kabuğun kendi satırına uyup kabuğu öldürür; PID'i `ps` ile bul.
 - Katalogda olumsuz anlamlı çiçekler var; `path` Latince ile Türkçe çeşit adını karıştırır ("Rosa › kırmızı"), ekranda `scientificName()` kullan.
 - iPhone'da ana ekrana eklenen uygulama Safari'den ayrı çalışır: kurulumdan sonra bir kez yeniden giriş gerekir. iPhone'da web push yalnızca ana ekrana eklenmiş PWA'da.
+- View Transitions: React yalnızca Transition içindeki güncellemede geçiş çalıştırır (router gezinmeleri zaten öyle; kendi `setState`'in `startTransition` ister). Geçiş adı sayfada benzersiz ve geçerli tanımlayıcı olmalı: Türkçe harfler geçersiz, sadeleştir. React Router'ın kendi `viewTransition` prop'u ve `useViewTransitionState` eskidi; ikisini birlikte açmak animasyonu keser. Destek: Safari/iOS 18+, Chrome/Edge 111+, Firefox 144+.
+- GLSL şablon dizesindeki yorumda ters tırnak dizeyi bitirir; TypeScript sonraki satırda sözdizimi hatası verir.
+- `sharp`: bulanıklaştırılmış tek kanallı ham tampon üç kanal döner (`info.channels`'ı adım olarak oku); birleştirmeden önce boyutlandırır, bu yüzden boyutlandırmayı ayrı geçişte yap; birleştirme ofsetleri negatif olamaz, taşanı kendin kırp.
+- Elle yazılış efekti denenirse: opentype.js değişken fontun hatlarını `.notdef` kutusu okur (statik yüzü kullan); Fontsource Türkçe harfleri ayrı alt kümede tutar; kesik çizgi deseni her `M`'de baştan başlar (her kontur ayrı yol); yuvarlak uç sıfır uzunlukta leke bırakır (düz uç).
 - Paket kurmadan önce yayıncıyı kontrol et: `pnpm view <paket> maintainers repository.url`.

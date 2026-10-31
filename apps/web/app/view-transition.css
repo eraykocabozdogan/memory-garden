@@ -1,0 +1,16 @@
+/* Decision 10 is open: this is how the browser's own view transitions are tuned for the
+   /ui/gecis comparison. It goes with the decision, kept or removed when one is made. */
+
+/* The same easing as the text reveal, so the two read as one language. */
+::view-transition-group(*) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}

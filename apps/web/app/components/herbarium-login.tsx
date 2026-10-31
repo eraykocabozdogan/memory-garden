@@ -1,5 +1,5 @@
 import { scientificName } from "@memory-garden/shared/flowers/catalog";
-import { type FormEvent, useState } from "react";
+import { type CSSProperties, type FormEvent, useState } from "react";
 
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -10,6 +10,8 @@ import { cn } from "~/lib/utils";
 // The login screen (decision 8-6b): a herbarium sheet. Today's flower plate is taped to the
 // sheet on the left; a museum-style label on the right names it and holds the form. Username
 // + password only, no sign-up (decision G1). The form is not wired to auth yet (stage 1).
+// Text motion follows decision 9: the label's rows rise softly in turn, and the handwritten
+// line is written on. Both stop at "reduce motion" (app/text-anim.css).
 
 const longDate = new Intl.DateTimeFormat("tr-TR", { dateStyle: "long" });
 
@@ -82,18 +84,24 @@ export function HerbariumLogin({ onSubmit }: { onSubmit?: (event: FormEvent) => 
               />
             </div>
             <figcaption className="text-center font-hand text-2xl text-muted-foreground">
-              Her anı bir çiçek…
+              <span className="anim-elyazisi">Her anı bir çiçek…</span>
             </figcaption>
           </figure>
 
           <div
-            className="border-2 border-foreground/70 bg-card p-4 text-card-foreground shadow-card"
+            className="anim-beliris border-2 border-foreground/70 bg-card p-4 text-card-foreground shadow-card"
             data-testid="label"
           >
-            <h1 className="border-b border-foreground/40 pb-2 text-center text-xs font-semibold tracking-[0.2em] uppercase">
+            <h1
+              style={{ "--i": 0 } as CSSProperties}
+              className="border-b border-foreground/40 pb-2 text-center text-xs font-semibold tracking-[0.2em] uppercase"
+            >
               Memory Garden Herbaryumu
             </h1>
-            <dl className="grid grid-cols-[5rem_1fr] gap-x-3 gap-y-1 py-3 text-sm">
+            <dl
+              style={{ "--i": 1 } as CSSProperties}
+              className="grid grid-cols-[5rem_1fr] gap-x-3 gap-y-1 py-3 text-sm"
+            >
               <dt className="text-muted-foreground">Bitki</dt>
               <dd>
                 <span className="font-heading font-semibold">{flower.name}</span>{" "}
@@ -105,6 +113,7 @@ export function HerbariumLogin({ onSubmit }: { onSubmit?: (event: FormEvent) => 
               <dd>{longDate.format(today)}</dd>
             </dl>
             <form
+              style={{ "--i": 2 } as CSSProperties}
               className="grid gap-4 border-t border-foreground/40 pt-4"
               onSubmit={onSubmit ?? ((event) => event.preventDefault())}
             >

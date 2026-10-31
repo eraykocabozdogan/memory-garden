@@ -191,7 +191,7 @@ Kodun verdiği sözler. Her birinin testi `SYSTEM.md`'deki tabloda.
 
 ## 6. Tasarım seçimleri
 
-Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek sırayla yapılıyor. 7/11 bitti.
+Seçimler canlı önizleme sayfalarında (`/ui*`) yan yana görülerek sırayla yapılıyor. 10/11 bitti.
 
 | # | Adım | Seçim | Neden |
 |---|---|---|---|
@@ -202,21 +202,23 @@ Seçimler canlı önizleme sayfasında (`/ui`) yan yana görülerek sırayla yap
 | 5 | Temel bileşenler | **shadcn/ui**, motor **Base UI**, stil **Vega**; tema geçişi **next-themes** | Token'larla doğrudan uyumlu; Vega, Paper şekliyle örtüşüyor |
 | 6a | Uygulama iskeleti | **İçe gömülü yan menü** (sidebar-08), ikonlara daralır; telefonda alt menü | İçerik menünün üstünde kâğıt gibi duruyor |
 | 6b | Giriş ekranı | **Herbaryum yaprağı:** solda bantla tutturulmuş günün çiçeği ve el yazısı not, sağda müze etiketi ve içinde alt çizgili form, köşede mürekkep damgası (telefonda gizli). Günün çiçeği yalnızca sıcak anlamlı 10 çiçekten | Şablon hissi vermiyor; Curtis, kâğıt ve arşiv havası tek ekranda |
+| 6c | Herbaryum yaprağının iç boşluğu | **Değişiklik yok**, olduğu gibi kalıyor | Ölçüler görüldü, "böyle kalsın"; boşluk 6b'de kilitlenen düzenin parçası |
 | 7 | İkonlar | **Phosphor**: varsayılan hafif, yan ve alt menüde normal | Hafif çizgi kâğıt havasına en yakın; küçük gezinme ikonları silik kalmasın |
-| 8 | Arka plan (giriş) | ⏳ **Sürüyor.** Yön: Curtis çizimleri ipeğe basılmış gibi (kendi WebGL2 shader'ımız). Sıradaki: çiçekleri kâğıttan kesip yoğun kolaj, ipek etkisi daha belirgin; olabildiğince çok çiçek, az sarı kâğıt | Kullanıcı Silk'i ve Curtis'i birlikte istedi |
-| 9 | Yazı animasyonu | — | |
-| 10 | Geçişler | — | |
-| 11 | Özel bileşenler | — | Adaylar: dosya yükleme, galeri / tam ekran görüntüleyici, tarih seçici / zaman çizelgesi, geri sayım kartı |
+| 8 | Arka plan (giriş) | **Yoğun buket:** kâğıttan kesilmiş Curtis çiçekleri (63 çiçek, %93 kaplama) dalgalanan ipeğe basılmış gibi; kendi WebGL2 shader'ımız | Sarı kâğıt zemini yok, çiçek çok. Seyrek buket ve tek büyük çiçek de denendi |
+| 9 | Yazı animasyonu | **Üçlü:** başlık ve metinlerde yumuşak beliriş (kelimeler sırayla, 380 ms); el yazısı notlarda yazılma (soldan sağa süpürme); öne çıkan sayılarda sayaç. Paket yok. "Hareketi azalt" açıkken hepsi kapanır | "Gentle" hissine en yakın. Harf harf, bulanıktan netleşme, daktilo, parlama, dönen kelime ve kalemle çizme reddedildi |
+| 10 | Geçişler | **Tarayıcının kendi View Transitions'ı** (React `<ViewTransition>`): sayfa geçişleri ve anı kartından ayrıntıya geçiş. Animasyon kütüphanesi yok | Sıfır paket; desteklemeyen tarayıcıda geçiş olmaz ama sayfa çalışır ("her cihazda çalışsın"). Motion kütüphanesi denendi, kaldırıldı; gerekirse #11'de bilinçli eklenir |
+| 11 | Özel bileşenler | ⏳ **Sürüyor.** Taslaklar elde yazıldı, paket yok: yükleme; galeri (masonry, aylar çizgiyle ayrılıyor; ayrı zaman çizelgesi kaldırıldı); tam ekran görüntüleyici (yakınlaştırmalı); geri sayım (üç varyant, seçim bekliyor) | — |
 
 Ertelenenler: kâğıt dokusunun son hali; uygulama içi arka plan (donmuş ipek karesi, hareketli ipek ya da yalnızca seçili sayfalar).
 
-**Yöntemden kalanlar:** "çok seçenek" adımlarında galeri yerine histen üç aday çıkarmak daha hızlı; bloklar iskelet için iyi, kimlik ekranları (giriş, açılış) için zayıf, onları histen tasarla; arka planları kullanıcının gerçek cihaz boyutunda göster.
+**Yöntemden kalanlar:** "çok seçenek" adımlarında galeri yerine histen üç aday çıkarmak daha hızlı; bloklar iskelet için iyi, kimlik ekranları (giriş, açılış) için zayıf, onları histen tasarla; seçenekleri kullanıcının gerçek cihazında göster ve seçimi onun yerine akıl yürüterek yapma; yerleşim seçeneği sunmadan önce ölç; kullanıcının tarif ettiği efekti yap, kolay olanı değil; her efekt düz, okunur metinde bitsin; animasyon kütüphanesini gerçek etkileşimler üzerinde karşılaştır.
 
 ## 7. Kararlar
 
 En yenisi üstte. Seçeneklerin ayrıntılı karşılaştırması git geçmişinde (`docs/decisions.md`, 2026-10-31 öncesi).
 
 - **2026-10-31:** Dokümanlar ortak şablona taşındı; `docs/`, proje içi CLAUDE.md ve `frontend-playbook.md` kaldırıldı (playbook'un özü §6'ya, teknik tuzakları SYSTEM'e). **`research/` istisna:** içindeki .md dosyalarıyla birlikte olduğu gibi kalır, araştırma emeği bilerek görünür tutuluyor. Yalnızca `_tmp_*` betikleri silindi.
+- **2026-10-30:** Tasarım seçimleri: 6c iç boşluk değişmiyor; 8 yoğun buket; 9 yumuşak beliriş + yazılma + sayaç; 10 View Transitions, kütüphane yok.
 - **2026-10 (Karar 8):** Tasarım seçimleri §6'daki gibi; ikonlar Lucide yerine Phosphor.
 - **2026-10 (katalog):** Katalog kaynaklara karşı baştan sona doğrulandı (146 anlatı paragrafı, atıflar, anlamlar, görseller). Yöntem belgesi yazıldı; 61 kaydın uzun metinlerinin hepsi doğrulandı. Kaynakta simge olarak geçmeyen anlamlar ayrı "çağrışımlar" alanına taşındı. Görseli bulunamayan iki kayıt temsilî görsel aldı. Eksik anlamlar eklendi (lavanta, ayçiçeği, sarı nergis, aynısefa, beyaz leylak, beyaz gül, manolya); yanlış türü gösteren görseller değiştirildi.
 - **Mimari onayı:** Takılan video işi sabit süre yerine nabızla tespit edilir (her dakika ilerleme, 10 dk sessizlik = başarısız; yan fayda: ilerleme yüzdesi). Kaydedilmemiş yükleme temizliği 6 saat, saatlik. Workers Paid plana geçildi (Container yalnızca Paid'de; Free'deki 10 ms işlemci sınırı şifre kontrolünü bile zorluyor; plan hesap başına).

@@ -85,7 +85,7 @@ test("the silk background sits behind the sheet and keeps the form usable", asyn
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ui/login");
 
-  for (const name of ["Silk + tek Curtis", "Silk + kolaj"]) {
+  for (const name of ["İpek + buket"]) {
     await page.getByRole("button", { name, exact: true }).click();
     const layer = page.getByTestId("background");
     await expect(layer.locator("canvas")).toHaveCount(1);
@@ -102,4 +102,149 @@ test("the silk background sits behind the sheet and keeps the form usable", asyn
   // "Sayfayı gizle" hides the sheet so the background can be judged on its own.
   await page.getByRole("button", { name: "Sayfayı gizle" }).click();
   await expect(page.getByLabel("Kullanıcı adı")).toBeHidden();
+});
+
+test("the three chosen text motions render and can be replayed", async ({ page }) => {
+  await page.goto("/ui/yazi");
+
+  for (const id of ["9-2", "9-3", "9-5"]) {
+    await expect(page.getByTestId(`aday-${id}`)).toBeVisible();
+  }
+
+  // The animations end on the plain text, so the heading reads the same however it arrived.
+  await expect(page.getByTestId("aday-9-2")).toContainText("Bahçende 47 anı açtı");
+  // The counter reaches its target rather than stopping somewhere along the way.
+  await expect(page.getByTestId("aday-9-5")).toContainText("47");
+  await expect(page.getByTestId("aday-9-5")).toContainText("128");
+
+  await page.getByRole("button", { name: "Tekrar oynat" }).click();
+  await expect(page.getByTestId("aday-9-2")).toContainText("Bahçende 47 anı açtı");
+});
+
+test("the login sheet carries the chosen text motion", async ({ page }) => {
+  await page.goto("/ui/login");
+
+  await expect(page.locator(".anim-elyazisi")).toHaveText("Her anı bir çiçek…");
+  await expect(page.getByTestId("label")).toHaveClass(/anim-beliris/);
+  // The form is usable while the reveal runs: nothing is hidden once the animation ends.
+  await page.getByLabel("Kullanıcı adı").click();
+  await expect(page.getByLabel("Kullanıcı adı")).toBeFocused();
+});
+
+test("text animations are skipped when the visitor asks for less motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ui/yazi");
+
+  // No animation runs at all: the text is simply there.
+  // (Evaluated as a string: the e2e tsconfig has no DOM types.)
+  const running = (await page.evaluate(
+    `document.getAnimations().filter((a) => a.playState === "running").length`,
+  )) as number;
+  expect(running).toBe(0);
+  await expect(page.getByTestId("aday-9-5")).toContainText("47");
+});
+
+test("the motion page opens a memory and changes the list", async ({ page }) => {
+  await page.goto("/ui/gecis");
+
+  // The shared-element scenario: a card opens into its detail and closes again.
+  await page.locator('[data-testid="senaryo-kart"] button').first().click();
+  await expect(page.getByRole("button", { name: "Kapat" })).toBeVisible();
+  await page.getByRole("button", { name: "Kapat" }).click();
+  await expect(page.getByRole("button", { name: "Kapat" })).toHaveCount(0);
+
+  // The list scenario: adding and removing really change the list, transition or not.
+  const rows = page.locator('[data-testid="senaryo-liste"] li');
+  const before = await rows.count();
+  await page.getByRole("button", { name: "Anı ekle" }).click();
+  await expect(rows).toHaveCount(before + 1);
+  await page.locator('[data-testid="senaryo-liste"] li').first().getByRole("button").click();
+  await expect(rows).toHaveCount(before);
+});
+
+test("a page change still lands on the new page with view transitions on", async ({ page }) => {
+  await page.goto("/ui");
+  await page.getByRole("link", { name: "Hareket" }).click();
+  await expect(page.getByRole("heading", { name: "Hareket", level: 1 })).toBeVisible();
+  await page.getByRole("link", { name: "← Önizleme" }).click();
+  await expect(page.getByRole("heading", { name: "Tasarım önizlemesi" })).toBeVisible();
+});
+
+test("the upload draft queues files, two at a time, and splits the big ones", async ({ page }) => {
+  await page.goto("/ui/bilesenler");
+
+  // Three files: the queue should start two and hold the third back.
+  await page.setInputFiles('[data-testid="yukleme"] input[type=file]', [
+    { name: "kusadasi.heic", mimeType: "image/heic", buffer: Buffer.alloc(3_500_000) },
+    { name: "ilk-kar.mp4", mimeType: "video/mp4", buffer: Buffer.alloc(40_000_000) },
+    { name: "mutfak.jpg", mimeType: "image/jpeg", buffer: Buffer.alloc(1_200_000) },
+  ]);
+
+  const rows = page.locator('[data-testid="yukleme"] li');
+  await expect(rows).toHaveCount(3);
+  await expect(rows.filter({ hasText: "yükleniyor" })).toHaveCount(2);
+  await expect(rows.filter({ hasText: "bekliyor" })).toHaveCount(1);
+
+  // Every file finishes, and the queue drains rather than stalling on the third.
+  await expect(rows.filter({ hasText: "bitti" })).toHaveCount(3, { timeout: 15_000 });
+});
+
+test("the gallery opens a photo full screen and walks through with the keyboard", async ({
+  page,
+}) => {
+  await page.goto("/ui/bilesenler");
+
+  await page.locator('[data-testid="galeri"] button img').first().click();
+  const viewer = page.locator('[data-slot="dialog-content"]');
+  await expect(viewer).toBeVisible();
+  const first = await viewer.getByRole("heading").textContent();
+
+  // Press on the dialog itself: page.keyboard depends on where focus happened to land.
+  await viewer.press("ArrowRight");
+  await expect(viewer.getByRole("heading")).not.toHaveText(first ?? "");
+
+  // The photo is made to fit the screen rather than overflowing it.
+  const fits = (await page.evaluate(
+    `(() => {
+      const img = document.querySelector('[data-slot="dialog-content"] img');
+      return img.getBoundingClientRect().height <= window.innerHeight;
+    })()`,
+  )) as boolean;
+  expect(fits).toBe(true);
+
+  await viewer.press("Escape");
+  await expect(viewer).toHaveCount(0);
+});
+
+test("the gallery is divided by month and the countdowns reach their number", async ({ page }) => {
+  await page.goto("/ui/bilesenler");
+
+  const months = page.locator('[data-testid="galeri"] h3');
+  // The page is a SPA, so wait for it to render before counting.
+  await expect(months.first()).toBeVisible();
+  expect(await months.count()).toBeGreaterThan(1);
+  await expect(months.first()).toHaveText(/\d{4}/);
+
+  // All three shapes of the countdown settle on a real number of days, not on zero.
+  for (const id of ["sayim-a", "sayim-b", "sayim-c"]) {
+    await expect(page.getByTestId(id)).toContainText(/[1-9]\d*/);
+  }
+});
+
+test("the viewer zooms in and back out", async ({ page }) => {
+  await page.goto("/ui/bilesenler");
+
+  await page.locator('[data-testid="galeri"] button img').first().click();
+  const viewer = page.locator('[data-slot="dialog-content"]');
+  await expect(viewer).toBeVisible();
+  await expect(viewer.getByTestId("zoom")).toHaveText("100%");
+
+  await viewer.getByRole("button", { name: "Yakınlaştır" }).click();
+  await expect(viewer.getByTestId("zoom")).not.toHaveText("100%");
+
+  // Double-clicking the photo toggles: once back to actual size, once in again.
+  await viewer.locator("img").dblclick();
+  await expect(viewer.getByTestId("zoom")).toHaveText("100%");
+  await viewer.locator("img").dblclick();
+  await expect(viewer.getByTestId("zoom")).not.toHaveText("100%");
 });

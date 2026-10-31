@@ -1,0 +1,46 @@
+/* Text motion (decision 9): a soft reveal everywhere, a written-on sweep for the handwritten
+   lines, and a count-up for numbers. The losing candidates (letter by letter, blur in,
+   typewriter, sheen, rotating word, pen-drawn outlines) were removed with the choice.
+   Hand-written CSS rather than a library: these are a few keyframes each. Every effect ends on
+   the plain, readable text, so "reduce motion" simply skips to that end state. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 9-2 Soft reveal: fade up. Children carry their own delay through --i. */
+  .anim-beliris > * {
+    animation: anim-rise 380ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  /* 9-3 Handwriting: a soft-edged mask sweeps left to right, as if the line were being
+     written. The mask, not opacity, is what makes it read as a pen rather than a fade. */
+  .anim-elyazisi {
+    /* Shrink-wrap the line so the sweep runs across the letters, not the whole column. */
+    display: inline-block;
+    animation: anim-write 1800ms cubic-bezier(0.45, 0.05, 0.55, 0.95) backwards;
+    animation-delay: 200ms;
+    -webkit-mask-image: linear-gradient(to right, #000 0 76%, transparent 92%);
+    mask-image: linear-gradient(to right, #000 0 76%, transparent 92%);
+    -webkit-mask-size: 420% 100%;
+    mask-size: 420% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+}
+
+@keyframes anim-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes anim-write {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}

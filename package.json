@@ -16,11 +16,12 @@
     "test:e2e": "pnpm --filter @memory-garden/web test:e2e",
     "flowers:assets": "node scripts/download-flower-art.mjs",
     "locations:generate": "node scripts/generate-turkey-locations.mjs",
-    "flowers:collage": "node scripts/flower-collage.mjs"
+    "flowers:cutout": "node scripts/flower-cutout.mjs",
+    "flowers:bouquet": "node scripts/flower-bouquet.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
-    "typescript": "7.0.2",
-    "sharp": "^0.34.0"
+    "sharp": "^0.34.0",
+    "typescript": "7.0.2"
   }
 }

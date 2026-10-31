@@ -40,3 +40,5 @@ pnpm typecheck
 pnpm test         # unit tests
 pnpm test:e2e     # Playwright against a production build served by Wrangler
 ```
+
+On a new machine, install the browser once before `pnpm test:e2e`: `pnpm --filter @memory-garden/web exec playwright install chromium`.

@@ -106,6 +106,15 @@ export default function Ui() {
           <Button variant="ghost" render={<Link to="/ui/icons" />}>
             İkonlar
           </Button>
+          <Button variant="ghost" render={<Link to="/ui/yazi" />}>
+            Yazı animasyonu
+          </Button>
+          <Button variant="ghost" render={<Link to="/ui/gecis" />}>
+            Hareket
+          </Button>
+          <Button variant="ghost" render={<Link to="/ui/bilesenler" />}>
+            Bileşenler
+          </Button>
           <Button
             variant={grain ? "default" : "outline"}
             aria-pressed={grain}

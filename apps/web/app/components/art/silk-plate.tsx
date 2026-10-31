@@ -2,9 +2,11 @@ import { useEffect, useRef } from "react";
 
 import { bindProgram, createProgram, loadTexture, runLoop } from "./gl";
 
-// A Curtis plate (or a collage of plates) printed on slowly rippling silk, covering the screen. The fold pattern and
-// lighting follow React Bits' Silk; the folds also bend the print and the sheen passes over it.
-// One full-screen triangle, one texture.
+// The bouquet of cut-out Curtis flowers, printed on slowly rippling silk and covering the screen.
+// The fold pattern and lighting follow React Bits' Silk; the folds also bend the print and the
+// sheen passes over it. Where the image is transparent, the silk itself shows: that is why the
+// flowers are cut out (`pnpm flowers:cutout`, `pnpm flowers:bouquet`) instead of printed on their
+// yellow plate paper. One full-screen triangle, one texture.
 
 const VERTEX = `#version 300 es
 in vec2 aPosition;
@@ -52,15 +54,19 @@ void main() {
   vec3 halfway = normalize(toLight + vec3(0.0, 0.0, 1.0));
   float gloss = pow(max(dot(normal, halfway), 0.0), 48.0) * smoothstep(0.25, 0.85, n01);
 
-  vec3 cloth = mix(uSilk * 0.78, min(uSilk * 1.15, vec3(1.0)), fold) * mix(1.0, relief, 0.6);
+  vec3 cloth = mix(uSilk * 0.58, uSilk * 1.12, fold) * mix(1.0, relief, 0.85);
 
   // The print rides the folds: sample the image slightly displaced along the fold's slope.
-  vec2 iuv = imageUv(uv + normal.xy * 0.012);
-  vec3 ink = texture(uImage, clamp(iuv, 0.0, 1.0)).rgb;
-  vec3 printed = ink * mix(0.82, 1.06, fold) * mix(1.0, relief, 0.7) * mix(0.55, 1.0, uLight);
+  vec2 iuv = imageUv(uv + normal.xy * 0.022);
+  vec4 sampled = texture(uImage, clamp(iuv, 0.0, 1.0));
+  vec3 printed = sampled.rgb * mix(0.66, 1.1, fold) * mix(1.0, relief, 0.85) * mix(0.55, 1.0, uLight);
 
-  vec3 color = mix(cloth, printed, uReady * 0.96);
-  color += vec3(1.0) * (gloss * 0.32 + pow(n01, 5.0) * 0.06) * mix(0.45, 1.0, uLight);
+  // Transparent parts of the image are bare silk, so the cloth keeps its own depth between the
+  // flowers. The cut-outs have a feathered edge, and a straight mix would leave a pale halo
+  // around every flower, so the edge is tightened here.
+  float ink = smoothstep(0.2, 0.7, sampled.a);
+  vec3 color = mix(cloth, printed, uReady * ink * 0.97);
+  color += vec3(1.0) * (gloss * 0.34 + pow(n01, 5.0) * 0.07) * mix(0.45, 1.0, uLight);
   outColor = vec4(clamp(color, 0.0, 1.0), 1.0);
 }`;
 

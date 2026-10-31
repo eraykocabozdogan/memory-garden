@@ -1,4 +1,3 @@
-import { flowerCatalog } from "@memory-garden/shared/flowers/catalog";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
@@ -12,30 +11,25 @@ export function meta(_: Route.MetaArgs) {
   return [{ title: "Giriş önizlemesi · Memory Garden" }, { name: "robots", content: "noindex" }];
 }
 
-// Design-system preview (stage 2): the login background is Curtis on silk (owner's pick over
-// React Bits Silk, Grid Motion and a 3D flower). Two views remain to compare: one random plate
-// covering the screen, or a 5×3 collage (`pnpm flowers:collage`). The layer is `inert` +
-// aria-hidden, so nothing in it takes focus. "Sayfayı gizle" hides the sheet.
+// Design-system preview (stage 2): the login background is the dense bouquet of cut-out Curtis
+// flowers on silk (decision 8-8, the owner's pick over a looser bouquet, a single large flower,
+// React Bits Silk, Grid Motion and a 3D flower). `pnpm flowers:cutout && pnpm flowers:bouquet`
+// builds the sheet. The layer is `inert` + aria-hidden, so nothing in it takes focus, and
+// "Sayfayı gizle" hides the sheet so the background can be judged on its own.
 
 const BACKGROUNDS = [
   { id: "yok", name: "Yok" },
-  { id: "silk-tek", name: "Silk + tek Curtis" },
-  { id: "silk-kolaj", name: "Silk + kolaj" },
+  { id: "ipek-buket", name: "İpek + buket" },
 ] as const;
 
 type BackgroundId = (typeof BACKGROUNDS)[number]["id"];
 
 export default function UiLogin() {
   const [params, setParams] = useSearchParams();
-  const bg: BackgroundId = BACKGROUNDS.find((b) => b.id === params.get("bg"))?.id ?? "silk-tek";
+  const bg: BackgroundId = BACKGROUNDS.find((b) => b.id === params.get("bg"))?.id ?? "ipek-buket";
   const sheetHidden = params.get("sayfa") === "gizli";
   const { resolvedTheme } = useTheme();
   const light = resolvedTheme !== "dark";
-  // A random plate on every visit (owner's choice over "flower of the day" for the background).
-  const [plate] = useState(() => {
-    const flower = flowerCatalog[Math.floor(Math.random() * flowerCatalog.length)];
-    return flower?.artwork.src ?? "/flowers/art/viola-tricolor.webp";
-  });
   // "Reduce motion": draw one frame and stop.
   const [still, setStill] = useState(false);
   useEffect(() => {
@@ -62,11 +56,7 @@ export default function UiLogin() {
           data-testid="background"
           className="fixed inset-0 z-0 overflow-hidden"
         >
-          <SilkPlate
-            src={bg === "silk-tek" ? plate : "/flowers/collage.webp"}
-            light={light}
-            still={still}
-          />
+          <SilkPlate src="/flowers/bouquet.webp" light={light} still={still} />
         </div>
       )}
       <div className={sheetHidden ? "invisible relative z-10" : "relative z-10"}>
