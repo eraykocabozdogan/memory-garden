@@ -25,7 +25,7 @@ Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım
 ### Sıradaki: ekran haritası (gri kutulu), Aşama 1'in ekrandan bağımsız kısmı paralel
 
 - **Ekran tasarımı (SPEC §7, 2026-10-31):** önce bütün uygulama ekranları için tek sayfalık gri kutulu yapı taslağı, sonra ekran ekran 2–3 varyant. Sorun görsel dil değil; içerik, yerleşim, filtre gibi özellikler.
-- **Aşama 1 bölünüyor.** Ekrandan bağımsız kısım: giriş kodu, hesap betiği (`pnpm account`), giriş tabloları ve IP limiti **hazır ve testli**. D1 (`memory-garden`, AB yetki alanı) oluşturuldu, migration uygulandı; `deploy.yml` CI geçince `main`'i deploy ediyor. Kalan: `BETTER_AUTH_SECRET`'i koymak, iki hesabı açmak, giriş ekranını API'ye bağlamak. Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası oturunca.
+- **Aşama 1 bölünüyor.** Ekrandan bağımsız kısım: giriş kodu, hesap betiği (`pnpm account`), giriş tabloları ve IP limiti **hazır ve testli**. D1 (`memory-garden`, AB yetki alanı) oluşturuldu, migration uygulandı; `deploy.yml` CI geçince `main`'i deploy ediyor. `BETTER_AUTH_SECRET` kondu; giriş canlıda çalışıyor. Kalan: iki hesabı açmak, giriş ekranını API'ye bağlamak. Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası oturunca.
 - **#11 taslakları** `/ui/bilesenler`'de: yükleme (transfer taklit), galeri (oranlar şimdilik görsel yüklenince ölçülüyor, gerçekte `media_asset` boyutlarından gelecek), görüntüleyici, geri sayım. Motion'a sonra tekrar bakılacak; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
 - Kazananlar gerçek ekranlar yazılırken `components/` altına taşınır. `/ui*` sayfalarının akıbeti açık.
 
@@ -147,7 +147,6 @@ erDiagram
 | `/ui*` önizleme sayfaları üründe | Ürün değil, yalnızca tasarım için | Tasarım listesi bitince kaldır ya da gizle |
 | `apps/media/container` eski projeden; fotoğraf yolu duruyor, 1080p sınırı ve nabız yok | Video işleme henüz SPEC'e uymuyor | Aşama 5 |
 | R2, Queue, CORS, R2 yaşam döngüsü oluşturulmadı (D1 var) | Medya yok | Aşama 5 (oluşturmadan önce kullanıcıya sorulur) |
-| `BETTER_AUTH_SECRET` Cloudflare'e konmadı | Canlıda `/api/auth/*` ve `/api/me` 500 döner (önizleme ekranları etkilenmez); kod varsayılan anahtara düşmez | Kullanıcı `wrangler secret put` ile koyunca |
 | Giriş limiti yalnızca IP başına; hesap başına limit yok | Çok IP'den dağıtık deneme tek hesaba karşı serbest | İki kişilik uygulamada kabul; gerekirse Aşama 8 |
 | `packages/shared` `login-identity` büyük/küçük harfi koruyor, Better Auth kullanıcı adını küçük harfe çeviriyor; modül kullanılmıyor | Çelişkili eski kural | Giriş ekranı bağlanırken silinir |
 | `backup.yml` yok; demo deploy'u `deploy.yml`'da yok | Haftalık yedek yok; demo henüz yok | Aşama 9 / 10 |
@@ -169,7 +168,7 @@ erDiagram
 | Container (kota üstü) | Büyük olasılıkla 0–1 $ |
 | **Toplam** | **~5–9 $** |
 
-Şu an kullanılan: Workers (`memory-garden`) ve D1 (`memory-garden`, AB yetki alanı, EEUR; Workers Paid kotası içinde). GitHub secret'ları: `CLOUDFLARE_API_TOKEN` (Workers + D1 Edit), `CLOUDFLARE_ACCOUNT_ID`. Worker gizlisi `BETTER_AUTH_SECRET` henüz konmadı.
+Şu an kullanılan: Workers (`memory-garden`) ve D1 (`memory-garden`, AB yetki alanı, EEUR; Workers Paid kotası içinde). GitHub secret'ları: `CLOUDFLARE_API_TOKEN` (Workers + D1 Edit), `CLOUDFLARE_ACCOUNT_ID`. Worker gizlisi: `BETTER_AUTH_SECRET` (rastgele, yalnızca Cloudflare'de).
 
 ## 8. Teknik notlar
 
