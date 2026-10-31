@@ -1,4 +1,12 @@
-import { honeycomb, MEDIA, MONTHS, type Placed, WEEKDAYS, ZoomStage } from "./maket-anilar";
+import {
+  DayView,
+  honeycomb,
+  MEDIA,
+  MONTHS,
+  type Placed,
+  WEEKDAYS,
+  ZoomStage,
+} from "./maket-anilar";
 
 // Harita, second round (owner, 2026-10-31): the same zoomable stage as Anılar, by place.
 // Four levels: the world → a country → a province's days → one day's media (the same day
@@ -206,27 +214,9 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
   const count =
     (VISITS.get(level.p) ?? []).find((d) => d.y === level.y && d.m === level.m && d.d === level.d)
       ?.count ?? 0;
-  const columns = phone ? 2 : Math.min(4, Math.max(2, count));
-  const w = 150 * scale;
-  return [
-    {
-      key: "day",
-      x: 0,
-      y: 0,
-      node: (
-        <div className="gap-2" style={{ columnCount: columns, width: columns * (w + 8) }}>
-          {Array.from({ length: count }, (_, i) => (
-            <div
-              // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
-              key={i}
-              className="mb-2 rounded-sm bg-neutral-300"
-              style={{ height: w * (0.8 + ((i * 5) % 4) * 0.25) }}
-            />
-          ))}
-        </div>
-      ),
-    },
-  ];
+  const weekday = WEEKDAYS[(new Date(level.y, level.m - 1, level.d).getDay() + 6) % 7];
+  const date = `${level.d} ${MONTHS[level.m - 1]} ${level.y}, ${weekday}`;
+  return [{ key: "day", x: 0, y: 0, node: <DayView phone={phone} date={date} count={count} /> }];
 }
 
 const parentOf = (level: Level): Level | null =>

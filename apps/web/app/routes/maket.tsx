@@ -87,56 +87,6 @@ function Grid({ phone, children }: { phone: boolean; children: ReactNode }) {
 
 // ---------------------------------------------------------------- screens
 
-function DayDetail({ phone }: { phone: boolean }) {
-  const [route, setRoute] = useState(false);
-  return (
-    <div className="grid gap-3">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
-          <p className="text-base font-medium text-neutral-800">14 Ağustos 2026, Cuma</p>
-          <p className="text-xs text-neutral-600">İzmir → Kuşadası → Selçuk</p>
-          <div className="flex gap-1 pt-1">
-            <Chip>Ege tatili</Chip>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-1">
-          <Btn>‹ Önceki gün</Btn>
-          <Btn>Sonraki gün ›</Btn>
-        </div>
-      </div>
-
-      <div>
-        <button type="button" onClick={() => setRoute((open) => !open)}>
-          <Btn>{route ? "Rotayı gizle" : "Rotayı göster"}</Btn>
-        </button>
-        {route && <Box label="Rota haritası: İzmir → Kuşadası → Selçuk" className="mt-2 h-48" />}
-      </div>
-
-      <Box label="Not · E. ekledi">
-        <Lines n={3} />
-      </Box>
-
-      <div className={`gap-2 ${phone ? "columns-2" : "columns-2 sm:columns-3 lg:columns-4"}`}>
-        {["h-32", "h-20", "h-24", "h-28", "h-20", "h-32", "h-24", "h-28"].map((h, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
-          <div key={i} className="mb-2">
-            <Img className={h} />
-          </div>
-        ))}
-      </div>
-      <p className="text-xs text-neutral-500">
-        Açıklamalar burada yok; bir fotoğrafa dokununca tam ekranda altında görünür.
-      </p>
-
-      <div className="flex gap-1">
-        <Btn>Düzenle</Btn>
-        <Btn>Öğe ekle</Btn>
-        <Btn>Sil</Btn>
-      </div>
-    </div>
-  );
-}
-
 function Memories({ phone }: { phone: boolean }) {
   const [mode, setMode] = useState<"Zaman" | "Harita">("Zaman");
   return (
@@ -186,6 +136,7 @@ const SCREENS: Screen[] = [
       "Medyası olmayan yıl, ay ve gün hiç çizilmez. Biçimi merkezden: öğeler merkeze en yakın altıgen hücrelere yerleşir, az öğe olsa da toplu bir küme olur. Sırası okuma düzeninde: sol üstten sağ alta, eskiden yeniye. En üst seviyede bütün aylar tek ızgarada; yıllar basamaklı çizgiyle ayrılır.",
       "Tekerlek yalnızca seviye değiştirir: yukarı, imlecin altındakine bir seviye in; aşağı, bir seviye çık. Gezinme imlecin merkeze uzaklığıyla; ortadaki kesikli dairede hareket yok.",
       "Bir öğeye tıklamak/dokunmak da bir seviye iner. Telefonda iki parmakla yakınlaş/uzaklaş, tek parmakla sürükle. Üstteki yol (Tüm yıllar › 2026 › …) seçili tarihi gösterir ve geri çıkar.",
+      'Son seviye her iki yolda da aynı gün görünümü (eski Gün ayrıntısı): not kendi satırında, rota "Rotayı göster" ile, açıklamalar yalnızca tam ekran görüntüleyicide.',
       "Üstte Zaman / Harita seçimi; ikisi aynı mantıkta. Harita: dünya → ülke → il → gün. Yalnızca anısı olan ülkeye girilir (şimdilik Türkiye); ülkede yalnızca anısı olan iller, daire büyüklüğü medya sayısı; ildeki gün kartları zamandaki gibi; güne inmek zamandaki güne girmekle aynı. Birkaç ili gezen gün her ilde görünür.",
       'Tarihi eksikler: yalnızca yılı bilinen o yılın içinde "Ayı bilinmeyenler", yalnızca ayı bilinen o ayın içinde "Günü bilinmeyenler", tarihsizler en üst seviyede en dışta.',
     ],
@@ -194,19 +145,6 @@ const SCREENS: Screen[] = [
       "Harita: il ile gün arasında ilçe seviyesi de olsun mu? (Konum il/ilçe tutuluyor; şu an ilçeler atlanıyor.)",
       "Harita: ülke seviyesinde iller daire mi kalsın, yoksa ilin kendi sınırı mı boyansın (medya çoksa koyu)?",
     ],
-  },
-  {
-    slug: "gun",
-    name: "Gün ayrıntısı",
-    body: (phone) => <DayDetail phone={phone} />,
-    why: [
-      "Bir günün bütün medyası tek masonry galeride, ekranın tamamında.",
-      "Not, galerinin üstünde kendi satırında; fotoğrafların arasına girmiyor.",
-      'Rota kapalı başlar, "Rotayı göster" ile açılır. Yalnızca tam günü olan anılarda var.',
-      "Fotoğraf açıklamaları galeride görünmez, yalnızca tam ekran görüntüleyicide.",
-      "Önceki/sonraki gün ile gezinme, listeye dönmeden.",
-    ],
-    open: [],
   },
   {
     slug: "gunluk",
@@ -454,8 +392,8 @@ const SCREENS: Screen[] = [
 
 // -------------------------------------------------------------------- page
 
-// The day screen and adding a memory are reached from Anılar, not from the menu.
-const MENU = SCREENS.filter((s) => s.slug !== "ani-ekle" && s.slug !== "gun");
+// Adding a memory is reached from Anılar, not from the menu.
+const MENU = SCREENS.filter((s) => s.slug !== "ani-ekle");
 const PHONE_MENU = ["anilar", "gunluk", "bahce"];
 
 export default function Maket() {

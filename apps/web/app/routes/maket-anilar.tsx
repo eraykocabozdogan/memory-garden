@@ -215,6 +215,70 @@ export function Tile({ w, h, children }: { w: number; h: number; children: React
   );
 }
 
+// ------------------------------------------------------------- one day
+
+const button = "inline-block rounded border border-neutral-500 bg-white px-2 py-1 text-xs";
+
+/**
+ * The last level of both maps, the same whichever way it was reached (owner, 2026-10-31):
+ * the note on its own row, the route only on request, captions only in the full-screen viewer.
+ */
+export function DayView({ phone, date, count }: { phone: boolean; date: string; count: number }) {
+  const [route, setRoute] = useState(false);
+  const columns = phone ? 2 : Math.min(4, Math.max(2, count));
+  const w = phone ? 130 : 160;
+  return (
+    <div className="grid gap-3 text-left" style={{ width: columns * (w + 8) }}>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-base font-medium text-neutral-800">{date}</p>
+          <p className="text-xs text-neutral-600">İzmir → Kuşadası → Selçuk</p>
+          <span className="mt-1 inline-block rounded-full border border-neutral-400 px-2 text-xs">
+            Ege tatili
+          </span>
+        </div>
+        <div className="flex gap-1">
+          <span className={button}>‹ Önceki gün</span>
+          <span className={button}>Sonraki gün ›</span>
+        </div>
+      </div>
+      <div>
+        <button type="button" className={button} onClick={() => setRoute((open) => !open)}>
+          {route ? "Rotayı gizle" : "Rotayı göster"}
+        </button>
+        {route && (
+          <div className="mt-2 grid h-40 place-items-center rounded border border-neutral-400 bg-neutral-100 text-xs text-neutral-600">
+            Rota haritası: İzmir → Kuşadası → Selçuk
+          </div>
+        )}
+      </div>
+      <div className="rounded border border-neutral-400 bg-neutral-100 p-2 text-xs text-neutral-600">
+        Not · E. ekledi
+        <div className="mt-1 h-2 w-4/5 rounded bg-neutral-300" />
+        <div className="mt-1 h-2 w-3/5 rounded bg-neutral-300" />
+      </div>
+      <div className="gap-2" style={{ columnCount: columns }}>
+        {Array.from({ length: count }, (_, i) => (
+          <div
+            // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
+            key={i}
+            className="mb-2 rounded-sm bg-neutral-300"
+            style={{ height: w * (0.8 + ((i * 5) % 4) * 0.25) }}
+          />
+        ))}
+      </div>
+      <p className="text-xs text-neutral-500">
+        Açıklamalar burada yok; bir fotoğrafa dokununca tam ekranda altında görünür.
+      </p>
+      <div className="flex gap-1">
+        <span className={button}>Düzenle</span>
+        <span className={button}>Öğe ekle</span>
+        <span className={button}>Sil</span>
+      </div>
+    </div>
+  );
+}
+
 // ------------------------------------------------------------ the levels
 
 export type Placed = { key: string; x: number; y: number; node: ReactNode };
@@ -413,29 +477,11 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
     return placed;
   }
 
-  // One day: its media as a masonry, the last level.
+  // One day: the shared day view, the last level.
   const count = inMonth(level.y, level.m).filter((x) => x.d === level.d).length;
-  const columns = phone ? 2 : Math.min(4, Math.max(2, count));
-  const w = 150 * scale;
-  return [
-    {
-      key: "day",
-      x: 0,
-      y: 0,
-      node: (
-        <div className="gap-2" style={{ columnCount: columns, width: columns * (w + 8) }}>
-          {Array.from({ length: count }, (_, i) => (
-            <div
-              // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
-              key={i}
-              className="mb-2 rounded-sm bg-neutral-300"
-              style={{ height: w * (0.8 + ((i * 5) % 4) * 0.25) }}
-            />
-          ))}
-        </div>
-      ),
-    },
-  ];
+  const weekday = WEEKDAYS[(new Date(level.y, level.m - 1, level.d).getDay() + 6) % 7];
+  const date = `${level.d} ${MONTHS[level.m - 1]} ${level.y}, ${weekday}`;
+  return [{ key: "day", x: 0, y: 0, node: <DayView phone={phone} date={date} count={count} /> }];
 }
 
 const parentOf = (level: Level): Level | null =>
