@@ -9,7 +9,7 @@
 | Aşama | İçerik | Durum |
 |---|---|---|
 | 0 | Hazırlık: monorepo, Biome, TypeScript, CI iskeleti, korunan verilerin taşınması | ✅ Onaylandı |
-| 2 | Tasarım sistemi (SPEC 6) | ⏳ 10/11; #11 özel bileşenler açık |
+| 2 | Tasarım sistemi (SPEC 6) | ✅ 11/11 seçildi; kazananlar henüz `components/` altına taşınmadı |
 | 1 | Temel + giriş: D1 şeması, Better Auth, hesap betiği, iskelet, ilk gerçek deploy | ⬜ Aşama 2'den sonra ya da paralel |
 | 3 | Herkese açık rehber: TR/EN prerender, çiçek sayfaları, anlam araması, kaynaklar, Lighthouse | ⬜ Katalog doğrulandı, hazır |
 | 4 | Anılar: not, görünümler, konumlar ve harita, düzenleme, filtreler, çöp kutusu, "geçen yıl bugün" | ⬜ |
@@ -22,13 +22,13 @@
 
 Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım sistemi gelince giydirilir.
 
-### Sıradaki: tasarım #11 ve açık süreç sorusu
+### Sıradaki: açık süreç sorusu, sonra Aşama 1
 
 - **Önce cevaplanacak (30 Ekim'de kullanıcı: "componentler, layout nasıl seçebiliriz, kötü böyle"; "sadece geri sayım değil, genel içerikler").** Teşhis: şimdiye kadar bağlamsız bileşenler ve uydurma içerik gösterildi, her adımda tek taslak sunulup onay istendi; en iyi sonuç (giriş ekranı) gerçek içerikli bütün bir ekrandı.
-  - Yollar: **Y1** vitrini bırakıp gerçek ekranları gerçekçi Türkçe içerikle kurmak · **Y2** her ekranın 2–3 yerleşim varyantı yan yana · **Y3** önce kullanıcıdan referans ekran görüntüleri, sonra Parchment'e uyarlamak · **Y4** önce ucuz statik maket, sonra yalnızca kazananın kodu. Öneri: Y3 + Y1, kritik ekranlarda Y2.
+  - Yollar: **Y1** vitrini bırakıp gerçek ekranları gerçekçi Türkçe içerikle kurmak · **Y2** her ekranın 2–3 yerleşim varyantı yan yana · **Y3** önce kullanıcıdan referans ekran görüntüleri, sonra Parchment'e uyarlamak · **Y4** önce ucuz statik maket, sonra yalnızca kazananın kodu.
   - "Genel içerikler kötü" ne demek: (a) örnek metinler, (b) yerleşim ve boşluklar, (c) dil ve ton, ya da hepsi?
-- **#11 taslakları** `/ui/bilesenler`'de çalışır hâlde, hepsi elde yazıldı: yükleme (sürükle-bırak, kuyruk, 2 eşzamanlı, 100 MB üstü parça sayısı, iptal; transfer taklit), galeri (en kısa sütuna yerleşen masonry, ay çizgisi sütunlar arasında basamaklı; oranlar şimdilik görsel yüklenince ölçülüyor, gerçekte `media_asset` boyutlarından gelecek), görüntüleyici (ok tuşu, kaydırma, Esc, yakınlaştırma), geri sayım (herbaryum etiketi seçildi; a ve c silindi). Önizleme sayfaları ekranın tamamını kullanır (SPEC §6 Yerleşim). Motion'a sonra tekrar bakılacak; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
-- Seçim yapılınca: reddedilenler silinir, kazananlar `components/` altına taşınır, SPEC 6'ya yazılır. Tasarım bitince `/ui*` sayfalarının akıbeti.
+- **#11 taslakları** `/ui/bilesenler`'de: yükleme (transfer taklit), galeri (oranlar şimdilik görsel yüklenince ölçülüyor, gerçekte `media_asset` boyutlarından gelecek), görüntüleyici, geri sayım. Motion'a sonra tekrar bakılacak; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
+- Kazananlar gerçek ekranlar yazılırken `components/` altına taşınır. `/ui*` sayfalarının akıbeti açık.
 
 ### Kullanıcının yapacakları
 

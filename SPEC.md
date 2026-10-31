@@ -191,7 +191,7 @@ Kodun verdiği sözler. Her birinin testi `SYSTEM.md`'deki tabloda.
 
 ## 6. Tasarım seçimleri
 
-Seçimler canlı önizleme sayfalarında (`/ui*`) yan yana görülerek sırayla yapılıyor. 10/11 bitti.
+Seçimler canlı önizleme sayfalarında (`/ui*`) yan yana görülerek sırayla yapıldı. 11/11 bitti.
 
 | # | Adım | Seçim | Neden |
 |---|---|---|---|
@@ -207,7 +207,7 @@ Seçimler canlı önizleme sayfalarında (`/ui*`) yan yana görülerek sırayla 
 | 8 | Arka plan (giriş) | **Yoğun buket:** kâğıttan kesilmiş Curtis çiçekleri (63 çiçek, %93 kaplama) dalgalanan ipeğe basılmış gibi; kendi WebGL2 shader'ımız | Sarı kâğıt zemini yok, çiçek çok. Seyrek buket ve tek büyük çiçek de denendi |
 | 9 | Yazı animasyonu | **Üçlü:** başlık ve metinlerde yumuşak beliriş (kelimeler sırayla, 380 ms); el yazısı notlarda yazılma (soldan sağa süpürme); öne çıkan sayılarda sayaç. Paket yok. "Hareketi azalt" açıkken hepsi kapanır | "Gentle" hissine en yakın. Harf harf, bulanıktan netleşme, daktilo, parlama, dönen kelime ve kalemle çizme reddedildi |
 | 10 | Geçişler | **Tarayıcının kendi View Transitions'ı** (React `<ViewTransition>`): sayfa geçişleri ve anı kartından ayrıntıya geçiş. Animasyon kütüphanesi yok | Sıfır paket; desteklemeyen tarayıcıda geçiş olmaz ama sayfa çalışır ("her cihazda çalışsın"). Motion az farkla daha iyiydi; şimdilik View Transitions, Motion'a sonra tekrar bakılacak |
-| 11 | Özel bileşenler | ⏳ **Sürüyor.** Taslaklar elde yazıldı, paket yok: yükleme; galeri (masonry, her fotoğraf en kısa sütuna yerleşir; ay çizgisi sütunlar arasından basamak basamak geçer, boşluk kalmaz; ayrı zaman çizelgesi kaldırıldı); tam ekran görüntüleyici (yakınlaştırmalı); geri sayım: **herbaryum etiketi** (çiçek görseli üstte, gün sayısı etiket çerçevesinde) | Sade sayı ve ince şerit reddedildi |
+| 11 | Özel bileşenler | **Elde yazıldı, paket yok:** yükleme; galeri (masonry, her fotoğraf en kısa sütuna yerleşir; ay çizgisi sütunlar arasından basamak basamak geçer, boşluk kalmaz; ayrı zaman çizelgesi kaldırıldı); tam ekran görüntüleyici (yakınlaştırmalı); geri sayım: **herbaryum etiketi** (çiçek görseli üstte, gün sayısı etiket çerçevesinde) | Sade sayı ve ince şerit reddedildi |
 | — | Yerleşim | **Ekranın tamamını kullan:** sayfa her ekranda tüm genişliği kullanır, kenarda yalnızca nefes payı; galeri ve kart ızgaraları genişledikçe sütun ekler; uzun metin okunur genişlikte (~65 karakter) kalır | Tablet yatayda iki yan boş kalıyordu; düz metin çok uzarsa okunmaz |
 
 Ertelenenler: kâğıt dokusunun son hali; uygulama içi arka plan (donmuş ipek karesi, hareketli ipek ya da yalnızca seçili sayfalar).
@@ -218,7 +218,7 @@ Ertelenenler: kâğıt dokusunun son hali; uygulama içi arka plan (donmuş ipek
 
 En yenisi üstte. Seçeneklerin ayrıntılı karşılaştırması git geçmişinde (`docs/decisions.md`, 2026-10-31 öncesi).
 
-- **2026-10-31 (tasarım):** Geri sayım herbaryum etiketi; Motion'a sonra tekrar bakılacak; yerleşim ekranın tamamını kullanır.
+- **2026-10-31 (tasarım):** #11 kilitlendi, tasarım listesi bitti; galeri en kısa sütuna yerleşir, ay çizgisi basamaklı; geri sayım herbaryum etiketi; Motion'a sonra tekrar bakılacak; yerleşim ekranın tamamını kullanır.
 - **2026-10-31:** Dokümanlar ortak şablona taşındı; `docs/`, proje içi CLAUDE.md ve `frontend-playbook.md` kaldırıldı (playbook'un özü §6'ya, teknik tuzakları SYSTEM'e). **`research/` istisna:** içindeki .md dosyalarıyla birlikte olduğu gibi kalır, araştırma emeği bilerek görünür tutuluyor. Yalnızca `_tmp_*` betikleri silindi.
 - **2026-10-30:** Tasarım seçimleri: 6c iç boşluk değişmiyor; 8 yoğun buket; 9 yumuşak beliriş + yazılma + sayaç; 10 View Transitions, kütüphane yok.
 - **2026-10 (Karar 8):** Tasarım seçimleri §6'daki gibi; ikonlar Lucide yerine Phosphor.
