@@ -138,9 +138,16 @@ function DayDetail({ phone }: { phone: boolean }) {
 }
 
 function Memories({ phone }: { phone: boolean }) {
+  const [mode, setMode] = useState<"Zaman" | "Harita">("Zaman");
   return (
     <div className="grid gap-3">
       <div className="flex flex-wrap items-center gap-2">
+        {(["Zaman", "Harita"] as const).map((m) => (
+          <button key={m} type="button" onClick={() => setMode(m)}>
+            <Chip on={mode === m}>{m}</Chip>
+          </button>
+        ))}
+        <span className="mx-1 h-4 w-px bg-neutral-400" />
         <Chip>Etiket ▾</Chip>
         <Chip>İl ▾</Chip>
         <Chip>Tür ▾</Chip>
@@ -159,7 +166,11 @@ function Memories({ phone }: { phone: boolean }) {
           </div>
         </div>
       </Box>
-      <MemoriesMap phone={phone} />
+      {mode === "Zaman" ? (
+        <MemoriesMap key="zaman" phone={phone} />
+      ) : (
+        <PlaceMap key="harita" phone={phone} />
+      )}
     </div>
   );
 }
@@ -175,9 +186,14 @@ const SCREENS: Screen[] = [
       "Medyası olmayan yıl, ay ve gün hiç çizilmez. Biçimi merkezden: öğeler merkeze en yakın altıgen hücrelere yerleşir, az öğe olsa da toplu bir küme olur. Sırası okuma düzeninde: sol üstten sağ alta, eskiden yeniye. En üst seviyede bütün aylar tek ızgarada; yıllar basamaklı çizgiyle ayrılır.",
       "Tekerlek yalnızca seviye değiştirir: yukarı, imlecin altındakine bir seviye in; aşağı, bir seviye çık. Gezinme imlecin merkeze uzaklığıyla; ortadaki kesikli dairede hareket yok.",
       "Bir öğeye tıklamak/dokunmak da bir seviye iner. Telefonda iki parmakla yakınlaş/uzaklaş, tek parmakla sürükle. Üstteki yol (Tüm yıllar › 2026 › …) seçili tarihi gösterir ve geri çıkar.",
+      "Üstte Zaman / Harita seçimi; ikisi aynı mantıkta. Harita: dünya → ülke → il → gün. Yalnızca anısı olan ülkeye girilir (şimdilik Türkiye); ülkede yalnızca anısı olan iller, daire büyüklüğü medya sayısı; ildeki gün kartları zamandaki gibi; güne inmek zamandaki güne girmekle aynı. Birkaç ili gezen gün her ilde görünür.",
       'Tarihi eksikler: yalnızca yılı bilinen o yılın içinde "Ayı bilinmeyenler", yalnızca ayı bilinen o ayın içinde "Günü bilinmeyenler", tarihsizler en üst seviyede en dışta.',
     ],
-    open: ["Etiket, il ve tür filtreleri: şimdilik çip olarak duruyor; kullanıcı ayrıca bakacak."],
+    open: [
+      "Etiket, il ve tür filtreleri: şimdilik çip olarak duruyor; kullanıcı ayrıca bakacak.",
+      "Harita: il ile gün arasında ilçe seviyesi de olsun mu? (Konum il/ilçe tutuluyor; şu an ilçeler atlanıyor.)",
+      "Harita: ülke seviyesinde iller daire mi kalsın, yoksa ilin kendi sınırı mı boyansın (medya çoksa koyu)?",
+    ],
   },
   {
     slug: "gun",
@@ -191,23 +207,6 @@ const SCREENS: Screen[] = [
       "Önceki/sonraki gün ile gezinme, listeye dönmeden.",
     ],
     open: [],
-  },
-  {
-    slug: "harita",
-    name: "Harita",
-    body: (phone) => <PlaceMap phone={phone} />,
-    why: [
-      "Ayrı ekran, Anılar'la aynı mantık: dört seviye, tekerlek seviye değiştirir, imleç merkezden uzaklaştıkça gezinir, telefonda iki parmak.",
-      "Dünya → ülke → il → gün. İlin içindeki gün kartları Anılar'daki gibi toplu bir altıgende, sol üstten sağ alta eskiden yeniye.",
-      "Bir güne inince Anılar'da güne girmekle aynı görünüm açılır.",
-      "Türkiye dışı anı şimdilik yok: dünyada bütün ülkeler çizilir ama yalnızca anısı olan ülkeye (Türkiye) girilir. Yurt dışı gelince o ülkenin sınır verisi eklenir.",
-      "Ülke seviyesinde yalnızca anısı olan iller çizilir; daire ne kadar büyükse o kadar çok medya.",
-      "Birkaç ili gezen bir gün (rota), her ilde ayrı görünür.",
-    ],
-    open: [
-      "İl seviyesinin altında ilçe seviyesi de olsun mu? Konum il/ilçe olarak tutuluyor; şu an ilçeler atlanıyor.",
-      "Ülke seviyesinde iller daire mi kalsın, yoksa ilin kendi sınırı mı boyansın (medya çoksa koyu)?",
-    ],
   },
   {
     slug: "gunluk",
@@ -457,7 +456,7 @@ const SCREENS: Screen[] = [
 
 // The day screen and adding a memory are reached from Anılar, not from the menu.
 const MENU = SCREENS.filter((s) => s.slug !== "ani-ekle" && s.slug !== "gun");
-const PHONE_MENU = ["anilar", "gunluk", "bahce", "harita"];
+const PHONE_MENU = ["anilar", "gunluk", "bahce"];
 
 export default function Maket() {
   const { ekran } = useParams();
@@ -523,7 +522,7 @@ export default function Maket() {
               )}
               <main className="flex-1 p-3">{screen.body(phone)}</main>
               {phone && (
-                <nav className="grid grid-cols-5 border-t border-neutral-300 bg-neutral-50 text-center text-xs">
+                <nav className="grid grid-cols-4 border-t border-neutral-300 bg-neutral-50 text-center text-xs">
                   {PHONE_MENU.map((slug) => (
                     <Link
                       key={slug}
