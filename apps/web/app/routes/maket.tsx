@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { Link, useParams } from "react-router";
 import type { Route } from "./+types/maket";
 import { MemoriesMap } from "./maket-anilar";
