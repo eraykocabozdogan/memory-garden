@@ -67,7 +67,7 @@ function IconRow({ title, note, weight }: { title: string; note: string; weight:
 
 export default function UiIcons() {
   return (
-    <main className="mx-auto max-w-5xl space-y-6 px-4 py-10">
+    <main className="space-y-6 px-4 py-10 md:px-10">
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="mr-auto text-2xl font-semibold">İkonlar: Phosphor</h1>
         <Button variant="outline" render={<Link to="/ui" />}>

@@ -216,7 +216,7 @@ test("the gallery opens a photo full screen and walks through with the keyboard"
   await expect(viewer).toHaveCount(0);
 });
 
-test("the gallery is divided by month and the countdowns reach their number", async ({ page }) => {
+test("the gallery is divided by month and the countdown reaches its number", async ({ page }) => {
   await page.goto("/ui/bilesenler");
 
   const months = page.locator('[data-testid="galeri"] h3');
@@ -225,10 +225,8 @@ test("the gallery is divided by month and the countdowns reach their number", as
   expect(await months.count()).toBeGreaterThan(1);
   await expect(months.first()).toHaveText(/\d{4}/);
 
-  // All three shapes of the countdown settle on a real number of days, not on zero.
-  for (const id of ["sayim-a", "sayim-b", "sayim-c"]) {
-    await expect(page.getByTestId(id)).toContainText(/[1-9]\d*/);
-  }
+  // The countdown settles on a real number of days, not on zero.
+  await expect(page.getByTestId("sayim")).toContainText(/[1-9]\d*/);
 });
 
 test("the viewer zooms in and back out", async ({ page }) => {
@@ -247,4 +245,30 @@ test("the viewer zooms in and back out", async ({ page }) => {
   await expect(viewer.getByTestId("zoom")).toHaveText("100%");
   await viewer.locator("img").dblclick();
   await expect(viewer.getByTestId("zoom")).not.toHaveText("100%");
+});
+
+test("on a wide screen the pages fill the width but text stays readable", async ({
+  page,
+}, testInfo) => {
+  test.skip(isMobile(testInfo.project.name), "about wide screens");
+  // A tablet held sideways.
+  await page.setViewportSize({ width: 1366, height: 1024 });
+
+  for (const path of ["/ui", "/ui/icons", "/ui/yazi", "/ui/gecis", "/ui/bilesenler"]) {
+    await page.goto(path);
+    const main = page.locator("main");
+    await expect(main).toBeVisible();
+    const box = await main.boundingBox();
+    expect(box?.width, path).toBeGreaterThan(1366 * 0.9);
+  }
+
+  // The gallery gains columns instead of leaving the sides empty.
+  await page.goto("/ui/bilesenler");
+  const gallery = page.locator('[data-testid="galeri"] [class*="columns-"]').first();
+  await expect(gallery).toHaveCSS("column-count", "4");
+
+  // The intro paragraph keeps a readable line length (max-w-prose is 65ch).
+  const intro = page.locator("main header p").first();
+  const introBox = await intro.boundingBox();
+  expect(introBox?.width).toBeLessThan(760);
 });

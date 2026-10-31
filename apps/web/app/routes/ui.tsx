@@ -95,7 +95,7 @@ export default function Ui() {
   return (
     <div className="min-h-screen text-foreground">
       <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 px-4 py-3">
+        <div className="flex flex-wrap items-center gap-3 px-4 py-3 md:px-10">
           <h1 className="mr-auto text-lg font-semibold">Tasarım önizlemesi</h1>
           <Button variant="ghost" render={<Link to="/ui/login" />}>
             Giriş ekranları
@@ -132,7 +132,7 @@ export default function Ui() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl space-y-12 px-4 py-10">
+      <main className="space-y-12 px-4 py-10 md:px-10">
         <p className="text-muted-foreground" data-testid="theme-note">
           Parchment renkleri · Lora + Source Sans 3 + Caveat · Paper şekli · shadcn/ui (Base UI,
           Vega)
@@ -160,7 +160,7 @@ export default function Ui() {
           <h2 id="swatches" className="text-2xl font-semibold">
             Renk token'ları
           </h2>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
             {PAIRS.map(([bg, fg]) => (
               <li
                 key={bg}

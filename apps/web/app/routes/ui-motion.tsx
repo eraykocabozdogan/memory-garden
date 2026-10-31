@@ -40,10 +40,10 @@ export default function UiMotion() {
   const card = CARDS.find((c) => c.id === open);
 
   return (
-    <main className="mx-auto grid max-w-5xl gap-6 p-6 md:p-10">
+    <main className="grid gap-6 p-6 md:p-10">
       <header className="grid gap-2">
         <h1 className="font-heading text-3xl">Hareket</h1>
-        <p className="text-muted-foreground">
+        <p className="max-w-prose text-muted-foreground">
           Karar 10: geçişleri tarayıcının kendisi yapıyor, animasyon kütüphanesi yok. Desteklemeyen
           tarayıcıda geçiş olmaz, sayfa yine çalışır; "hareketi azalt" açıkken de kapanır.
         </p>
@@ -84,7 +84,7 @@ export default function UiMotion() {
               </div>
             </ViewTransition>
           ) : (
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
               {CARDS.map((item) => (
                 <li key={item.id}>
                   <ViewTransition name={`kart-${item.id}`}>

@@ -45,10 +45,10 @@ export default function UiText() {
   const [run, setRun] = useState(0);
 
   return (
-    <main className="mx-auto grid max-w-5xl gap-6 p-6 md:p-10">
+    <main className="grid gap-6 p-6 md:p-10">
       <header className="grid gap-2">
         <h1 className="font-heading text-3xl">Yazı animasyonu</h1>
-        <p className="text-muted-foreground">
+        <p className="max-w-prose text-muted-foreground">
           Karar 9: başlıklarda ve metinlerde yumuşak beliriş, el yazısı notlarda yazılma, öne çıkan
           sayılarda sayaç. Hepsi sade CSS; "hareketi azalt" açıkken hiçbiri çalışmaz.
         </p>
@@ -62,7 +62,7 @@ export default function UiText() {
         </div>
       </header>
 
-      <div key={run} className="grid gap-5 md:grid-cols-2">
+      <div key={run} className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         <Card data-testid="aday-9-2">
           <CardHeader>
             <CardTitle className="text-base">9-2 · Yumuşak beliriş</CardTitle>

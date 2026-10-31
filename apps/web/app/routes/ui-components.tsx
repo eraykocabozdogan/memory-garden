@@ -30,8 +30,8 @@ export function meta(_: Route.MetaArgs) {
 // touch, not finished screens: the upload fakes the transfer (the real one is stage 5, signed
 // PUTs straight to R2) and the data is stand-in.
 // The owner's second round: masonry stays and the separate timeline goes, with the months
-// dividing the gallery instead; the viewer gains zoom; the countdown is shown as three shapes to
-// choose from.
+// dividing the gallery instead; the viewer gains zoom; the countdown is the herbarium label, picked
+// from three shapes.
 
 const PHOTOS = flowerCatalog
   .filter((flower) => flower.artwork)
@@ -46,12 +46,13 @@ const PHOTOS = flowerCatalog
 
 export default function UiComponents() {
   return (
-    <main className="mx-auto grid max-w-5xl gap-6 p-6 md:p-10">
+    <main className="grid gap-6 p-6 md:p-10">
       <header className="grid gap-2">
         <h1 className="font-heading text-3xl">Özel bileşen taslakları</h1>
-        <p className="text-muted-foreground">
+        <p className="max-w-prose text-muted-foreground">
           Karar 11. Hepsi elde yazıldı, yeni paket yok: sürükle-bırak yükleme, aylara bölünmüş
-          galeri, yakınlaştırmalı tam ekran görüntüleyici ve geri sayım kartının üç hâli.
+          galeri, yakınlaştırmalı tam ekran görüntüleyici ve herbaryum etiketi biçiminde geri sayım
+          kartı.
         </p>
       </header>
 
@@ -288,7 +289,7 @@ function Gallery() {
               {month}
               <span aria-hidden="true" className="h-px flex-1 bg-border" />
             </h3>
-            <div className="columns-2 gap-3 sm:columns-3">
+            <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 2xl:columns-5">
               {items.map((item) =>
                 // While the viewer holds this photo's transition name, the tile must not also
                 // carry it: a name has to be unique or the browser drops the transition.
@@ -509,31 +510,17 @@ function Countdowns() {
   const flower = PHOTOS[0];
 
   return (
-    <Card data-testid="geri-sayim">
+    <Card data-testid="geri-sayim" className="max-w-md">
       <CardHeader>
-        <CardTitle className="text-base">3 · Geri sayım kartı — üç hâli</CardTitle>
+        <CardTitle className="text-base">3 · Geri sayım kartı</CardTitle>
         <p className="text-sm text-muted-foreground">
-          İlkini beğenmedin; aynı bilgiyi üç ayrı biçimde koydum. Hangisi?
+          Herbaryum etiketi: gün, çiçeğin yanındaki yaprağa yazılmış.
         </p>
       </CardHeader>
-      <CardContent className="grid gap-4 md:grid-cols-3">
-        {/* a · the plain big number, as it was */}
+      <CardContent>
+        {/* A herbarium label: the day is written on the sheet beside its flower. */}
         <figure
-          data-testid="sayim-a"
-          className="grid justify-items-center gap-1 rounded-lg border bg-card p-6 shadow-card"
-        >
-          <figcaption className="font-hand text-2xl text-muted-foreground">Yıl dönümüne</figcaption>
-          <p className="font-heading text-6xl font-semibold">
-            <CountUp to={days} />
-          </p>
-          <p className="text-muted-foreground">gün</p>
-          <p className="pt-2 text-sm text-muted-foreground">{when}</p>
-          <p className="pt-3 text-xs text-muted-foreground">a · sade</p>
-        </figure>
-
-        {/* b · a herbarium label: the day is written on the sheet beside its flower */}
-        <figure
-          data-testid="sayim-b"
+          data-testid="sayim"
           className="grid gap-3 rounded-lg border bg-card p-4 shadow-card"
         >
           <img
@@ -550,26 +537,6 @@ function Countdowns() {
             </p>
             <p className="text-center text-sm text-muted-foreground">{when}</p>
           </div>
-          <p className="text-center text-xs text-muted-foreground">b · herbaryum etiketi</p>
-        </figure>
-
-        {/* c · a quiet line that could sit at the top of any page */}
-        <figure
-          data-testid="sayim-c"
-          className="grid content-center gap-2 rounded-lg border bg-card p-4 shadow-card"
-        >
-          <p className="font-hand text-xl text-muted-foreground">Yıl dönümüne</p>
-          <p className="font-heading text-2xl">
-            <CountUp to={days} /> gün kaldı
-          </p>
-          <div className="h-1 overflow-hidden rounded-full bg-muted">
-            <div
-              className="h-full rounded-full bg-primary"
-              style={{ width: `${Math.round((1 - days / 365) * 100)}%` }}
-            />
-          </div>
-          <p className="text-sm text-muted-foreground">{when}</p>
-          <p className="pt-2 text-xs text-muted-foreground">c · ince şerit</p>
         </figure>
       </CardContent>
     </Card>
