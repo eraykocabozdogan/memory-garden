@@ -10,4 +10,5 @@ export default [
   route("ui/yazi", "routes/ui-text.tsx"),
   route("ui/gecis", "routes/ui-motion.tsx"),
   route("ui/bilesenler", "routes/ui-components.tsx"),
+  route("maket/:ekran?", "routes/maket.tsx"),
 ] satisfies RouteConfig;

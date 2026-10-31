@@ -102,6 +102,7 @@ Henüz şema yok (Aşama 1). Planlanan tablolar §8'de.
 | `/ui/yazi` | #9'un üç efekti, "Tekrar oynat" |
 | `/ui/gecis` | #10: anı kartından tam ekrana, listeye ekleme/silme |
 | `/ui/bilesenler` | #11'in taslakları: yükleme, galeri + görüntüleyici, geri sayım (herbaryum etiketi) |
+| `/maket`, `/maket/:ekran` | Ekran haritası: 10 uygulama ekranının gri kutulu taslağı, masaüstü/telefon, ekran başına açık sorular. Mantık ve test yok; ekranlar seçilince silinir |
 
 ## 6. Eksik ve geçici
 
