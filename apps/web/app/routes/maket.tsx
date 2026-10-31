@@ -87,6 +87,73 @@ function Grid({ phone, children }: { phone: boolean; children: ReactNode }) {
 
 // ---------------------------------------------------------------- screens
 
+function Diaries({ phone }: { phone: boolean }) {
+  const [partner, setPartner] = useState<"açık" | "a" | "b" | "c">("açık");
+  const empty = partner !== "açık";
+  const write = (
+    <div className="grid content-start gap-3">
+      <Box label="Bugün yaz">
+        <div className="mt-1 h-24 rounded border border-neutral-300 bg-white" />
+        <div className="flex justify-between pt-1 text-xs text-neutral-600">
+          <span>0 / 2.000</span>
+          <Btn>Yayınla</Btn>
+        </div>
+      </Box>
+      <Box label="Açık günlüğün · bugün 09:12 · partnerine 18 sa daha açık · düzenle / sil">
+        <Lines n={2} />
+      </Box>
+    </div>
+  );
+  const side =
+    partner === "açık" ? (
+      <Box label="D. · 6 saat önce · 18 sa kaldı">
+        <Lines n={3} />
+        <Btn>Çiçek bırak</Btn>
+      </Box>
+    ) : partner === "a" ? (
+      <Box label="D. bugün henüz yazmadı">
+        <div className="flex items-center gap-2 pt-2">
+          <Img className="h-14 w-12" />
+          <p className="text-xs text-neutral-700">
+            En son bıraktığın çiçek
+            <br />
+            <span className="font-medium">Papatya · 28 Ekim</span>
+            <br />
+            <span className="text-neutral-500">Bahçede gör →</span>
+          </p>
+        </div>
+      </Box>
+    ) : partner === "b" ? (
+      <Box label="D. henüz yazmadı. Yazınca bildirim gelir." className="text-center" />
+    ) : null;
+
+  return (
+    <div className="grid gap-3">
+      <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-600">
+        Partnerin günlüğü:
+        {(["açık", "a", "b", "c"] as const).map((v) => (
+          <button key={v} type="button" onClick={() => setPartner(v)}>
+            <Chip on={partner === v}>{v === "açık" ? "var" : `yok · ${v}`}</Chip>
+          </button>
+        ))}
+      </div>
+      {side ? (
+        <Grid phone={phone}>
+          {write}
+          <div className="grid content-start gap-3">
+            <p className="text-xs text-neutral-600">
+              {empty ? "Partnerin" : "Açık günlükler (partnerin)"}
+            </p>
+            {side}
+          </div>
+        </Grid>
+      ) : (
+        write
+      )}
+    </div>
+  );
+}
+
 function Memories({ phone }: { phone: boolean }) {
   const [mode, setMode] = useState<"Zaman" | "Harita">("Zaman");
   return (
@@ -149,48 +216,14 @@ const SCREENS: Screen[] = [
   {
     slug: "gunluk",
     name: "Günlükler",
-    body: (phone) => (
-      <Grid phone={phone}>
-        <div className="grid content-start gap-3">
-          <Box label="Bugün yaz">
-            <div className="mt-1 h-24 rounded border border-neutral-300 bg-white" />
-            <div className="flex justify-between pt-1 text-xs text-neutral-600">
-              <span>0 / 2.000</span>
-              <Btn>Yayınla</Btn>
-            </div>
-          </Box>
-          <Box label="Benim günlüklerim">
-            <div className="grid gap-2 pt-1">
-              <Box label="Bugün 09:12 · partnerine 18 sa daha açık · düzenle / sil">
-                <Lines n={2} />
-              </Box>
-              <Box label="28 Ekim · kapandı · bırakılan çiçek: Papatya">
-                <Lines n={2} />
-              </Box>
-            </div>
-          </Box>
-        </div>
-        <div className="grid content-start gap-3">
-          <Box label="Açık günlükler (partnerin)">
-            <div className="grid gap-2 pt-1">
-              <Box label="D. · 6 saat önce · 18 sa kaldı">
-                <Lines n={3} />
-                <Btn>Çiçek bırak</Btn>
-              </Box>
-            </div>
-          </Box>
-        </div>
-      </Grid>
-    ),
+    body: (phone) => <Diaries phone={phone} />,
     why: [
-      "Yazmak ve partnerin açık günlüğü aynı ekranda; ikisi de günlük ritmin parçası.",
-      "Kalan süre her günlükte açıkça yazıyor (24 saat kuralı).",
-      "Çiçek bırak kitap gibi bir pencerede kataloğu açar.",
+      "Yazma alanı her zaman açık; günün ilk işi yazmak.",
+      "Yalnızca açık günlükler burada: seninki (24 saat içinde düzenle/sil) ve partnerinki (çiçek bırak). Kapanan günlükler burada listelenmez; bahçede çiçekleriyle yaşar.",
+      "Kalan süre her açık günlükte yazıyor (24 saat kuralı). Çiçek bırak kitap gibi bir pencerede kataloğu açar.",
     ],
     open: [
-      'Yazma alanı her zaman açık mı, yoksa "Yaz" düğmesiyle tam ekran mı?',
-      "Kapanan günlükler burada mı listelenir, yoksa yalnızca bahçede çiçekleriyle mi yaşar?",
-      "Partnerin açık günlüğü yokken bu taraf ne gösterir?",
+      'Partnerin açık günlüğü yokken o taraf: a) son bırakılan çiçekle sakin boş durum [O] · b) sade "henüz yazmadı" · c) taraf hiç görünmez. Yukarıdaki düğmelerle karşılaştır.',
     ],
   },
   {
