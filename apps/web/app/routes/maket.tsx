@@ -285,6 +285,56 @@ function GreyMasonry({ view, columns }: { view: View; columns: number }) {
   );
 }
 
+function DayDetail({ phone }: { phone: boolean }) {
+  const [route, setRoute] = useState(false);
+  return (
+    <div className="grid gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-base font-medium text-neutral-800">14 Ağustos 2026, Cuma</p>
+          <p className="text-xs text-neutral-600">İzmir → Kuşadası → Selçuk</p>
+          <div className="flex gap-1 pt-1">
+            <Chip>Ege tatili</Chip>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-1">
+          <Btn>‹ Önceki gün</Btn>
+          <Btn>Sonraki gün ›</Btn>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" onClick={() => setRoute((open) => !open)}>
+          <Btn>{route ? "Rotayı gizle" : "Rotayı göster"}</Btn>
+        </button>
+        {route && <Box label="Rota haritası: İzmir → Kuşadası → Selçuk" className="mt-2 h-48" />}
+      </div>
+
+      <Box label="Not · E. ekledi">
+        <Lines n={3} />
+      </Box>
+
+      <div className={`gap-2 ${phone ? "columns-2" : "columns-2 sm:columns-3 lg:columns-4"}`}>
+        {["h-32", "h-20", "h-24", "h-28", "h-20", "h-32", "h-24", "h-28"].map((h, i) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
+          <div key={i} className="mb-2">
+            <Img className={h} />
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-neutral-500">
+        Açıklamalar burada yok; bir fotoğrafa dokununca tam ekranda altında görünür.
+      </p>
+
+      <div className="flex gap-1">
+        <Btn>Düzenle</Btn>
+        <Btn>Öğe ekle</Btn>
+        <Btn>Sil</Btn>
+      </div>
+    </div>
+  );
+}
+
 function Memories({ phone }: { phone: boolean }) {
   const [view, setView] = useState<View>("Gün");
   return (
@@ -339,56 +389,15 @@ const SCREENS: Screen[] = [
   {
     slug: "gun",
     name: "Gün ayrıntısı",
-    body: (phone) => (
-      <Grid phone={phone}>
-        <div className="grid gap-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-base font-medium text-neutral-800">14 Ağustos 2026, Cuma</p>
-              <p className="text-xs text-neutral-600">İzmir → Kuşadası → Selçuk · Ege tatili</p>
-            </div>
-            <div className="flex gap-1">
-              <Btn>‹ Önceki gün</Btn>
-              <Btn>Sonraki gün ›</Btn>
-            </div>
-          </div>
-          <div className="columns-2 gap-2 sm:columns-3">
-            {["h-32", "h-20", "h-24", "h-28", "h-20", "h-32"].map((h, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
-              <div key={i} className="mb-2">
-                <Img className={h} />
-              </div>
-            ))}
-          </div>
-          <Box label="Not · E. ekledi">
-            <Lines n={3} />
-          </Box>
-          <div className="flex gap-1">
-            <Btn>Düzenle</Btn>
-            <Btn>Öğe ekle</Btn>
-            <Btn>Sil</Btn>
-          </div>
-        </div>
-        <div className="grid content-start gap-3">
-          <Box label="Rota haritası" className="h-40" />
-          <Box label="Bu günün etiketleri">
-            <div className="flex gap-1 pt-1">
-              <Chip>Ege tatili</Chip>
-            </div>
-          </Box>
-        </div>
-      </Grid>
-    ),
+    body: (phone) => <DayDetail phone={phone} />,
     why: [
-      "Bir günün bütün öğeleri tek yerde; fotoğraflar oranını koruyor, not araya giriyor.",
-      "Rota yalnızca tam günü olan anılarda var; yan sütunda harita.",
+      "Bir günün bütün medyası tek masonry galeride, ekranın tamamında.",
+      "Not, galerinin üstünde kendi satırında; fotoğrafların arasına girmiyor.",
+      'Rota kapalı başlar, "Rotayı göster" ile açılır. Yalnızca tam günü olan anılarda var.',
+      "Fotoğraf açıklamaları galeride görünmez, yalnızca tam ekran görüntüleyicide.",
       "Önceki/sonraki gün ile gezinme, listeye dönmeden.",
     ],
-    open: [
-      "Not fotoğrafların üstünde mi, arasında mı (eklenme sırasıyla), ayrı sütunda mı?",
-      'Rota haritası her zaman açık mı, yoksa "Rotayı göster" ile mi açılır?',
-      "Fotoğraf açıklamaları (280 karakter) galeride görünür mü, yalnızca görüntüleyicide mi?",
-    ],
+    open: [],
   },
   {
     slug: "harita",
