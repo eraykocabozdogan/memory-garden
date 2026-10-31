@@ -12,7 +12,8 @@
       "!research",
       "!**/worker-configuration.d.ts",
       "!packages/shared/src/flowers/*.json",
-      "!packages/shared/src/locations/*.json"
+      "!packages/shared/src/locations/*.json",
+      "!apps/web/app/data/*.json"
     ]
   },
   "formatter": {
