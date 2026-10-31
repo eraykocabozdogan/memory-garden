@@ -3,7 +3,8 @@ import { useState } from "react";
 import { MONTHS } from "./maket-anilar";
 
 // Bahçe (owner, 2026-10-31): an isometric square garden like the Forest app. One square per
-// day, laid in a square spiral out from the centre, the first square being 1 November 2026.
+// day, laid in a square spiral out from the centre, the first square being the first
+// diary's day (G9; 1 November 2026 in this stand-in).
 // A day with no flower is an empty square; a day with a flower holds it. When both of us left
 // a flower the same day, the second one goes, once and for good, to the empty square nearest
 // that day (never towards the centre); only with no empty square left is one added after the last. A flower

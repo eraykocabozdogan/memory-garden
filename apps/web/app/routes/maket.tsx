@@ -233,16 +233,14 @@ const SCREENS: Screen[] = [
     ),
     why: [
       "Bahçe ve günlükler tek ekranda: üstte bahçe, altta günlükler.",
-      "Bahçe izometrik kare bir alan (Forest gibi). Her gün bir kare, merkezden kare spiral halinde dışa; ilk kare 1 Kasım 2026. Çiçek bırakılmayan gün boş kare.",
+      "Bahçe izometrik kare bir alan (Forest gibi). Her gün bir kare, merkezden kare spiral halinde dışa; ilk kare ilk günlüğün günü (G9; makette örnek olarak 1 Kasım 2026). Çiçek bırakılmayan gün boş kare.",
       "Aynı gün ikimiz de çiçek bıraktıysak ikinci çiçek o güne en yakın boş kareye gider; merkeze doğru değil. Yer, gün kesinleşince bir kez hesaplanıp kalıcı yazılır. Bahçede hiç boş kare kalmadıysa spiralin sonuna yeni kare eklenir, sonraki günler bir kayar; henüz kesinleşmemiş bir boş kare varsa ikinci çiçek onu bekler. Maket taşınan çiçekleri kesik çizgiyle işaretliyor (gerçekte görünmez).",
       "Bir kareye dokununca o günün çiçeği, kimin bıraktığı, anlamı ve günlüğü. Günlüğü silinmiş çiçek kalır, metni yok.",
       "Çiçekler kataloğun Curtis çizimlerinden, arka planı temizlenmiş halleriyle (maket gri).",
       "Yazma alanı her zaman açık. Kendi günlüklerin tek listede: açık olan en üstte vurgulu, altında geçmişler; birine dokununca tam metni açılır.",
       'Partnerin yalnızca açık günlüğü burada (çiçek bırak). Yokken: "D. bugün henüz yazmadı" ve en son bıraktığın çiçek, bahçeye bağlantıyla.',
     ],
-    open: [
-      'Bahçe her zaman 1 Kasım 2026\'dan mı başlasın, yoksa ilk günlüğün gününden mi (SPEC G9 şu an "ilk günlüğün günü" diyor)?',
-    ],
+    open: [],
   },
   {
     slug: "etiketler",
