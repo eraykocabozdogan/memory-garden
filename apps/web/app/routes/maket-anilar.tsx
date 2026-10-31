@@ -9,7 +9,7 @@ import {
 // Anılar, second round (owner, 2026-10-31): one zoomable map instead of a list. Four levels:
 // every year with its months → one year's months → one month's day cards → one day's media.
 // Months keep a real calendar outline (Monday first, ragged first and last week) but nothing
-// sits on day squares. Items circle the centre like a watch's app grid, newest in the middle.
+// sits on day squares. Items sit in a honeycomb read left to right, oldest first.
 // The wheel only changes level; moving the pointer away from the centre pans, faster further
 // out, still inside a dead zone. Touch: pinch changes level, one finger drags. Grey on purpose.
 
@@ -63,8 +63,8 @@ type Level =
   | { kind: "month"; y: number; m: number }
   | { kind: "day"; y: number; m: number; d: number };
 
-const desc = (a: number, b: number) => b - a;
-const unique = (values: number[]) => [...new Set(values)].sort(desc);
+const asc = (a: number, b: number) => a - b;
+const unique = (values: number[]) => [...new Set(values)].sort(asc);
 const yearsWithMedia = () => unique(MEDIA.flatMap((x) => (x.y === undefined ? [] : [x.y])));
 const monthsOf = (y: number) =>
   unique(MEDIA.flatMap((x) => (x.y === y && x.m !== undefined ? [x.m] : [])));
@@ -74,34 +74,26 @@ const daysOf = (y: number, m: number) =>
 
 // --------------------------------------------------------------- hex rings
 
-/** Axial positions spiralling out from the centre: 1, then rings of 6, 12, 18… */
-function spiral(count: number) {
-  const dirs = [
-    [1, 0],
-    [1, -1],
-    [0, -1],
-    [-1, 0],
-    [-1, 1],
-    [0, 1],
-  ] as const;
-  const out: [number, number][] = [[0, 0]];
-  for (let ring = 1; out.length < count; ring++) {
-    let q = -ring;
-    let r = ring; // start bottom-left, walk the ring
-    for (const [dq, dr] of dirs) {
-      for (let step = 0; step < ring && out.length < count; step++) {
-        out.push([q, r]);
-        q += dq;
-        r += dr;
-      }
-    }
-  }
-  return out.slice(0, count);
-}
-
-/** Centres for `count` boxes of w×h laid in a honeycomb (rows offset by half a box). */
+/**
+ * Centres for `count` boxes of w×h in a honeycomb read like text: oldest top-left, newest
+ * bottom-right, every other row shifted half a box so each item still has six neighbours.
+ * The whole block is centred on the origin.
+ */
 function honeycomb(count: number, w: number, h: number, gap: number) {
-  return spiral(count).map(([q, r]) => ({ x: (q + r / 2) * (w + gap), y: r * (h + gap) }));
+  const perRow = Math.max(1, Math.ceil(Math.sqrt(count * 1.4)));
+  const rows = Math.ceil(count / perRow);
+  const out: { x: number; y: number }[] = [];
+  for (let i = 0; i < count; i++) {
+    const row = Math.floor(i / perRow);
+    const col = i % perRow;
+    const inRow = Math.min(perRow, count - row * perRow);
+    const shift = row % 2 ? 0.5 : 0;
+    out.push({
+      x: (col - (inRow - 1) / 2 + shift - 0.25) * (w + gap),
+      y: (row - (rows - 1) / 2) * (h + gap),
+    });
+  }
+  return out;
 }
 
 // ------------------------------------------------------------ month outline
@@ -232,7 +224,12 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
       Math.max(...blocks.flatMap((b) => b.spots.map((p) => Math.abs(p[axis])))) * 2 + monthW;
     const blockW = extent("x");
     const blockH = extent("y") + 40;
-    const centres = honeycomb(blocks.length + 1, blockW, blockH, 40 * scale);
+    // Years in one row, oldest on the left, the undated pile after the newest.
+    const step = blockW + 60 * scale;
+    const centres = Array.from({ length: blocks.length + 1 }, (_, i) => ({
+      x: (i - blocks.length / 2) * step,
+      y: 0,
+    }));
     const placed: Placed[] = blocks.flatMap(({ y, months, spots }, i) => {
       const c = centres[i] ?? { x: 0, y: 0 };
       const label: Placed = {
