@@ -35,13 +35,14 @@ export function meta(_: Route.MetaArgs) {
 
 const PHOTOS = flowerCatalog
   .filter((flower) => flower.artwork)
-  .slice(0, 12)
+  .slice(0, 18)
   .map((flower, i) => ({
     id: flower.id,
     name: flower.name,
     src: flower.artwork?.src ?? "",
-    // Stand-in dates, newest first, three to a month, so the month rules are visible.
-    date: new Date(2026, 9 - Math.floor(i / 3), 26 - (i % 3) * 9),
+    // Stand-in dates, newest first, six to a month, so the month rules are visible and a wide
+    // gallery has enough to fill its columns.
+    date: new Date(2026, 9 - Math.floor(i / 6), 26 - (i % 6) * 4),
   }));
 
 export default function UiComponents() {
