@@ -398,7 +398,7 @@ function Masonry({ renderTile }: { renderTile: (item: Photo) => ReactNode }) {
         <>
           <svg
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 text-border"
+            className="pointer-events-none absolute inset-0 text-muted-foreground/70"
             width={width}
             height={height}
           >
@@ -408,6 +408,7 @@ function Masonry({ renderTile }: { renderTile: (item: Photo) => ReactNode }) {
                 d={rulePath(rule.ys, colWidth, width)}
                 fill="none"
                 stroke="currentColor"
+                strokeWidth={2}
                 strokeLinejoin="round"
               />
             ))}
