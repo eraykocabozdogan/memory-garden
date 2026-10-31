@@ -15,9 +15,9 @@ import {
 // out, still inside a dead zone. Touch: pinch changes level, one finger drags. Grey on purpose.
 
 type Precision = "day" | "month" | "year" | "none";
-type Media = { y?: number; m?: number; d?: number; precision: Precision };
+export type Media = { y?: number; m?: number; d?: number; precision: Precision };
 
-const MONTHS = [
+export const MONTHS = [
   "Ocak",
   "Şubat",
   "Mart",
@@ -31,10 +31,10 @@ const MONTHS = [
   "Kasım",
   "Aralık",
 ];
-const WEEKDAYS = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+export const WEEKDAYS = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
 
 // Stand-in archive: three years, some months empty, a few items with partial or no dates.
-const MEDIA: Media[] = (() => {
+export const MEDIA: Media[] = (() => {
   const list: Media[] = [];
   let seed = 7;
   const rand = () => {
@@ -81,7 +81,7 @@ const daysOf = (y: number, m: number) =>
  * order is read like text: those cells are filled top-left to bottom-right, oldest first.
  * `row` is the item's row and `col` its place within that row (0 = first in the row).
  */
-function honeycomb(count: number, w: number, h: number, gap: number, rowGap = gap) {
+export function honeycomb(count: number, w: number, h: number, gap: number, rowGap = gap) {
   const R = Math.ceil(Math.sqrt(count / 3)) + 2;
   const cells: { r: number; x: number; d: number; a: number }[] = [];
   for (let r = -R; r <= R; r++) {
@@ -204,7 +204,7 @@ function MonthFrame({
   );
 }
 
-function Tile({ w, h, children }: { w: number; h: number; children: ReactNode }) {
+export function Tile({ w, h, children }: { w: number; h: number; children: ReactNode }) {
   return (
     <div
       className="grid place-items-center rounded border border-dashed border-neutral-500 bg-neutral-50 p-2 text-center text-xs text-neutral-600"
@@ -217,7 +217,7 @@ function Tile({ w, h, children }: { w: number; h: number; children: ReactNode })
 
 // ------------------------------------------------------------ the levels
 
-type Placed = { key: string; x: number; y: number; node: ReactNode };
+export type Placed = { key: string; x: number; y: number; node: ReactNode };
 
 function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Placed[] {
   const scale = phone ? 0.75 : 1;
@@ -475,8 +475,29 @@ function zoomTarget(level: Level, hit: string | undefined): Level | null {
   return null;
 }
 
-export function MemoriesMap({ phone }: { phone: boolean }) {
-  const [level, setLevel] = useState<Level>({ kind: "years" });
+/**
+ * The zoomable stage both maps share (memories by time, by place): the wheel changes level on
+ * what the pointer is over, the pointer's distance from the centre pans, touch pinches and
+ * drags, and the crumbs above show and leave the current level.
+ */
+export function ZoomStage<L>({
+  label,
+  start,
+  phone,
+  layout: lay,
+  parentOf: up,
+  zoomTarget: target,
+  crumbs: trail,
+}: {
+  label: string;
+  start: L;
+  phone: boolean;
+  layout: (level: L, zoom: (next: L) => void) => Placed[];
+  parentOf: (level: L) => L | null;
+  zoomTarget: (level: L, hit: string | undefined) => L | null;
+  crumbs: (level: L) => { label: string; level: L }[];
+}) {
+  const [level, setLevel] = useState<L>(start);
   const stage = useRef<HTMLDivElement>(null);
   const camera = useRef({ x: 0, y: 0 });
   const pointer = useRef<{ x: number; y: number } | null>(null);
@@ -485,12 +506,16 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
   const levelRef = useRef(level);
   levelRef.current = level;
 
-  const zoom = (next: Level) => {
+  const zoom = (next: L) => {
     camera.current = { x: 0, y: 0 };
     setLevel(next);
   };
   const zoomRef = useRef(zoom);
   zoomRef.current = zoom;
+  const upRef = useRef(up);
+  upRef.current = up;
+  const targetRef = useRef(target);
+  targetRef.current = target;
 
   // Wheel: up = one level in, on what the pointer is over; down = one level out. Never scrolls.
   useEffect(() => {
@@ -501,12 +526,12 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
       if (Date.now() - lastZoom.current < 450 || Math.abs(event.deltaY) < 4) return;
       lastZoom.current = Date.now();
       if (event.deltaY > 0) {
-        const up = parentOf(levelRef.current);
-        if (up) zoomRef.current(up);
+        const parent = upRef.current(levelRef.current);
+        if (parent) zoomRef.current(parent);
         return;
       }
       const hit = (event.target as Element).closest<HTMLElement>("[data-zoom]")?.dataset.zoom;
-      const next = zoomTarget(levelRef.current, hit);
+      const next = targetRef.current(levelRef.current, hit);
       if (next) zoomRef.current(next);
     };
     element.addEventListener("wheel", onWheel, { passive: false });
@@ -551,12 +576,12 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
           (t[0]?.clientY ?? 0) - (t[1]?.clientY ?? 0),
         );
 
-  const placed = layout(level, zoom, phone);
+  const placed = lay(level, zoom);
 
   return (
     <div className="grid gap-2">
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        {crumbs(level).map((c, i, all) => (
+        {trail(level).map((c, i, all) => (
           <span key={c.label} className="flex items-center gap-2">
             {i > 0 && <span className="text-neutral-400">›</span>}
             <button
@@ -577,7 +602,7 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
       <div
         ref={stage}
         role="application"
-        aria-label="Anı haritası"
+        aria-label={label}
         className="relative h-[560px] touch-none overflow-hidden rounded border border-neutral-300 bg-white select-none"
         onMouseMove={(e) => {
           const r = e.currentTarget.getBoundingClientRect();
@@ -601,14 +626,14 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
             if (ratio > 1.35 || ratio < 0.75) {
               touch.current = null;
               if (ratio < 0.75) {
-                const up = parentOf(level);
-                if (up) zoom(up);
+                const parent = up(level);
+                if (parent) zoom(parent);
               } else {
                 const mx = ((e.touches[0]?.clientX ?? 0) + (e.touches[1]?.clientX ?? 0)) / 2;
                 const my = ((e.touches[0]?.clientY ?? 0) + (e.touches[1]?.clientY ?? 0)) / 2;
                 const hit = document.elementFromPoint(mx, my)?.closest<HTMLElement>("[data-zoom]")
                   ?.dataset.zoom;
-                const next = zoomTarget(level, hit);
+                const next = target(level, hit);
                 if (next) zoom(next);
               }
             }
@@ -640,5 +665,19 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
         </div>
       </div>
     </div>
+  );
+}
+
+export function MemoriesMap({ phone }: { phone: boolean }) {
+  return (
+    <ZoomStage<Level>
+      label="Anı haritası"
+      start={{ kind: "years" }}
+      phone={phone}
+      layout={(level, zoom) => layout(level, zoom, phone)}
+      parentOf={parentOf}
+      zoomTarget={zoomTarget}
+      crumbs={crumbs}
+    />
   );
 }

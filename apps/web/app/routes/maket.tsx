@@ -2,6 +2,7 @@ import { type ReactNode, useState } from "react";
 import { Link, useParams } from "react-router";
 import type { Route } from "./+types/maket";
 import { MemoriesMap } from "./maket-anilar";
+import { PlaceMap } from "./maket-harita";
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: "Ekran haritası · Memory Garden" }, { name: "robots", content: "noindex" }];
@@ -194,49 +195,18 @@ const SCREENS: Screen[] = [
   {
     slug: "harita",
     name: "Harita",
-    body: (phone) => (
-      <Grid phone={phone}>
-        <Box label="Türkiye haritası · anı olan il/ilçelerde sayı rozeti" className="h-80">
-          <div className="relative h-full">
-            {[
-              ["20%", "40%", "12"],
-              ["45%", "35%", "4"],
-              ["70%", "55%", "7"],
-              ["30%", "70%", "21"],
-            ].map(([x, y, n]) => (
-              <span
-                key={`${x}${y}`}
-                className="absolute grid size-7 place-items-center rounded-full bg-neutral-700 text-xs text-white"
-                style={{ left: x, top: y }}
-              >
-                {n}
-              </span>
-            ))}
-          </div>
-        </Box>
-        <div className="grid content-start gap-2">
-          <div className="flex gap-1">
-            <Chip>Yıl ▾</Chip>
-            <Chip>Etiket ▾</Chip>
-          </div>
-          <Box label="Seçili yer: Kuşadası · 21 gün">
-            <div className="grid gap-1 pt-1">
-              <Lines n={1} />
-              <Lines n={1} />
-              <Lines n={1} />
-            </div>
-          </Box>
-        </div>
-      </Grid>
-    ),
+    body: (phone) => <PlaceMap phone={phone} />,
     why: [
-      "Harita yalnızca bu ekranda yüklenir (ağır). Bir yere dokununca o yerdeki günler listelenir.",
-      "Konum ilk sürümde il/ilçe düzeyinde; nokta değil bölge.",
+      "Ayrı ekran, Anılar'la aynı mantık: dört seviye, tekerlek seviye değiştirir, imleç merkezden uzaklaştıkça gezinir, telefonda iki parmak.",
+      "Dünya → ülke → il → gün. İlin içindeki gün kartları Anılar'daki gibi toplu bir altıgende, sol üstten sağ alta eskiden yeniye.",
+      "Bir güne inince Anılar'da güne girmekle aynı görünüm açılır.",
+      "Türkiye dışı anı şimdilik yok: dünyada bütün ülkeler çizilir ama yalnızca anısı olan ülkeye (Türkiye) girilir. Yurt dışı gelince o ülkenin sınır verisi eklenir.",
+      "Ülke seviyesinde yalnızca anısı olan iller çizilir; daire ne kadar büyükse o kadar çok medya.",
+      "Birkaç ili gezen bir gün (rota), her ilde ayrı görünür.",
     ],
     open: [
-      "Rozetler mi, ısı haritası gibi renk yoğunluğu mu, yoksa illerin boyanması mı?",
-      "Seçili yerin günleri yan panelde mi, alttan açılan çekmecede mi?",
-      "Haritanın ayrı bir ekran olması gerekli mi, yoksa Anılar'da bir görünüm (Gün/Ay/Yıl/Harita) mı?",
+      "İl seviyesinin altında ilçe seviyesi de olsun mu? Konum il/ilçe olarak tutuluyor; şu an ilçeler atlanıyor.",
+      "Ülke seviyesinde iller daire mi kalsın, yoksa ilin kendi sınırı mı boyansın (medya çoksa koyu)?",
     ],
   },
   {
