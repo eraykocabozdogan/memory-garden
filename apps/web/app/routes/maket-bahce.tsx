@@ -5,8 +5,8 @@ import { MONTHS } from "./maket-anilar";
 // Bahçe (owner, 2026-10-31): an isometric square garden like the Forest app. One square per
 // day, laid in a square spiral out from the centre, the first square being 1 November 2026.
 // A day with no flower is an empty square; a day with a flower holds it. When both of us left
-// a flower the same day, the second one goes to the empty square nearest that day, doubles
-// taken in order from the centre out, so the garden is not filled from the middle. A flower
+// a flower the same day, the second one goes, once and for good, to the settled empty square
+// nearest that day; with none left, a square is added after the last. Not filled from the middle. A flower
 // whose diary was deleted stays, without the text. Grey stand-ins for the catalogue cut-outs.
 
 const START = new Date(2026, 10, 1);
@@ -44,30 +44,35 @@ function grow() {
     seed = (seed * 9301 + 49297) % 233280;
     return seed / 233280;
   };
-  const cells = squareSpiral(DAYS);
-  // What was left each day: none, one, or one from each of us.
-  const left: Flower[][] = Array.from({ length: DAYS }, (_, day) => {
+  const slots = squareSpiral(DAYS * 2);
+  const owner: (number | null)[] = []; // the day a square belongs to; null for an added square
+  const square: Flower[][] = [];
+  // Days in order, as they settle. Each day takes the next square of the spiral. A second flower
+  // goes, once and for good, to the empty settled square nearest its day; if there is none, a
+  // new square is added after the last one, and the days after it move along by one.
+  for (let day = 0; day < DAYS; day++) {
     const r = rand();
     const n = r < 0.35 ? 0 : r < 0.85 ? 1 : 2;
-    return Array.from({ length: n }, (_, k) => ({
+    const left = Array.from({ length: n }, (_, k) => ({
       name: FLOWERS[Math.floor(rand() * FLOWERS.length)] ?? "Papatya",
-      by: k === 0 ? (rand() < 0.5 ? "E." : "D.") : "D.",
+      by: (k === 0 ? (rand() < 0.5 ? "E." : "D.") : "D.") as Flower["by"],
       deleted: rand() < 0.08,
       day,
       moved: false,
     }));
-  });
-  const square: Flower[][] = left.map((list) => list.slice(0, 1));
-  // Second flowers, in order from the centre: each to the empty square nearest its own day.
-  left.forEach((list, day) => {
-    const extra = list[1];
-    if (!extra) return;
-    const [ox, oy] = cells[day] ?? [0, 0];
+    const mine = owner.length;
+    owner.push(day);
+    square.push(left.slice(0, 1));
+    const extra = left[1];
+    if (!extra) continue;
+    const [ox, oy] = slots[mine] ?? [0, 0];
     let best = -1;
     let bestD = Number.POSITIVE_INFINITY;
     square.forEach((held, i) => {
-      if (held.length > 0) return;
-      const [x, y] = cells[i] ?? [0, 0];
+      // Only days whose diaries have closed: a younger square can still get its own flower.
+      const settled = (owner[i] ?? day) <= day - 2;
+      if (held.length > 0 || !settled) return;
+      const [x, y] = slots[i] ?? [0, 0];
       const d = (x - ox) ** 2 + (y - oy) ** 2;
       if (d < bestD) {
         bestD = d;
@@ -75,9 +80,12 @@ function grow() {
       }
     });
     if (best >= 0) square[best] = [{ ...extra, moved: true }];
-    else square[day]?.push(extra); // no empty square left: it stays beside its pair
-  });
-  return { cells, square };
+    else {
+      owner.push(null);
+      square.push([{ ...extra, moved: true }]);
+    }
+  }
+  return { cells: slots.slice(0, owner.length), square, owner };
 }
 
 const GARDEN = grow();
@@ -92,7 +100,7 @@ export function Garden({ phone }: { phone: boolean }) {
   const [picked, setPicked] = useState<number | null>(null);
   const tw = phone ? 34 : 48;
   const th = tw / 2;
-  const { cells, square } = GARDEN;
+  const { cells, square, owner } = GARDEN;
   const iso = cells.map(([x, y]) => ({ left: (x - y) * (tw / 2), top: (x + y) * (th / 2) }));
   const minL = Math.min(...iso.map((p) => p.left));
   const minT = Math.min(...iso.map((p) => p.top));
@@ -115,13 +123,14 @@ export function Garden({ phone }: { phone: boolean }) {
           {cells.map((_, i) => {
             const p = iso[i] ?? { left: 0, top: 0 };
             const held = square[i] ?? [];
-            const today = i === DAYS - 1;
+            const today = owner[i] === DAYS - 1;
+            const day = owner[i];
             return (
               <button
                 // biome-ignore lint/suspicious/noArrayIndexKey: one square per day, fixed order
                 key={i}
                 type="button"
-                aria-label={`${dateOf(i)}${held[0] ? `, ${held[0].name}` : ", boş"}`}
+                aria-label={`${day === null || day === undefined ? "Ek kare" : dateOf(day)}${held[0] ? `, ${held[0].name}` : ", boş"}`}
                 onClick={() => setPicked(i)}
                 className="absolute"
                 style={{
@@ -169,11 +178,13 @@ export function Garden({ phone }: { phone: boolean }) {
         {picked === null
           ? "Bir kareye dokun: o günün çiçeği, kimin bıraktığı, anlamı ve günlüğü."
           : shown.length === 0
-            ? `${dateOf(picked)} · çiçek bırakılmadı`
+            ? `${dateOf(owner[picked] ?? 0)} · çiçek bırakılmadı`
             : shown.map((f) => (
                 <p key={`${f.day}-${f.by}`}>
                   <span className="font-medium">{f.name}</span> · {dateOf(f.day)} · {f.by} bıraktı
-                  {f.moved ? ` · o günün ikinci çiçeği, en yakın boş kareye kondu` : ""}
+                  {f.moved
+                    ? ` · o günün ikinci çiçeği; en yakın boş kareye${owner[picked] === null ? " yer olmadığı için eklenen kareye" : ""} kalıcı olarak kondu`
+                    : ""}
                   {f.deleted ? " · günlük silindi, yalnızca çiçek kaldı" : " · günlüğü oku →"}
                 </p>
               ))}
