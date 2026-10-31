@@ -11,6 +11,10 @@ const DAY = 60 * 60 * 24;
 export const SIGN_IN_LIMIT = { window: 15 * 60, max: 5 };
 
 export function createAuth(env: Env, baseURL: string) {
+  // The demo Worker has no DB binding on purpose (G4); it gets its own sign-in in stage 9.
+  if (!env.DB) throw new Error("DB binding is missing");
+  // Never fall back to a library default: a guessable secret would let anyone forge sessions.
+  if ((env.BETTER_AUTH_SECRET ?? "").length < 32) throw new Error("BETTER_AUTH_SECRET is missing");
   return betterAuth({
     baseURL,
     basePath: "/api/auth",

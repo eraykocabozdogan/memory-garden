@@ -5,7 +5,7 @@ import { getPlatformProxy } from "wrangler";
 
 import { createAccountSql, resetPasswordSql } from "./accounts";
 import { AUTH_PATHS, app } from "./app";
-import { SIGN_IN_LIMIT } from "./auth";
+import { createAuth, SIGN_IN_LIMIT } from "./auth";
 
 // Runs the real Worker app against a local D1 (Miniflare), with the real migrations.
 
@@ -16,8 +16,10 @@ const proxy = await getPlatformProxy<Env>({
 afterAll(() => proxy.dispose());
 
 const assets = { fetch: async () => new Response("shell") } as unknown as Fetcher;
+const db = proxy.env.DB as D1Database;
 const env = {
   ...proxy.env,
+  DB: db,
   ASSETS: assets,
   BETTER_AUTH_SECRET: "test-secret-that-is-long-enough-for-better-auth",
 } as Env;
@@ -26,12 +28,12 @@ const PASSWORD = "dogru-sifre-123";
 let ip = 0;
 
 async function run(statements: string[]) {
-  for (const sql of statements) await env.DB.prepare(sql).run();
+  for (const sql of statements) await db.prepare(sql).run();
 }
 
 beforeEach(async () => {
   const tables = ["session", "account", "verification", "rateLimit", "user"];
-  const existing = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
+  const existing = await db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
   if (existing.results.length === 0) {
     for (const file of readdirSync("migrations")
       .filter((f) => f.endsWith(".sql"))
@@ -113,7 +115,7 @@ test("G1: the session cookie is httpOnly, secure, same-site and lasts 90 days", 
 
 test("using the app slides the session: the browser gets a fresh 90-day cookie", async () => {
   const signedIn = await signIn(PASSWORD);
-  const before = await env.DB.prepare("SELECT expiresAt FROM session").first<{
+  const before = await db.prepare("SELECT expiresAt FROM session").first<{
     expiresAt: number;
   }>();
   await new Promise((resolve) => setTimeout(resolve, 20));
@@ -121,7 +123,7 @@ test("using the app slides the session: the browser gets a fresh 90-day cookie",
   const me = await call("/api/me", { headers: { cookie: cookieOf(signedIn) } });
   expect(me.status).toBe(200);
   expect(maxAgeOf(sessionCookie(me))).toBe(NINETY_DAYS);
-  const after = await env.DB.prepare("SELECT expiresAt FROM session").first<{
+  const after = await db.prepare("SELECT expiresAt FROM session").first<{
     expiresAt: number;
   }>();
   expect(after?.expiresAt).toBeGreaterThan(before?.expiresAt ?? Number.POSITIVE_INFINITY);
@@ -165,7 +167,7 @@ test("G2: there is no way to open an account from the app", async () => {
     }),
   });
   expect(response.status).toBe(404);
-  const users = await env.DB.prepare("SELECT count(*) AS n FROM user").first<{ n: number }>();
+  const users = await db.prepare("SELECT count(*) AS n FROM user").first<{ n: number }>();
   expect(users?.n).toBe(1);
 });
 
@@ -202,4 +204,9 @@ test("G3: a client cannot dodge the limit by sending its own forwarding header",
 
 test("G2: resetting an unknown username fails instead of reporting success", async () => {
   await expect(run(resetPasswordSql("yok_boyle", "salt:hash", Date.now()))).rejects.toThrow();
+});
+
+test("without a real secret the app refuses to sign anything", () => {
+  expect(() => createAuth({ ...env, BETTER_AUTH_SECRET: "" }, "https://x.test")).toThrow();
+  expect(() => createAuth({ ...env, BETTER_AUTH_SECRET: "short" }, "https://x.test")).toThrow();
 });

@@ -14,6 +14,16 @@
     "not_found_handling": "none",
     "run_worker_first": ["/api/*"]
   },
+  // EU jurisdiction: the database and its replicas stay inside the EU (decision 2026-10-31).
+  // Bindings are not inherited by env.demo, so the demo cannot reach this database (G4).
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "memory-garden",
+      "database_id": "42f083f2-f9d3-4f23-94cf-ed37252dfae6",
+      "migrations_dir": "migrations"
+    }
+  ],
   "env": {
     "demo": {
       "name": "memory-garden-demo"

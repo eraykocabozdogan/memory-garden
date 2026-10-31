@@ -16,7 +16,9 @@ export default defineConfig({
       : {},
   },
   webServer: {
-    command: "pnpm build && pnpm preview",
+    // A throwaway value: the Worker refuses to start sign-in without a secret of real length.
+    command:
+      "pnpm build && pnpm preview --var BETTER_AUTH_SECRET:e2e-only-value-not-a-real-secret-0000",
     url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

@@ -14,12 +14,7 @@ test("the health endpoint answers", async () => {
   await expect(response.json()).resolves.toEqual({ ok: true });
 });
 
-test("API routes answer in JSON, never with the SPA shell", async () => {
-  // Signed out, so the API refuses before it even looks for the route (G1).
-  const response = await app.request("/api/unknown", {}, env);
-  expect(response.status).toBe(401);
-  await expect(response.json()).resolves.toEqual({ error: "Unauthorized" });
-});
+// Signed-out API calls (401 in JSON, never the shell) are covered in auth.test.ts with a real D1.
 
 test("app routes are answered with the SPA shell", async () => {
   const response = await app.request("/app/day/2026-10-09", {}, env);
