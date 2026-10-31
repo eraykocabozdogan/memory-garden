@@ -2,6 +2,7 @@ import { type ReactNode, useState } from "react";
 import { Link, useParams } from "react-router";
 import type { Route } from "./+types/maket";
 import { MemoriesMap } from "./maket-anilar";
+import { Garden } from "./maket-bahce";
 import { PlaceMap } from "./maket-harita";
 
 export function meta(_: Route.MetaArgs) {
@@ -89,6 +90,7 @@ function Grid({ phone, children }: { phone: boolean; children: ReactNode }) {
 
 function Diaries({ phone }: { phone: boolean }) {
   const [partnerOpen, setPartnerOpen] = useState(true);
+  const [reading, setReading] = useState<string | null>(null);
   return (
     <div className="grid gap-3">
       <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-600">
@@ -122,9 +124,16 @@ function Diaries({ phone }: { phone: boolean }) {
             "25 Ekim · D. çiçek bıraktı: Lavanta",
             "21 Ekim · çiçek bırakılmadı",
           ].map((t) => (
-            <Box key={t} label={t}>
-              <Lines n={2} />
-            </Box>
+            <button
+              key={t}
+              type="button"
+              className="text-left"
+              onClick={() => setReading((open) => (open === t ? null : t))}
+            >
+              <Box label={`${t} · ${reading === t ? "kapat" : "oku"}`}>
+                <Lines n={reading === t ? 7 : 1} />
+              </Box>
+            </button>
           ))}
         </div>
         <div className="grid content-start gap-3">
@@ -216,48 +225,24 @@ const SCREENS: Screen[] = [
   {
     slug: "gunluk",
     name: "Günlükler",
-    body: (phone) => <Diaries phone={phone} />,
-    why: [
-      "Yazma alanı her zaman açık; günün ilk işi yazmak.",
-      "Kendi günlüklerin tek listede: açık olan en üstte vurgulu (24 saat içinde düzenle/sil, kalan süre yazıyor), altında geçmiş günlüklerin, yeniden eskiye, her birinde partnerin bıraktığı çiçek.",
-      "Partnerin yalnızca açık günlüğü burada (çiçek bırak, kitap gibi pencerede katalog). Kapanınca bahçede çiçeğiyle yaşar.",
-      'Partnerin açık günlüğü yokken: "D. bugün henüz yazmadı" ve en son bıraktığın çiçek, bahçeye bağlantıyla. Yukarıdaki düğmeyle gör.',
-    ],
-    open: [],
-  },
-  {
-    slug: "bahce",
-    name: "Bahçe",
-    body: () => (
-      <div className="grid gap-3">
-        <Box label="Bahçe · bırakılan her çiçek bir bitki, ilk günlükten bugüne" className="h-72">
-          <div className="flex h-full flex-wrap content-end gap-2 p-2">
-            {Array.from({ length: 30 }, (_, i) => (
-              <div
-                // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
-                key={i}
-                className="w-6 rounded-t-full bg-neutral-400"
-                style={{ height: 30 + ((i * 37) % 60) }}
-              />
-            ))}
-          </div>
-        </Box>
-        <div className="flex flex-wrap gap-2 text-xs text-neutral-700">
-          <Box>47 çiçek</Box>
-          <Box>İlk günlük: 3 Mart 2025</Box>
-          <Box>En çok bırakılan: Papatya</Box>
-        </div>
-        <Box label="Bir çiçeğe dokununca: Papatya · 28 Ekim · D. bıraktı · anlamı: masumiyet" />
+    body: (phone) => (
+      <div className="grid gap-4">
+        <Garden phone={phone} />
+        <Diaries phone={phone} />
       </div>
     ),
     why: [
-      "Projenin en özgün ekranı; bahçe büyüdükçe dolan tek bir sahne.",
-      "Çiçeğe dokununca hangi günlüğe, kimin bıraktığı ve anlamı.",
+      "Bahçe ve günlükler tek ekranda: üstte bahçe, altta günlükler.",
+      "Bahçe izometrik kare bir alan (Forest gibi). Her gün bir kare, merkezden kare spiral halinde dışa; ilk kare 1 Kasım 2026. Çiçek bırakılmayan gün boş kare.",
+      "Aynı gün ikimiz de çiçek bıraktıysak ikinci çiçek o güne en yakın boş kareye gider; çift günler merkezden dışa sırayla. Maket bu taşınan çiçekleri kesik çizgiyle işaretliyor (gerçekte görünmez).",
+      "Bir kareye dokununca o günün çiçeği, kimin bıraktığı, anlamı ve günlüğü. Günlüğü silinmiş çiçek kalır, metni yok.",
+      "Çiçekler kataloğun Curtis çizimlerinden, arka planı temizlenmiş halleriyle (maket gri).",
+      "Yazma alanı her zaman açık. Kendi günlüklerin tek listede: açık olan en üstte vurgulu, altında geçmişler; birine dokununca tam metni açılır.",
+      'Partnerin yalnızca açık günlüğü burada (çiçek bırak). Yokken: "D. bugün henüz yazmadı" ve en son bıraktığın çiçek, bahçeye bağlantıyla.',
     ],
     open: [
-      "Bahçe zaman çizgisi gibi soldan sağa mı büyür, yoksa serbest bir tarhta mı?",
-      "Silinmiş günlüğün çiçeği nasıl görünür (metni yok, çiçek kalır)?",
-      "Bahçe Günlükler ile aynı ekranda mı (üstte bahçe, altta günlükler), ayrı mı?",
+      'Bahçe her zaman 1 Kasım 2026\'dan mı başlasın, yoksa ilk günlüğün gününden mi (SPEC G9 şu an "ilk günlüğün günü" diyor)?',
+      "Hiç boş kare kalmamışsa ikinci çiçek: maket kendi gününün karesine yan yana koyuyor. Böyle mi?",
     ],
   },
   {
@@ -426,7 +411,7 @@ const SCREENS: Screen[] = [
 
 // Adding a memory is reached from Anılar, not from the menu.
 const MENU = SCREENS.filter((s) => s.slug !== "ani-ekle");
-const PHONE_MENU = ["anilar", "gunluk", "bahce"];
+const PHONE_MENU = ["anilar", "gunluk"];
 
 export default function Maket() {
   const { ekran } = useParams();
@@ -492,7 +477,7 @@ export default function Maket() {
               )}
               <main className="flex-1 p-3">{screen.body(phone)}</main>
               {phone && (
-                <nav className="grid grid-cols-4 border-t border-neutral-300 bg-neutral-50 text-center text-xs">
+                <nav className="grid grid-cols-3 border-t border-neutral-300 bg-neutral-50 text-center text-xs">
                   {PHONE_MENU.map((slug) => (
                     <Link
                       key={slug}
