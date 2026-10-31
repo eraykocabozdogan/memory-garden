@@ -2,7 +2,7 @@
 
 > Kodda şu an ne var. Ne istediğimiz `SPEC.md`'de.
 >
-> Son güncelleme: 2026-10-31
+> Son güncelleme: 2026-11-01
 
 ## 1. Durum
 
@@ -36,7 +36,7 @@ Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım
   - §4 aday garantiler: ikinci çiçeğin yeri bir kez yazılır, değişmez; boş kare varken yeni kare açılmaz.
   - §6: harita sınırları Natural Earth (kamu malı).
 - **Açık teknik karar (gerçek ekrana geçerken):** harita çizimi kendi SVG'miz mi, planlanan MapLibre + OpenFreeMap mı; karşılaştırılıp kullanıcıya sunulacak.
-- **Aşama 1:** ekrandan bağımsız kısmı bitti (giriş canlıda, iki hesap, D1 AB, otomatik deploy). Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası bitince.
+- **Aşama 1:** ekrandan bağımsız kısmı bitti (giriş canlıda, iki hesap, D1 AB, otomatik deploy). ⚠️ **Kural ihlali:** bu kısım SPEC başındaki "gözden geçirme bekliyor" notu dururken başlatılıp canlıya alındı; not "kalkmadan yeni aşamaya başlanmaz" diyordu. Geri alınmadı, kayıt için duruyor. **Kalanı** (anı/medya/etiket tabloları, iskeletin menüsü) SPEC gözden geçirmesi onaylanmadan başlamaz. Gözden geçirme ekran haritası bitince, SPEC taslağıyla birlikte tek seferde (kullanıcı kararı, 2026-11-01).
 - **#11 taslakları** `/ui/bilesenler`'de. `/ui*` sayfaları, gerçek ekranlar bileşenleri kullanana kadar kalır, sonra silinir (kullanıcı kararı). Motion'a sonra tekrar bakılacak.
 
 ### Kullanıcının yapacakları
