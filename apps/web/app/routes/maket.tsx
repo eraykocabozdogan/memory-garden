@@ -88,68 +88,68 @@ function Grid({ phone, children }: { phone: boolean; children: ReactNode }) {
 // ---------------------------------------------------------------- screens
 
 function Diaries({ phone }: { phone: boolean }) {
-  const [partner, setPartner] = useState<"açık" | "a" | "b" | "c">("açık");
-  const empty = partner !== "açık";
-  const write = (
-    <div className="grid content-start gap-3">
-      <Box label="Bugün yaz">
-        <div className="mt-1 h-24 rounded border border-neutral-300 bg-white" />
-        <div className="flex justify-between pt-1 text-xs text-neutral-600">
-          <span>0 / 2.000</span>
-          <Btn>Yayınla</Btn>
-        </div>
-      </Box>
-      <Box label="Açık günlüğün · bugün 09:12 · partnerine 18 sa daha açık · düzenle / sil">
-        <Lines n={2} />
-      </Box>
-    </div>
-  );
-  const side =
-    partner === "açık" ? (
-      <Box label="D. · 6 saat önce · 18 sa kaldı">
-        <Lines n={3} />
-        <Btn>Çiçek bırak</Btn>
-      </Box>
-    ) : partner === "a" ? (
-      <Box label="D. bugün henüz yazmadı">
-        <div className="flex items-center gap-2 pt-2">
-          <Img className="h-14 w-12" />
-          <p className="text-xs text-neutral-700">
-            En son bıraktığın çiçek
-            <br />
-            <span className="font-medium">Papatya · 28 Ekim</span>
-            <br />
-            <span className="text-neutral-500">Bahçede gör →</span>
-          </p>
-        </div>
-      </Box>
-    ) : partner === "b" ? (
-      <Box label="D. henüz yazmadı. Yazınca bildirim gelir." className="text-center" />
-    ) : null;
-
+  const [partnerOpen, setPartnerOpen] = useState(true);
   return (
     <div className="grid gap-3">
       <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-600">
         Partnerin günlüğü:
-        {(["açık", "a", "b", "c"] as const).map((v) => (
-          <button key={v} type="button" onClick={() => setPartner(v)}>
-            <Chip on={partner === v}>{v === "açık" ? "var" : `yok · ${v}`}</Chip>
-          </button>
-        ))}
+        <button type="button" onClick={() => setPartnerOpen(true)}>
+          <Chip on={partnerOpen}>açık</Chip>
+        </button>
+        <button type="button" onClick={() => setPartnerOpen(false)}>
+          <Chip on={!partnerOpen}>yok</Chip>
+        </button>
       </div>
-      {side ? (
-        <Grid phone={phone}>
-          {write}
-          <div className="grid content-start gap-3">
-            <p className="text-xs text-neutral-600">
-              {empty ? "Partnerin" : "Açık günlükler (partnerin)"}
+      <Grid phone={phone}>
+        <div className="grid content-start gap-3">
+          <Box label="Bugün yaz">
+            <div className="mt-1 h-24 rounded border border-neutral-300 bg-white" />
+            <div className="flex justify-between pt-1 text-xs text-neutral-600">
+              <span>0 / 2.000</span>
+              <Btn>Yayınla</Btn>
+            </div>
+          </Box>
+          <p className="text-xs text-neutral-600">Günlüklerin</p>
+          {/* One list: the open entry on top, highlighted; past ones under it, newest first. */}
+          <div className="rounded border-2 border-neutral-800 bg-white p-2">
+            <p className="text-xs font-medium text-neutral-800">
+              Açık · bugün 09:12 · partnerine 18 sa daha açık · düzenle / sil
             </p>
-            {side}
+            <Lines n={2} />
           </div>
-        </Grid>
-      ) : (
-        write
-      )}
+          {[
+            "28 Ekim · D. çiçek bıraktı: Papatya",
+            "25 Ekim · D. çiçek bıraktı: Lavanta",
+            "21 Ekim · çiçek bırakılmadı",
+          ].map((t) => (
+            <Box key={t} label={t}>
+              <Lines n={2} />
+            </Box>
+          ))}
+        </div>
+        <div className="grid content-start gap-3">
+          <p className="text-xs text-neutral-600">Partnerin</p>
+          {partnerOpen ? (
+            <Box label="D. · 6 saat önce · 18 sa kaldı">
+              <Lines n={3} />
+              <Btn>Çiçek bırak</Btn>
+            </Box>
+          ) : (
+            <Box label="D. bugün henüz yazmadı">
+              <div className="flex items-center gap-2 pt-2">
+                <Img className="h-14 w-12" />
+                <p className="text-xs text-neutral-700">
+                  En son bıraktığın çiçek
+                  <br />
+                  <span className="font-medium">Papatya · 28 Ekim</span>
+                  <br />
+                  <span className="text-neutral-500">Bahçede gör →</span>
+                </p>
+              </div>
+            </Box>
+          )}
+        </div>
+      </Grid>
     </div>
   );
 }
@@ -219,12 +219,11 @@ const SCREENS: Screen[] = [
     body: (phone) => <Diaries phone={phone} />,
     why: [
       "Yazma alanı her zaman açık; günün ilk işi yazmak.",
-      "Yalnızca açık günlükler burada: seninki (24 saat içinde düzenle/sil) ve partnerinki (çiçek bırak). Kapanan günlükler burada listelenmez; bahçede çiçekleriyle yaşar.",
-      "Kalan süre her açık günlükte yazıyor (24 saat kuralı). Çiçek bırak kitap gibi bir pencerede kataloğu açar.",
+      "Kendi günlüklerin tek listede: açık olan en üstte vurgulu (24 saat içinde düzenle/sil, kalan süre yazıyor), altında geçmiş günlüklerin, yeniden eskiye, her birinde partnerin bıraktığı çiçek.",
+      "Partnerin yalnızca açık günlüğü burada (çiçek bırak, kitap gibi pencerede katalog). Kapanınca bahçede çiçeğiyle yaşar.",
+      'Partnerin açık günlüğü yokken: "D. bugün henüz yazmadı" ve en son bıraktığın çiçek, bahçeye bağlantıyla. Yukarıdaki düğmeyle gör.',
     ],
-    open: [
-      'Partnerin açık günlüğü yokken o taraf: a) son bırakılan çiçekle sakin boş durum [O] · b) sade "henüz yazmadı" · c) taraf hiç görünmez. Yukarıdaki düğmelerle karşılaştır.',
-    ],
+    open: [],
   },
   {
     slug: "bahce",
