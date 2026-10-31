@@ -167,7 +167,6 @@ erDiagram
 | GitHub Actions eylemleri etiketle (`@v5`) sabit, commit sha'sıyla değil | Secret'lı deploy işinde tedarik zinciri riski (düşük) | Aşama 10 |
 | G4 (demo gerçek D1'e erişemez) yalnızca yapılandırmaya dayanıyor: `env.demo` bağlamaları miras almıyor; otomatik test yok | Biri `env.demo`'ya DB eklerse yakalanmaz | Aşama 9 (demo kurulurken test) |
 | Endpoint ve veritabanı bölümleri koddan üretilmiyor | SYSTEM elle güncelleniyor | Şema ve API gelince (Aşama 1) |
-| `pnpm check` yalnızca Biome; typecheck ve test ayrı komutlar | "Bitti" tanımıyla uyumsuz | Temizliğin ayrı adımı |
 | Cloudflare'e özgü servis kodu `src/platform/` kuralına göre düzenlenmedi | Kural uyumsuzluğu | Temizliğin ayrı adımı |
 | Kâğıt dokusu geçici olarak açık | — | Tasarım sonunda |
 | `v0-nextjs` etiketi yok | Eski sürüme etiketle dönülemiyor (commit `1357af6` git'te duruyor) | İsteğe bağlı: GitHub → Releases |
@@ -189,7 +188,7 @@ erDiagram
 ### Yığın ve repo
 - Workers (Paid), React Router v8 (`ssr: false` + `prerender`), Vite, Tailwind 4, shadcn/ui (Base UI, Vega), TanStack Query, Hono + Hono RPC, Zod, D1 + Drizzle, Better Auth, R2, Queues, Cloudflare Images, Containers (ffmpeg), Durable Objects (demo). TypeScript 7 strict, Biome, Vitest 4, Playwright, pnpm monorepo, Node 22.22+.
 - `apps/web`: React Router uygulaması + Hono API Worker (`memory-garden`, `memory-garden-demo`). `apps/media`: medya Worker'ı + ffmpeg container'ı (`memory-garden-media`). `packages/shared`: alan mantığı, çiçek kataloğu, Türkiye konumları, imzalı token'lar. `research/`: çiçek dili kaynak çalışması. `scripts/`: veri üretimi.
-- Komutlar: `pnpm dev` (Vite :5173 + `wrangler dev` :8787), `pnpm check` (Biome), `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm build`, `pnpm flowers:assets`, `pnpm flowers:cutout`, `pnpm flowers:bouquet`, `pnpm locations:generate`.
+- Komutlar: `pnpm dev` (Vite :5173 + `wrangler dev` :8787), `pnpm check` (Biome + typecheck + birim testleri; CI'da da bu), `pnpm lint` (yalnız Biome), `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm build`, `pnpm flowers:assets`, `pnpm flowers:cutout`, `pnpm flowers:bouquet`, `pnpm locations:generate`.
 - Veri kaynakları: çiçek görsellerinin listesi `packages/shared/src/flowers/flower-artwork.json`; il/ilçe verisinin kaynağı ve lisansı (biri CC BY 4.0) `scripts/generate-turkey-locations.mjs` başında.
 
 ### Onaylı mimari (henüz büyük kısmı kodda yok)
@@ -232,7 +231,7 @@ Kimlikler UUID, zamanlar UTC ms, gün hesabı `Europe/Istanbul`.
 
 **Demo kopyası:** `POST /api/demo/start` → IP sınırı → yeni Durable Object → migration'lar + örnek veri → imzalı demo çerezi; sonraki `/api/*` o kopyaya, aynı Hono uygulamasıyla. 24 saat sonra alarmla silinir.
 
-**CI/CD:** `ci.yml` (var): Biome, typecheck, birim testleri, build, uçtan uca. Planlanan: Lighthouse; `deploy.yml` (`main`: migration → demo → gerçek → `media` değiştiyse media); `backup.yml`. Secret'lar: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
+**CI/CD:** `ci.yml` (var): `pnpm check`, build, uçtan uca (ayrı iş). Planlanan: Lighthouse; `deploy.yml` (`main`: migration → demo → gerçek → `media` değiştiyse media); `backup.yml`. Secret'lar: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 
 **Küçük teknik varsayılanlar:** i18next, vite-plugin-pwa (Workbox), aws4fetch (imzalı R2 URL), date-fns + @date-fns/tz, React Hook Form + Zod, Motion, concurrently, Fontsource (Türkçe alt kümeyle), WebCrypto tabanlı web push. Harita: MapLibre GL + OpenFreeMap, yalnızca harita ekranında yüklenir.
 

@@ -1,10 +1,11 @@
 # Memory Garden — SPEC
 
 > Ne istiyorum. Kodda şu an ne olduğu `SYSTEM.md`'de. Karar değişirse önce burası, sonra kod.
-> Son güncelleme: 2026-10-31
+> Son güncelleme: 2026-11-01
 >
 > ⏳ **Gözden geçirme bekliyor.** 2026-10-31'de `docs/decisions.md` ve `docs/architecture.md`'den ortak
 > şablona taşındı; kullanıcı baştan kontrol edecek. Bu not kalkmadan yeni aşamaya başlanmaz.
+> İstisna ve erteleme: §7, 2026-11-01.
 
 ## 1. Ürün
 
@@ -218,6 +219,7 @@ Ertelenenler: kâğıt dokusunun son hali; uygulama içi arka plan (donmuş ipek
 
 En yenisi üstte. Seçeneklerin ayrıntılı karşılaştırması git geçmişinde (`docs/decisions.md`, 2026-10-31 öncesi).
 
+- **2026-11-01:** SPEC gözden geçirmesi ekran haritasından sonraya kaldı ve SPEC taslağıyla tek seferde yapılacak (SPEC'e iki kez bakılmasın diye). Aşama 1'in kalanı bu onaya bağlı. Aşama 1'in ilk kısmının notu çiğnediği kayda geçti.
 - **2026-10-31 (ekran tasarımı):** Görsel dil oturdu; ekranların içeriği, yerleşimi ve özellikleri henüz oturmadı. Yöntem: her ekran için 2–3 statik maket yan yana (yapıda ayrışan: içerik, gezinme, filtreler); seçilenin kodu yazılır, reddedilen maketler silinir. `/ui*` sayfaları gerçek ekranlar bileşenleri kullanana kadar kalır. Maketler gri kutulu taslak; önce bütün ekranların kaba haritası.
 - **2026-10-31 (tasarım):** #11 kilitlendi, tasarım listesi bitti; galeri en kısa sütuna yerleşir, ay çizgisi basamaklı; geri sayım herbaryum etiketi; Motion'a sonra tekrar bakılacak; yerleşim ekranın tamamını kullanır.
 - **2026-10-31:** Dokümanlar ortak şablona taşındı; `docs/`, proje içi CLAUDE.md ve `frontend-playbook.md` kaldırıldı (playbook'un özü §6'ya, teknik tuzakları SYSTEM'e). **`research/` istisna:** içindeki .md dosyalarıyla birlikte olduğu gibi kalır, araştırma emeği bilerek görünür tutuluyor. Yalnızca `_tmp_*` betikleri silindi.

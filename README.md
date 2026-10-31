@@ -35,9 +35,8 @@ Requires Node 22.22+ and pnpm 10.
 ```bash
 pnpm install
 pnpm dev          # app on http://localhost:5173, API Worker on :8787
-pnpm check        # Biome
-pnpm typecheck
-pnpm test         # unit tests
+pnpm check        # lint (Biome) + typecheck + unit tests
+pnpm lint         # Biome only
 pnpm test:e2e     # Playwright against a production build served by Wrangler
 ```
 
