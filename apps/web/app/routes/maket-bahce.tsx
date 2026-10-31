@@ -5,8 +5,8 @@ import { MONTHS } from "./maket-anilar";
 // Bahçe (owner, 2026-10-31): an isometric square garden like the Forest app. One square per
 // day, laid in a square spiral out from the centre, the first square being 1 November 2026.
 // A day with no flower is an empty square; a day with a flower holds it. When both of us left
-// a flower the same day, the second one goes, once and for good, to the settled empty square
-// nearest that day; with none left, a square is added after the last. Not filled from the middle. A flower
+// a flower the same day, the second one goes, once and for good, to the empty square nearest
+// that day (never towards the centre); only with no empty square left is one added after the last. A flower
 // whose diary was deleted stays, without the text. Grey stand-ins for the catalogue cut-outs.
 
 const START = new Date(2026, 10, 1);
@@ -48,8 +48,11 @@ function grow() {
   const owner: (number | null)[] = []; // the day a square belongs to; null for an added square
   const square: Flower[][] = [];
   // Days in order, as they settle. Each day takes the next square of the spiral. A second flower
-  // goes, once and for good, to the empty settled square nearest its day; if there is none, a
-  // new square is added after the last one, and the days after it move along by one.
+  // goes, once and for good, to the empty square nearest its own day (not the centre). Only when
+  // no square in the garden is empty is a new one added after the last, and the days after it
+  // move along by one. For real, a square counts once its day has settled: a second flower
+  // waits for a still-open neighbour to settle rather than open a new square while one may
+  // stay empty. Here every day is settled as it is grown.
   for (let day = 0; day < DAYS; day++) {
     const r = rand();
     const n = r < 0.35 ? 0 : r < 0.85 ? 1 : 2;
@@ -69,9 +72,7 @@ function grow() {
     let best = -1;
     let bestD = Number.POSITIVE_INFINITY;
     square.forEach((held, i) => {
-      // Only days whose diaries have closed: a younger square can still get its own flower.
-      const settled = (owner[i] ?? day) <= day - 2;
-      if (held.length > 0 || !settled) return;
+      if (held.length > 0) return;
       const [x, y] = slots[i] ?? [0, 0];
       const d = (x - ox) ** 2 + (y - oy) ** 2;
       if (d < bestD) {
