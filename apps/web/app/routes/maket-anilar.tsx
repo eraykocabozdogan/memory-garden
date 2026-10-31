@@ -9,7 +9,8 @@ import {
 // Anılar, second round (owner, 2026-10-31): one zoomable map instead of a list. Four levels:
 // every year with its months → one year's months → one month's day cards → one day's media.
 // Months keep a real calendar outline (Monday first, ragged first and last week) but nothing
-// sits on day squares. Items sit in a honeycomb read left to right, oldest first.
+// sits on day squares. Items form a compact honeycomb around the centre, filled like text:
+// oldest top-left, newest bottom-right.
 // The wheel only changes level; moving the pointer away from the centre pans, faster further
 // out, still inside a dead zone. Touch: pinch changes level, one finger drags. Grey on purpose.
 
@@ -75,27 +76,36 @@ const daysOf = (y: number, m: number) =>
 // --------------------------------------------------------------- hex rings
 
 /**
- * Centres for `count` boxes of w×h in a honeycomb read like text: oldest top-left, newest
- * bottom-right, every other row shifted half a box so each item still has six neighbours.
- * The whole block is centred on the origin.
+ * Centres for `count` boxes of w×h. The shape comes from the centre out: the `count` honeycomb
+ * cells nearest the middle, so even three items make a compact cluster, never a strip. The
+ * order is read like text: those cells are filled top-left to bottom-right, oldest first.
+ * `row` is the item's row and `col` its place within that row (0 = first in the row).
  */
 function honeycomb(count: number, w: number, h: number, gap: number, rowGap = gap) {
-  const perRow = Math.max(1, Math.ceil(Math.sqrt(count * 1.4)));
-  const rows = Math.ceil(count / perRow);
-  const out: { x: number; y: number; row: number; col: number }[] = [];
-  for (let i = 0; i < count; i++) {
-    const row = Math.floor(i / perRow);
-    const col = i % perRow;
-    // Rows start at the same left edge (the last one is not centred) so the order reads on.
-    const shift = row % 2 ? 0.5 : 0;
-    out.push({
-      x: (col - (perRow - 1) / 2 + shift - 0.25) * (w + gap),
-      y: (row - (rows - 1) / 2) * (h + rowGap),
-      row,
-      col,
-    });
+  const R = Math.ceil(Math.sqrt(count / 3)) + 2;
+  const cells: { r: number; x: number; d: number; a: number }[] = [];
+  for (let r = -R; r <= R; r++) {
+    for (let c = -R; c <= R; c++) {
+      const x = c + (r & 1) / 2; // odd rows sit half a box over
+      const y = r * 0.87; // keeps the cluster round, not stretched, before real sizes apply
+      cells.push({ r, x, d: Math.hypot(x, y), a: Math.atan2(y, x) });
+    }
   }
-  return out;
+  const chosen = cells
+    .sort((p, q) => p.d - q.d || p.a - q.a)
+    .slice(0, count)
+    .sort((p, q) => p.r - q.r || p.x - q.x);
+  const xs = chosen.map((c) => c.x);
+  const rs = chosen.map((c) => c.r);
+  const midX = (Math.min(...xs) + Math.max(...xs)) / 2;
+  const midR = (Math.min(...rs) + Math.max(...rs)) / 2;
+  const firstRow = Math.min(...rs);
+  return chosen.map((c, i) => ({
+    x: (c.x - midX) * (w + gap),
+    y: (c.r - midR) * (h + rowGap),
+    row: c.r - firstRow,
+    col: chosen.slice(0, i).filter((o) => o.r === c.r).length,
+  }));
 }
 
 // ------------------------------------------------------------ month outline
