@@ -16,9 +16,10 @@ export default defineConfig({
       : {},
   },
   webServer: {
-    // A throwaway value: the Worker refuses to start sign-in without a secret of real length.
+    // A local test database with one test account, and a throwaway secret: the Worker refuses
+    // to start sign-in without one of real length.
     command:
-      "pnpm build && pnpm preview --var BETTER_AUTH_SECRET:e2e-only-value-not-a-real-secret-0000",
+      "pnpm build && node scripts/e2e-db.ts && pnpm preview --var BETTER_AUTH_SECRET:e2e-only-value-not-a-real-secret-0000",
     url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

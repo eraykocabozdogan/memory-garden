@@ -25,7 +25,7 @@ Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım
 ### Sıradaki: ekran haritası (gri kutulu), Aşama 1'in ekrandan bağımsız kısmı paralel
 
 - **Ekran tasarımı (SPEC §7, 2026-10-31):** önce bütün uygulama ekranları için tek sayfalık gri kutulu yapı taslağı, sonra ekran ekran 2–3 varyant. Sorun görsel dil değil; içerik, yerleşim, filtre gibi özellikler.
-- **Aşama 1 bölünüyor.** Ekrandan bağımsız kısım: giriş kodu, hesap betiği (`pnpm account`), giriş tabloları ve IP limiti **hazır ve testli**. D1 (`memory-garden`, AB yetki alanı) oluşturuldu, migration uygulandı; `deploy.yml` CI geçince `main`'i deploy ediyor. `BETTER_AUTH_SECRET` kondu; giriş canlıda çalışıyor. Kalan: iki hesabı açmak, giriş ekranını API'ye bağlamak. Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası oturunca.
+- **Aşama 1 bölünüyor.** Ekrandan bağımsız kısım: giriş kodu, hesap betiği (`pnpm account`), giriş tabloları ve IP limiti **hazır ve testli**. D1 (`memory-garden`, AB yetki alanı) oluşturuldu, migration uygulandı; `deploy.yml` CI geçince `main`'i deploy ediyor. `BETTER_AUTH_SECRET` kondu; giriş canlıda çalışıyor. İki hesap açıldı (`eray`, `ilkeruya`); `/giris` gerçek girişe bağlı. Aşama 1'in ekrandan bağımsız kısmı bitti. Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası oturunca.
 - **#11 taslakları** `/ui/bilesenler`'de: yükleme (transfer taklit), galeri (oranlar şimdilik görsel yüklenince ölçülüyor, gerçekte `media_asset` boyutlarından gelecek), görüntüleyici, geri sayım. Motion'a sonra tekrar bakılacak; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
 - Kazananlar gerçek ekranlar yazılırken `components/` altına taşınır. `/ui*` sayfalarının akıbeti açık.
 
@@ -43,7 +43,7 @@ Garantilerin metni SPEC 4'te. Testler `packages/shared/src/**/*.test.ts` ve `app
 
 | # | Durum | Koruyan test |
 |---|---|---|
-| G1 | ✅ | `auth.test` › oturumsuz her metotta 401, oturumla cevap; yanlış şifre ve sahte çerez oturum almaz; çerez httpOnly/Secure/Lax/90 gün; yalnızca izinli giriş uçları açık |
+| G1 | ✅ | `auth.test` › oturumsuz her metotta 401; çıkış oturumu sunucuda siler, eski çerez 401; oturumla cevap; yanlış şifre ve sahte çerez oturum almaz; çerez httpOnly/Secure/Lax/90 gün; yalnızca izinli giriş uçları açık |
 | G2 | ✅ | `auth.test` › kayıt uçları 404, kullanıcı eklenmez; sıfırlama şifreyi değiştirir ve oturumları kapatır; bilinmeyen kullanıcıda sıfırlama düşer. `accounts.test` › kullanıcı adı kuralı, SQL kaçışı |
 | G3 | ✅ | `auth.test` › aynı IP'den 5 denemeden sonra 429 (doğru şifre de bekler), başka IP etkilenmez; `x-forwarded-for` ile atlatılamaz |
 | G4 | ⬜ Aşama 9 | — |
@@ -69,6 +69,8 @@ Garantilerin metni SPEC 4'te. Testler `packages/shared/src/**/*.test.ts` ve `app
 | G24 | ⬜ `/ui*` sayfalarında `noindex` var ama testi yok; uygulama ve demo sayfaları Aşama 1 / 9 | — |
 
 **Testsiz garanti: 13** (G4, G5, G8, G10, G11, G13–G18, G21, G24), kısmen testli 2 (G7, G12). Hepsi henüz yazılmamış aşamalara ait; aşamayla birlikte testi gelir.
+
+**Tarayıcıda giriş:** `e2e/auth.spec.ts` › oturumsuz `/app` → `/giris`; yanlış şifrede mesaj; giriş → `/app`, çıkış → `/giris` ve `/app` yeniden kapalı. Yerel test D1'i `scripts/e2e-db.ts` kurar ve yerel veriyi siler (test hesabı `e2e_uye`, yalnızca yerelde; canlıda bu adla hesap açılmaz). Testler iki projede toplam 4 giriş yapar, sınır 5: yeni giriş testi eklenirse sınır aşılır. Sunucu açıkken (`reuseExistingServer`) tekrar koşunca sayaçlar 15 dk sıfırlanmaz.
 
 **Diğer testler:** `login-identity` (kullanıcı adı kırpılır, büyük/küçük harf korunur; boş ve uzun reddedilir), `scientificName` (Latince ad), `login-flower` (günün çiçeği gün boyu aynı, yalnızca seçili listeden), `app.test.ts` (sağlık ucu, uygulama yolları SPA kabuğu), `auth.test` › kullanım oturumu kaydırır ve tarayıcıya yeni 90 günlük çerez gider, `e2e/ui*.spec.ts` (tasarım token'ları, bileşenler, kontrast, Türkçe font).
 
@@ -130,7 +132,8 @@ erDiagram
 | Adres | Ne var |
 |---|---|
 | `/` | Geçici rehber ana sayfası (prerender) |
-| `/app` | Geçici uygulama kabuğu |
+| `/giris` | **Gerçek giriş:** herbaryum yaprağı + ipek buket; oturum varsa `/app`'e geçer (`noindex`) |
+| `/app` | Geçici: oturum yoksa `/giris`'e yollar; "Merhaba, ad" ve çıkış. Ekranlar haritadan sonra |
 | `/ui` | Tasarım vitrini: token'lar, yazı, butonlar, form, menü/diyalog/sekmeler, Türkçe tarih seçici, bildirim, anı kartı; kâğıt dokusu ve tema düğmeleri |
 | `/ui/login` | Herbaryum giriş ekranı + arka plan seçici + "Sayfayı gizle" (`?bg=`, `?sayfa=gizli`) |
 | `/ui/shell` | İçe gömülü yan menü / mobil alt menü |

@@ -1,22 +1,54 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
-// Placeholder for the private app (stage 1+). Rendered in the browser from the SPA shell.
+import { Button } from "~/components/ui/button";
+import { currentMember, type Member, signOut } from "~/lib/session";
+
+// Stand-in for the private app until the screen map settles (SYSTEM §1). Signed out, it sends
+// the visitor to /giris; the API refuses them anyway (G1).
 export default function AppHome() {
-  const [apiStatus, setApiStatus] = useState("kontrol ediliyor…");
+  const navigate = useNavigate();
+  const [member, setMember] = useState<Member | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [signOutFailed, setSignOutFailed] = useState(false);
 
   useEffect(() => {
-    fetch("/api/health")
-      .then((response) => response.json() as Promise<{ ok: boolean }>)
-      .then((body) => setApiStatus(body.ok ? "çalışıyor" : "hata"))
-      .catch(() => setApiStatus("ulaşılamıyor"));
-  }, []);
+    currentMember()
+      .then((found) => (found ? setMember(found) : navigate("/giris", { replace: true })))
+      .catch(() => setFailed(true));
+  }, [navigate]);
+
+  if (failed) return <p className="p-8">Bağlanılamadı, sayfayı yenile.</p>;
+  if (!member) return null;
 
   return (
-    <main className="mx-auto max-w-2xl p-8">
-      <h1 className="text-3xl font-semibold">Uygulama</h1>
-      <p className="mt-3 text-neutral-600" data-testid="api-status">
-        API: {apiStatus}
+    <main className="grid gap-4 p-8">
+      <h1 className="font-heading text-3xl" data-testid="greeting">
+        Merhaba, {member.name}
+      </h1>
+      <p className="max-w-prose text-muted-foreground">
+        Giriş çalışıyor. Uygulamanın ekranları, ekran haritası seçildikten sonra buraya gelecek.
       </p>
+      <div>
+        <Button
+          variant="outline"
+          onClick={async () => {
+            try {
+              await signOut();
+              navigate("/giris", { replace: true });
+            } catch {
+              setSignOutFailed(true);
+            }
+          }}
+        >
+          Çıkış yap
+        </Button>
+        {signOutFailed && (
+          <p role="alert" className="pt-2 text-sm text-destructive">
+            Çıkış yapılamadı, tekrar dene.
+          </p>
+        )}
+      </div>
     </main>
   );
 }

@@ -222,3 +222,17 @@ test("changing the password in the app follows the same 8-character rule", async
   expect((await change("1234567")).status).toBe(400);
   expect((await change("12345678")).status).toBe(200);
 });
+
+test("signing out ends the session on the server, not only in the browser", async () => {
+  const cookie = cookieOf(await signIn(PASSWORD));
+  const out = await call("/api/auth/sign-out", {
+    method: "POST",
+    headers: { "content-type": "application/json", cookie },
+    body: "{}",
+  });
+  expect(out.status).toBe(200);
+  // A copy of the old cookie, say a stolen one, no longer opens anything.
+  expect((await call("/api/me", { headers: { cookie } })).status).toBe(401);
+  const sessions = await db.prepare("SELECT count(*) AS n FROM session").first<{ n: number }>();
+  expect(sessions?.n).toBe(0);
+});

@@ -8,9 +8,9 @@ test("the prerendered home page is served as HTML", async ({ page, request }) =>
   await expect(page.getByRole("heading", { name: "Memory Garden" })).toBeVisible();
 });
 
-test("app routes load the SPA, which reaches the API", async ({ page }) => {
-  await page.goto("/app");
-  await expect(page.getByTestId("api-status")).toHaveText("API: çalışıyor");
+test("the API answers through the Worker", async ({ request }) => {
+  const response = await request.get("/api/health");
+  expect(await response.json()).toEqual({ ok: true });
 });
 
 test("signed out, API routes answer 401 in JSON, never the SPA shell", async ({ request }) => {

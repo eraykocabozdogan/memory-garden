@@ -9,7 +9,7 @@ import { cn } from "~/lib/utils";
 
 // The login screen (decision 8-6b): a herbarium sheet. Today's flower plate is taped to the
 // sheet on the left; a museum-style label on the right names it and holds the form. Username
-// + password only, no sign-up (decision G1). The form is not wired to auth yet (stage 1).
+// + password only, no sign-up (G2). /giris wires it to sign-in; /ui/login shows it unwired.
 // Text motion follows decision 9: the label's rows rise softly in turn, and the handwritten
 // line is written on. Both stop at "reduce motion" (app/text-anim.css).
 
@@ -47,13 +47,20 @@ function Stamp({ className }: { className?: string }) {
   );
 }
 
-function Field(props: { id: string; label: string; type?: string; autoComplete: string }) {
+function Field(props: {
+  id: string;
+  name: string;
+  label: string;
+  type?: string;
+  autoComplete: string;
+}) {
   return (
     <div className="grid gap-1.5">
       <Label htmlFor={props.id}>{props.label}</Label>
       {/* Underlined like writing on a page; the bottom border keeps 3:1 contrast (--input). */}
       <Input
         id={props.id}
+        name={props.name}
         type={props.type}
         autoComplete={props.autoComplete}
         required
@@ -63,7 +70,26 @@ function Field(props: { id: string; label: string; type?: string; autoComplete: 
   );
 }
 
-export function HerbariumLogin({ onSubmit }: { onSubmit?: (event: FormEvent) => void }) {
+export type Credentials = { username: string; password: string };
+
+export function HerbariumLogin({
+  onSubmit,
+  error,
+  pending = false,
+}: {
+  onSubmit?: (credentials: Credentials) => void;
+  error?: string | null;
+  pending?: boolean;
+}) {
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    onSubmit?.({
+      username: String(form.get("username") ?? ""),
+      password: String(form.get("password") ?? ""),
+    });
+  };
+
   // The login route is client-rendered (SPA), so "today" is known on the first render.
   const [today] = useState(() => new Date());
   const flower = loginFlowerOfTheDay(today);
@@ -115,17 +141,28 @@ export function HerbariumLogin({ onSubmit }: { onSubmit?: (event: FormEvent) => 
             <form
               style={{ "--i": 2 } as CSSProperties}
               className="grid gap-4 border-t border-foreground/40 pt-4"
-              onSubmit={onSubmit ?? ((event) => event.preventDefault())}
+              onSubmit={submit}
             >
-              <Field id="login-username" label="Kullanıcı adı" autoComplete="username" />
+              <Field
+                id="login-username"
+                name="username"
+                label="Kullanıcı adı"
+                autoComplete="username"
+              />
               <Field
                 id="login-password"
+                name="password"
                 label="Şifre"
                 type="password"
                 autoComplete="current-password"
               />
-              <Button type="submit" className="mt-1 w-full">
-                Giriş yap
+              {error && (
+                <p role="alert" className="text-sm text-destructive">
+                  {error}
+                </p>
+              )}
+              <Button type="submit" className="mt-1 w-full" disabled={pending}>
+                {pending ? "Giriliyor…" : "Giriş yap"}
               </Button>
             </form>
           </div>
