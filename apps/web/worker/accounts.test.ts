@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { accountInput, createAccountSql, resetPasswordSql } from "./accounts";
+import { accountInput, createAccountSql, passwordInput, resetPasswordSql } from "./accounts";
 
 test("usernames follow the sign-in rules and are lower-cased", () => {
   expect(accountInput.parse({ username: " Uye_Bir ", name: "Üye" }).username).toBe("uye_bir");
@@ -21,4 +21,9 @@ test("a quote in the display name cannot break out of the SQL string", () => {
 
 test("a password reset refuses a username the rules would not allow", () => {
   expect(() => resetPasswordSql("x' OR '1'='1", "salt:hash", 1)).toThrow();
+});
+
+test("passwords need at least 8 characters", () => {
+  expect(passwordInput.safeParse("1234567").success).toBe(false);
+  expect(passwordInput.safeParse("12345678").success).toBe(true);
 });

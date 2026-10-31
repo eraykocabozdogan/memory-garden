@@ -210,3 +210,15 @@ test("without a real secret the app refuses to sign anything", () => {
   expect(() => createAuth({ ...env, BETTER_AUTH_SECRET: "" }, "https://x.test")).toThrow();
   expect(() => createAuth({ ...env, BETTER_AUTH_SECRET: "short" }, "https://x.test")).toThrow();
 });
+
+test("changing the password in the app follows the same 8-character rule", async () => {
+  const cookie = cookieOf(await signIn(PASSWORD));
+  const change = (newPassword: string) =>
+    call("/api/auth/change-password", {
+      method: "POST",
+      headers: { "content-type": "application/json", cookie },
+      body: JSON.stringify({ currentPassword: PASSWORD, newPassword }),
+    });
+  expect((await change("1234567")).status).toBe(400);
+  expect((await change("12345678")).status).toBe(200);
+});

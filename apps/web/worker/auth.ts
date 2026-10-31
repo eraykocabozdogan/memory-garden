@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { username } from "better-auth/plugins";
 import { drizzle } from "drizzle-orm/d1";
 
+import { PASSWORD_LENGTH } from "./accounts";
 import * as schema from "./db/schema";
 
 const DAY = 60 * 60 * 24;
@@ -21,7 +22,12 @@ export function createAuth(env: Env, baseURL: string) {
     secret: env.BETTER_AUTH_SECRET,
     database: drizzleAdapter(drizzle(env.DB, { schema }), { provider: "sqlite", schema }),
     // Accounts are opened only by scripts/account.ts (G2); there is no sign-up in the app.
-    emailAndPassword: { enabled: true, disableSignUp: true },
+    emailAndPassword: {
+      enabled: true,
+      disableSignUp: true,
+      minPasswordLength: PASSWORD_LENGTH.min,
+      maxPasswordLength: PASSWORD_LENGTH.max,
+    },
     plugins: [username()],
     // Sliding 90 days: every use pushes the end out again (SPEC 3.1).
     session: { expiresIn: 90 * DAY, updateAge: 0 },

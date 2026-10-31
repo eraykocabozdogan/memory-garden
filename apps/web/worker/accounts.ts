@@ -14,7 +14,13 @@ export const accountInput = z.object({
   name: z.string().trim().min(1).max(64),
 });
 
-export const passwordInput = z.string().min(10, "Şifre en az 10 karakter").max(128);
+/** One rule for the script and the in-app "change password" (owner's choice, 2026-10-31). */
+export const PASSWORD_LENGTH = { min: 8, max: 128 };
+
+export const passwordInput = z
+  .string()
+  .min(PASSWORD_LENGTH.min, `Şifre en az ${PASSWORD_LENGTH.min} karakter`)
+  .max(PASSWORD_LENGTH.max);
 
 export type AccountInput = z.infer<typeof accountInput>;
 

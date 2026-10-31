@@ -233,6 +233,7 @@ Kimlikler UUID, zamanlar UTC ms, gün hesabı `Europe/Istanbul`.
 
 ### Tuzaklar
 - D1'de etkileşimli transaction yok; Drizzle `.transaction()` hata verir. Çok adımlı yazma `batch()` ile.
+- **Şifre:** en az 8, en fazla 128 karakter; betik ve uygulamadaki "şifremi değiştir" aynı sabiti (`PASSWORD_LENGTH`) kullanır (kullanıcı kararı, 2026-10-31).
 - **Migration kuralı (genişlet, sonra daralt):** `deploy.yml` migration'ı yeni koddan önce uygular ve D1 migration'ı geri alınmaz. Bu yüzden bir migration yalnızca ekler (tablo, sütun, indeks); silme ya da yeniden adlandırma, eski kodun artık kullanmadığı bir sonraki sürümde ayrı migration olarak gelir. Migration'lar `drizzle-kit generate` ile `apps/web/migrations/`'a.
 - `@cloudflare/vite-plugin` React Router'ın `ssr: false` + `prerender` build'iyle çalışmıyor; Worker'ı Wrangler paketliyor.
 - **shadcn `init` CSS'i ezer:** gri renkler ve Inter ekler; sonra `app.css`'i yeniden yaz. `add` mevcut dosyanın üzerine yazmak isterse `yes n | pnpm dlx shadcn@latest add <ad>` ile reddet. `components.json` → `iconLibrary: "phosphor"`. Yol takma adı `tsconfig.json`'da da olmalı, yoksa `~/` adlı klasör açar. Kurulum: `pnpm dlx shadcn@latest init -b base -p vega -y --no-monorepo --no-rtl`.
