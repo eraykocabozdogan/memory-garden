@@ -1,0 +1,10 @@
+{
+  // Only for the worker tests: gives getPlatformProxy a local, throwaway D1. The real
+  // database binding lives in wrangler.jsonc once it is created.
+  "name": "memory-garden-test",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    { "binding": "DB", "database_name": "memory-garden-test", "database_id": "local-test" }
+  ]
+}

@@ -6,7 +6,7 @@ const assets = {
   fetch: async (request: Request) => new Response(`shell:${new URL(request.url).pathname}`),
 } as unknown as Fetcher;
 
-const env = { ASSETS: assets } as Env;
+const env = { ASSETS: assets } as unknown as Env;
 
 test("the health endpoint answers", async () => {
   const response = await app.request("/api/health", {}, env);
@@ -14,10 +14,11 @@ test("the health endpoint answers", async () => {
   await expect(response.json()).resolves.toEqual({ ok: true });
 });
 
-test("unknown API routes return JSON 404s instead of the SPA shell", async () => {
+test("API routes answer in JSON, never with the SPA shell", async () => {
+  // Signed out, so the API refuses before it even looks for the route (G1).
   const response = await app.request("/api/unknown", {}, env);
-  expect(response.status).toBe(404);
-  await expect(response.json()).resolves.toEqual({ error: "Not found" });
+  expect(response.status).toBe(401);
+  await expect(response.json()).resolves.toEqual({ error: "Unauthorized" });
 });
 
 test("app routes are answered with the SPA shell", async () => {

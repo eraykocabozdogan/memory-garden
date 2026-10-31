@@ -3,7 +3,9 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.cache/tsconfig.worker.tsbuildinfo",
-    "types": ["node"]
+    "types": ["node"],
+    // scripts/ run straight on Node, which needs the .ts extension in their imports.
+    "allowImportingTsExtensions": true
   },
-  "include": ["worker", "worker-configuration.d.ts", "e2e", "*.config.ts"]
+  "include": ["worker", "worker-configuration.d.ts", "e2e", "scripts", "*.config.ts"]
 }

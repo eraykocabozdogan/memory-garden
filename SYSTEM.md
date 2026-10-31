@@ -25,7 +25,7 @@ Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım
 ### Sıradaki: ekran haritası (gri kutulu), Aşama 1'in ekrandan bağımsız kısmı paralel
 
 - **Ekran tasarımı (SPEC §7, 2026-10-31):** önce bütün uygulama ekranları için tek sayfalık gri kutulu yapı taslağı, sonra ekran ekran 2–3 varyant. Sorun görsel dil değil; içerik, yerleşim, filtre gibi özellikler.
-- **Aşama 1 bölünüyor:** giriş, hesap betiği, oturum tabloları, giriş sınırı, Cloudflare kaynakları ve deploy hattı ekrandan bağımsız, başlanabilir. Anı/medya/etiket tabloları ve uygulama iskeletinin menüsü ekran haritasına bağlı, harita oturunca.
+- **Aşama 1 bölünüyor.** Ekrandan bağımsız kısım: giriş kodu, hesap betiği (`pnpm account`), giriş tabloları ve IP limiti **hazır ve testli**. Kalan: D1'i oluşturmak (kullanıcı onayıyla), `BETTER_AUTH_SECRET`'i koymak, `deploy.yml` (kullanıcı GitHub'a Cloudflare token'ı ekleyince). Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası oturunca.
 - **#11 taslakları** `/ui/bilesenler`'de: yükleme (transfer taklit), galeri (oranlar şimdilik görsel yüklenince ölçülüyor, gerçekte `media_asset` boyutlarından gelecek), görüntüleyici, geri sayım. Motion'a sonra tekrar bakılacak; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
 - Kazananlar gerçek ekranlar yazılırken `components/` altına taşınır. `/ui*` sayfalarının akıbeti açık.
 
@@ -43,9 +43,9 @@ Garantilerin metni SPEC 4'te. Testler `packages/shared/src/**/*.test.ts` ve `app
 
 | # | Durum | Koruyan test |
 |---|---|---|
-| G1 | ⬜ Aşama 1 | — |
-| G2 | ⬜ Aşama 1 | — |
-| G3 | ⬜ Aşama 1 | — |
+| G1 | ✅ | `auth.test` › oturumsuz her metotta 401, oturumla cevap; yanlış şifre ve sahte çerez oturum almaz; çerez httpOnly/Secure/Lax/90 gün; yalnızca izinli giriş uçları açık |
+| G2 | ✅ | `auth.test` › kayıt uçları 404, kullanıcı eklenmez; sıfırlama şifreyi değiştirir ve oturumları kapatır; bilinmeyen kullanıcıda sıfırlama düşer. `accounts.test` › kullanıcı adı kuralı, SQL kaçışı |
+| G3 | ✅ | `auth.test` › aynı IP'den 5 denemeden sonra 429 (doğru şifre de bekler), başka IP etkilenmez; `x-forwarded-for` ile atlatılamaz |
 | G4 | ⬜ Aşama 9 | — |
 | G5 | ⬜ Aşama 9 | — |
 | G6 | ✅ Kural testli; uç Aşama 6 | `diary-policy` › exact rolling 24-hour lifetime; author keeps expired entries but cannot edit them |
@@ -68,9 +68,9 @@ Garantilerin metni SPEC 4'te. Testler `packages/shared/src/**/*.test.ts` ve `app
 | G23 | ✅ | `catalog` › associations kept apart from emblem meanings; meanings and narratives attached to their paths |
 | G24 | ⬜ `/ui*` sayfalarında `noindex` var ama testi yok; uygulama ve demo sayfaları Aşama 1 / 9 | — |
 
-**Testsiz garanti: 16** (G1–G5, G8, G10, G11, G13–G18, G21, G24), kısmen testli 2 (G7, G12). Hepsi henüz yazılmamış aşamalara ait; aşamayla birlikte testi gelir.
+**Testsiz garanti: 13** (G4, G5, G8, G10, G11, G13–G18, G21, G24), kısmen testli 2 (G7, G12). Hepsi henüz yazılmamış aşamalara ait; aşamayla birlikte testi gelir.
 
-**Diğer testler:** `login-identity` (kullanıcı adı kırpılır, büyük/küçük harf korunur; boş ve uzun reddedilir), `scientificName` (Latince ad), `login-flower` (günün çiçeği gün boyu aynı, yalnızca seçili listeden), `app.test.ts` (sağlık ucu, bilinmeyen API JSON 404, uygulama yolları SPA kabuğu), `e2e/ui*.spec.ts` (tasarım token'ları, bileşenler, kontrast, Türkçe font).
+**Diğer testler:** `login-identity` (kullanıcı adı kırpılır, büyük/küçük harf korunur; boş ve uzun reddedilir), `scientificName` (Latince ad), `login-flower` (günün çiçeği gün boyu aynı, yalnızca seçili listeden), `app.test.ts` (sağlık ucu, API hiçbir zaman SPA kabuğu dönmez, uygulama yolları SPA kabuğu), `auth.test` › kullanım oturumu kaydırır ve tarayıcıya yeni 90 günlük çerez gider, `e2e/ui*.spec.ts` (tasarım token'ları, bileşenler, kontrast, Türkçe font).
 
 **Mutasyon kontrolü:** yok.
 
@@ -79,13 +79,49 @@ Garantilerin metni SPEC 4'te. Testler `packages/shared/src/**/*.test.ts` ve `app
 | Yöntem | Yol | Kim | Ne yapar |
 |---|---|---|---|
 | `GET` | `/api/health` | Herkes | Ayakta mı |
-| `*` | `/api/*` | — | Bilinmeyen uç: JSON 404 |
+| `POST` | `/api/auth/sign-in/username` | Herkes (IP başına 15 dk'da 5) | Giriş, oturum çerezi |
+| `POST` | `/api/auth/sign-out` | Üye | Çıkış |
+| `GET` | `/api/auth/get-session` | Herkes | Oturum varsa üye bilgisi |
+| `POST` | `/api/auth/change-password` | Üye | Şifre değiştir |
+| `*` | `/api/auth/*` (diğerleri) | — | 404: Better Auth'un geri kalanı kapalı |
+| `GET` | `/api/me` | Üye | Oturumdaki üye (id, ad, kullanıcı adı) |
+| `*` | `/api/*` | — | Oturumsuz 401, oturumla bilinmeyen uç JSON 404 |
 
 Planlanan uçlar §8 "Onaylı mimari"de.
 
 ## 4. Veritabanı diyagramı
 
-Henüz şema yok (Aşama 1). Planlanan tablolar §8'de.
+Şema `apps/web/worker/db/schema.ts`, migration'lar `apps/web/migrations/` (drizzle-kit). Şimdilik yalnızca giriş tabloları; anı/medya/etiket tabloları ekran haritasından sonra (planlananlar §8).
+
+```mermaid
+erDiagram
+  user ||--o{ session : "oturum"
+  user ||--o{ account : "şifre (credential)"
+  user {
+    text id PK
+    text name
+    text email "yer tutucu .invalid"
+    text username UK
+  }
+  session {
+    text token UK
+    int expiresAt "kayan 90 gün"
+    text ipAddress
+  }
+  account {
+    text providerId "credential"
+    text password "scrypt"
+  }
+  rateLimit {
+    text key UK "ip + yol"
+    int count
+    int lastRequest
+  }
+  verification {
+    text identifier
+    text value
+  }
+```
 
 ## 5. Ekranlar ve önizleme linki
 
@@ -111,6 +147,9 @@ Henüz şema yok (Aşama 1). Planlanan tablolar §8'de.
 | `/ui*` önizleme sayfaları üründe | Ürün değil, yalnızca tasarım için | Tasarım listesi bitince kaldır ya da gizle |
 | `apps/media/container` eski projeden; fotoğraf yolu duruyor, 1080p sınırı ve nabız yok | Video işleme henüz SPEC'e uymuyor | Aşama 5 |
 | Cloudflare kaynakları (D1, R2, Queue, CORS, R2 yaşam döngüsü) oluşturulmadı | Gerçek uygulama çalışmaz | Aşama 1 (oluşturmadan önce kullanıcıya söylenir) |
+| D1 bağlaması `wrangler.jsonc`'de yok; `worker/env.d.ts` geçici olarak `DB` ve `BETTER_AUTH_SECRET` tanımlıyor | Canlıda `/api/auth/*` ve `/api/me` çalışmaz (önizleme ekranları etkilenmez) | D1 oluşturulunca |
+| Giriş limiti yalnızca IP başına; hesap başına limit yok | Çok IP'den dağıtık deneme tek hesaba karşı serbest | İki kişilik uygulamada kabul; gerekirse Aşama 8 |
+| `packages/shared` `login-identity` büyük/küçük harfi koruyor, Better Auth kullanıcı adını küçük harfe çeviriyor; modül kullanılmıyor | Çelişkili eski kural | Giriş ekranı bağlanırken silinir |
 | `deploy.yml` ve `backup.yml` yok; deploy elle | Testsiz deploy riski | Aşama 1 / 10 |
 | Endpoint ve veritabanı bölümleri koddan üretilmiyor | SYSTEM elle güncelleniyor | Şema ve API gelince (Aşama 1) |
 | `pnpm check` yalnızca Biome; typecheck ve test ayrı komutlar | "Bitti" tanımıyla uyumsuz | Temizliğin ayrı adımı |

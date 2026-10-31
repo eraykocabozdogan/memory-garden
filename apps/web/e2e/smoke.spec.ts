@@ -13,8 +13,8 @@ test("app routes load the SPA, which reaches the API", async ({ page }) => {
   await expect(page.getByTestId("api-status")).toHaveText("API: çalışıyor");
 });
 
-test("unknown API routes return JSON 404s", async ({ request }) => {
+test("signed out, API routes answer 401 in JSON, never the SPA shell", async ({ request }) => {
   const response = await request.get("/api/does-not-exist");
-  expect(response.status()).toBe(404);
-  expect(await response.json()).toEqual({ error: "Not found" });
+  expect(response.status()).toBe(401);
+  expect(await response.json()).toEqual({ error: "Unauthorized" });
 });

@@ -17,7 +17,8 @@
     "flowers:assets": "node scripts/download-flower-art.mjs",
     "locations:generate": "node scripts/generate-turkey-locations.mjs",
     "flowers:cutout": "node scripts/flower-cutout.mjs",
-    "flowers:bouquet": "node scripts/flower-bouquet.mjs"
+    "flowers:bouquet": "node scripts/flower-bouquet.mjs",
+    "account": "pnpm --filter @memory-garden/web account"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
