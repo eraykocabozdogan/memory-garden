@@ -22,12 +22,22 @@
 
 Aşama 2 gecikirse 3–7'nin işlevsel kısmı geçici temayla ilerler, tasarım sistemi gelince giydirilir.
 
-### Sıradaki: ekran haritası (gri kutulu), Aşama 1'in ekrandan bağımsız kısmı paralel
+### Sıradaki: ekran haritasına devam (Etiketler'den)
 
-- **Ekran tasarımı (SPEC §7, 2026-10-31):** önce bütün uygulama ekranları için tek sayfalık gri kutulu yapı taslağı, sonra ekran ekran 2–3 varyant. Sorun görsel dil değil; içerik, yerleşim, filtre gibi özellikler.
-- **Aşama 1 bölünüyor.** Ekrandan bağımsız kısım: giriş kodu, hesap betiği (`pnpm account`), giriş tabloları ve IP limiti **hazır ve testli**. D1 (`memory-garden`, AB yetki alanı) oluşturuldu, migration uygulandı; `deploy.yml` CI geçince `main`'i deploy ediyor. `BETTER_AUTH_SECRET` kondu; giriş canlıda çalışıyor. İki hesap açıldı (`eray`, `ilkeruya`); `/giris` gerçek girişe bağlı. Aşama 1'in ekrandan bağımsız kısmı bitti. Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası oturunca.
-- **#11 taslakları** `/ui/bilesenler`'de: yükleme (transfer taklit), galeri (oranlar şimdilik görsel yüklenince ölçülüyor, gerçekte `media_asset` boyutlarından gelecek), görüntüleyici, geri sayım. Motion'a sonra tekrar bakılacak; görüntüleyici zorlanırsa `yet-another-react-lightbox`.
-- Kazananlar gerçek ekranlar yazılırken `components/` altına taşınır. `/ui*` sayfalarının akıbeti açık.
+- **Yöntem (SPEC §7, 2026-10-31):** gri kutulu harita `/maket`; kullanıcı ekranları **tek tek** cevaplıyor. Her ekranın kararları `/maket/<ekran>` altındaki "Neden böyle" listesinde ve dosya başı yorumlarında (`apps/web/app/routes/maket*.tsx`). Taslaklarda mantık ve test yok; ekranlar seçilince silinir.
+- **Biten ekranlar:**
+  - **Anılar:** Zaman / Harita seçimi, ikisi aynı yakınlaştırma sahnesi (`ZoomStage`): tekerlek yalnızca seviye değiştirir, imleç merkezden uzaklaştıkça hızlanarak gezinir (merkezde durgun daire), tıklama bir seviye iner, Esc çıkar, telefonda iki parmak. Zaman: tüm aylar → yıl → ay (gün kartları) → gün; aylar takvim çerçevesinde, içi kırpılmış kolaj + "+N"; öğeler merkezden toplu altıgen küme, okuma sırasıyla eskiden yeniye; en üstte yıllar basamaklı çizgiyle ayrılır. Harita: dünya → Türkiye → il → gün, gerçek sınırlar (Natural Earth), yalnızca anısı olan ülke/il girilir, ilçe yok. Son seviye her iki yolda aynı gün görünümü (not ayrı satırda, "Rotayı göster", açıklama yalnız görüntüleyicide). Tarihi eksikler: yalnız yıl → yılın içinde "Ayı bilinmeyenler", yalnız ay → ayın içinde "Günü bilinmeyenler", tarihsiz → en üst seviyede en sonda. Filtre: etiket/il/tür çip (yıl filtresi yok; kullanıcı filtrelere ayrıca bakacak). "Geçen yıl bugün" şerit.
+  - **Günlükler + Bahçe (tek ekran):** üstte izometrik kare bahçe, her gün bir kare, kare spiral; ilk kare ilk günlüğün günü (G9). İkinci çiçek kendi gününe en yakın boş kareye, gün kesinleşince bir kez ve kalıcı; hiç boş kare yokken spiral sonuna yeni kare. Altta yazma alanı hep açık; kendi günlüklerin tek listede (açık olan üstte vurgulu, geçmişler okunabilir); partnerin yalnız açık günlüğü, yokken "henüz yazmadı" + en son bıraktığın çiçek. Çiçekler kataloğun arka planı temizlenmiş Curtis çizimleri (`scripts/flower-cutout.mjs` yeniden kullanılır).
+- **Kalan ekranlar (sırayla):** Etiketler, Özel günler, Çöp kutusu, Ayarlar, Anı ekleme. Etiketler için sorulmuş, cevap bekleyen: (1) ayrı ekran mı [O ayrı]; (2) ayrıntıda ne [O aralık + gün listesi, altında o günlerin kartları, Anılar'daki gibi].
+- **Onay bekleyen SPEC taslağı** (bütün ekranlar bitince tek seferde sunulacak):
+  - §2: "Gün ayrıntısı" ve "Harita" ayrı ekran değil (Anılar'ın içinde); "Günlükler" ve "Bahçe" tek ekran; menü buna göre.
+  - §3.2: filtreler etiket, il, tür (yıl yok); tarihi eksik medyanın yeri; "geçen yıl bugün" şerit.
+  - §3.6: izometrik spiral bahçe, ikinci çiçek kuralı, kalıcı yer, yeni kare kuralı; kendi geçmiş günlüklerini okuma.
+  - §4 aday garantiler: ikinci çiçeğin yeri bir kez yazılır, değişmez; boş kare varken yeni kare açılmaz.
+  - §6: harita sınırları Natural Earth (kamu malı).
+- **Açık teknik karar (gerçek ekrana geçerken):** harita çizimi kendi SVG'miz mi, planlanan MapLibre + OpenFreeMap mı; karşılaştırılıp kullanıcıya sunulacak.
+- **Aşama 1:** ekrandan bağımsız kısmı bitti (giriş canlıda, iki hesap, D1 AB, otomatik deploy). Anı/medya/etiket tabloları ve iskeletin menüsü ekran haritası bitince.
+- **#11 taslakları** `/ui/bilesenler`'de. `/ui*` sayfaları, gerçek ekranlar bileşenleri kullanana kadar kalır, sonra silinir (kullanıcı kararı). Motion'a sonra tekrar bakılacak.
 
 ### Kullanıcının yapacakları
 
