@@ -171,16 +171,12 @@ const SCREENS: Screen[] = [
     why: [
       "Liste değil, yakınlaştırılan bir harita. Dört seviye: bütün yıllar ve ayları → bir yılın ayları → bir ayın gün kartları → bir günün medyası.",
       "Her ay gerçek bir takvim çerçevesinde (pazartesi başlar, ilk ve son haftada eksik kareler); içi ayın fotoğraflarıyla kaplı, sığmayanlar +N. Günler karelere oturmaz.",
-      "Medyası olmayan yıl, ay ve gün hiç çizilmez. Öğeler altıgen istifte, soldan sağa ve yukarıdan aşağı eskiden yeniye; küme ortalanmış.",
+      "Medyası olmayan yıl, ay ve gün hiç çizilmez. Öğeler altıgen istifte, sol üstten sağ alta eskiden yeniye. En üst seviyede bütün aylar tek ızgarada; yıllar basamaklı çizgiyle ayrılır.",
       "Tekerlek yalnızca seviye değiştirir: yukarı, imlecin altındakine bir seviye in; aşağı, bir seviye çık. Gezinme imlecin merkeze uzaklığıyla; ortadaki kesikli dairede hareket yok.",
-      "Telefonda iki parmakla yakınlaş/uzaklaş, tek parmakla sürükle. Üstteki yol (Tüm yıllar › 2026 › …) seçili tarihi gösterir ve geri çıkar.",
+      "Bir öğeye tıklamak/dokunmak da bir seviye iner. Telefonda iki parmakla yakınlaş/uzaklaş, tek parmakla sürükle. Üstteki yol (Tüm yıllar › 2026 › …) seçili tarihi gösterir ve geri çıkar.",
       'Tarihi eksikler: yalnızca yılı bilinen o yılın içinde "Ayı bilinmeyenler", yalnızca ayı bilinen o ayın içinde "Günü bilinmeyenler", tarihsizler en üst seviyede en dışta.',
     ],
-    open: [
-      "Etiket, il ve tür filtreleri kalsın mı? Kalırsa çip mi olsun, yoksa onlar da sezgisel bir seçime mi dönsün?",
-      "Bir öğeye tıklamak/dokunmak da bir seviye insin mi (şu an iniyor), yoksa yalnızca tekerlek ve iki parmak mı?",
-      "Gezinme hızı ve ortadaki durgun bölgenin büyüklüğü doğru mu?",
-    ],
+    open: ["Etiket, il ve tür filtreleri: şimdilik çip olarak duruyor; kullanıcı ayrıca bakacak."],
   },
   {
     slug: "gun",

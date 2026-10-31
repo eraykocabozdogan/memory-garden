@@ -79,18 +79,20 @@ const daysOf = (y: number, m: number) =>
  * bottom-right, every other row shifted half a box so each item still has six neighbours.
  * The whole block is centred on the origin.
  */
-function honeycomb(count: number, w: number, h: number, gap: number) {
+function honeycomb(count: number, w: number, h: number, gap: number, rowGap = gap) {
   const perRow = Math.max(1, Math.ceil(Math.sqrt(count * 1.4)));
   const rows = Math.ceil(count / perRow);
-  const out: { x: number; y: number }[] = [];
+  const out: { x: number; y: number; row: number; col: number }[] = [];
   for (let i = 0; i < count; i++) {
     const row = Math.floor(i / perRow);
     const col = i % perRow;
-    const inRow = Math.min(perRow, count - row * perRow);
+    // Rows start at the same left edge (the last one is not centred) so the order reads on.
     const shift = row % 2 ? 0.5 : 0;
     out.push({
-      x: (col - (inRow - 1) / 2 + shift - 0.25) * (w + gap),
-      y: (row - (rows - 1) / 2) * (h + gap),
+      x: (col - (perRow - 1) / 2 + shift - 0.25) * (w + gap),
+      y: (row - (rows - 1) / 2) * (h + rowGap),
+      row,
+      col,
     });
   }
   return out;
@@ -211,61 +213,89 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
   const scale = phone ? 0.75 : 1;
 
   if (level.kind === "years") {
+    // Every month of every year in one honeycomb, oldest top-left; years are told apart by a
+    // stepped rule between their months, like the masonry's period rules, not by clusters.
     const cell = 11 * scale;
-    const monthW = 7 * cell;
-    const years = yearsWithMedia();
-    const blocks = years.map((y) => {
-      const months = monthsOf(y);
-      const spots = honeycomb(months.length, monthW, monthW, 16 * scale);
-      return { y, months, spots };
-    });
-    // Space the years by the widest and tallest block actually drawn, so none overlap.
-    const extent = (axis: "x" | "y") =>
-      Math.max(...blocks.flatMap((b) => b.spots.map((p) => Math.abs(p[axis])))) * 2 + monthW;
-    const blockW = extent("x");
-    const blockH = extent("y") + 40;
-    // Years in one row, oldest on the left, the undated pile after the newest.
-    const step = blockW + 60 * scale;
-    const centres = Array.from({ length: blocks.length + 1 }, (_, i) => ({
-      x: (i - blocks.length / 2) * step,
-      y: 0,
-    }));
-    const placed: Placed[] = blocks.flatMap(({ y, months, spots }, i) => {
-      const c = centres[i] ?? { x: 0, y: 0 };
-      const label: Placed = {
+    const w = 7 * cell;
+    const h = 6 * cell + 16;
+    const gap = 16 * scale;
+    const rowGap = 34 * scale;
+    const months = yearsWithMedia().flatMap((y) => monthsOf(y).map((m) => ({ y, m })));
+    const undated = MEDIA.filter((x) => x.precision === "none").length;
+    const spots = honeycomb(months.length + (undated ? 1 : 0), w, h, gap, rowGap);
+    const left = Math.min(...spots.map((p) => p.x)) - w / 2 - gap;
+    const right = Math.max(...spots.map((p) => p.x)) + w / 2 + gap;
+    const top = (i: number) => (spots[i]?.y ?? 0) - h / 2;
+
+    // Rules: before the first month of each year after the first, and before the undated pile.
+    const starts = months.flatMap((cur, i) => (i > 0 && months[i - 1]?.y !== cur.y ? [i] : []));
+    if (undated) starts.push(months.length);
+    const rule = (k: number) => {
+      const s = spots[k];
+      if (!s) return "";
+      const above = top(k) - rowGap / 2;
+      if (s.col === 0) return `M ${left} ${above} H ${right}`;
+      const below = top(k) + h + rowGap / 2;
+      const split = s.x - w / 2 - gap / 2;
+      return `M ${left} ${below} H ${split} V ${above} H ${right}`;
+    };
+    const placed: Placed[] = [
+      {
+        key: "rules",
+        x: 0,
+        y: 0,
+        node: (
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none overflow-visible"
+            width={1}
+            height={1}
+            style={{ transform: "translate(50%, 50%)" }}
+          >
+            {starts.map((k) => (
+              <path key={k} d={rule(k)} fill="none" stroke="#404040" strokeWidth={2} />
+            ))}
+          </svg>
+        ),
+      },
+    ];
+    // Each year's name sits on the rule, above its first month.
+    months.forEach(({ y }, i) => {
+      if (i > 0 && months[i - 1]?.y === y) return;
+      const s = spots[i] ?? { x: 0, y: 0 };
+      placed.push({
         key: `y${y}`,
-        x: c.x,
-        y: c.y - blockH / 2 + 4,
+        x: s.x - w / 2 + 22,
+        y: top(i) - rowGap / 2,
         node: (
           <button
             type="button"
             data-zoom={`year:${y}`}
             onClick={() => zoom({ kind: "year", y })}
-            className="rounded-full border border-neutral-700 bg-white px-3 py-0.5 text-sm font-semibold"
+            className="rounded-full border border-neutral-700 bg-white px-2 text-xs font-semibold"
           >
             {y}
           </button>
         ),
-      };
-      return [
-        label,
-        ...months.map((m, j) => ({
-          key: `${y}-${m}`,
-          x: c.x + (spots[j]?.x ?? 0),
-          y: c.y + (spots[j]?.y ?? 0),
-          node: <MonthFrame y={y} m={m} cell={cell} onZoom={() => zoom({ kind: "year", y })} />,
-        })),
-      ];
+      });
     });
-    const last = centres[blocks.length] ?? { x: 0, y: 0 };
-    const undated = MEDIA.filter((x) => x.precision === "none").length;
-    if (undated > 0) {
+    months.forEach(({ y, m }, i) => {
+      const s = spots[i] ?? { x: 0, y: 0 };
+      placed.push({
+        key: `${y}-${m}`,
+        x: s.x,
+        y: s.y,
+        node: <MonthFrame y={y} m={m} cell={cell} onZoom={() => zoom({ kind: "year", y })} />,
+      });
+    });
+    if (undated) {
+      const s = spots[months.length] ?? { x: 0, y: 0 };
       placed.push({
         key: "undated",
-        x: last.x,
-        y: last.y,
+        x: s.x,
+        y: s.y,
         node: (
-          <Tile w={140 * scale} h={90 * scale}>
+          <Tile w={w} h={h}>
             Tarihi bilinmeyenler · {undated}
           </Tile>
         ),
@@ -484,7 +514,7 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
         const dx = p.x - width / 2;
         const dy = p.y - height / 2;
         const dist = Math.hypot(dx, dy);
-        const dead = Math.min(width, height) * 0.18;
+        const dead = Math.min(width, height) * 0.27;
         const edge = Math.min(width, height) / 2;
         if (dist > dead) {
           const speed = Math.min(1, (dist - dead) / (edge - dead)) * 9;
@@ -585,7 +615,7 @@ export function MemoriesMap({ phone }: { phone: boolean }) {
         }}
       >
         {/* The dead zone, drawn so it can be judged; the real screen would not show it. */}
-        <div className="pointer-events-none absolute top-1/2 left-1/2 z-10 aspect-square h-[36%] -translate-1/2 rounded-full border border-dashed border-neutral-300" />
+        <div className="pointer-events-none absolute top-1/2 left-1/2 z-10 aspect-square h-[54%] -translate-1/2 rounded-full border border-dashed border-neutral-300" />
         <div
           key={JSON.stringify(level)}
           className="absolute top-1/2 left-1/2 animate-in fade-in zoom-in-95 duration-300"
