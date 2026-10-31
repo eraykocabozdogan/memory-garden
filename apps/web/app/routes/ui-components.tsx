@@ -3,6 +3,8 @@ import { differenceInCalendarDays, format } from "date-fns";
 import { tr } from "date-fns/locale";
 import {
   type DragEvent,
+  Fragment,
+  type ReactNode,
   type PointerEvent as ReactPointerEvent,
   startTransition,
   useEffect,
@@ -265,50 +267,31 @@ function Gallery() {
     if (target) setOpen(target.id);
   };
 
-  // One masonry block per month, so a rule and a month name separate them (the owner's choice
-  // over a timeline of its own).
-  const months = new Map<string, typeof PHOTOS>();
-  for (const item of PHOTOS) {
-    const key = format(item.date, "LLLL yyyy", { locale: tr });
-    months.set(key, [...(months.get(key) ?? []), item]);
-  }
-
   return (
     <Card data-testid="galeri">
       <CardHeader>
         <CardTitle className="text-base">2 · Galeri ve tam ekran görüntüleyici</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Fotoğraflar kendi oranlarını korur (masonry) ve aylar bir çizgiyle ayrılır. Bir anıya
-          dokununca tam ekrana açılır: çift dokunarak ya da parmakla sıkıştırarak yakınlaştır,
-          kaydırarak gez, Esc ile kapat.
+          Fotoğraflar kendi oranlarını korur (masonry) ve her biri en kısa sütuna yerleşir; ay
+          çizgisi fotoğrafların arasından basamak basamak geçer, boşluk kalmaz. Bir anıya dokununca
+          tam ekrana açılır: çift dokunarak ya da parmakla sıkıştırarak yakınlaştır, kaydırarak gez,
+          Esc ile kapat.
         </p>
       </CardHeader>
-      <CardContent className="grid gap-6">
-        {[...months].map(([month, items]) => (
-          <section key={month} className="grid gap-3">
-            <h3 className="flex items-center gap-3 font-heading text-sm tracking-wide text-muted-foreground uppercase">
-              {month}
-              <span aria-hidden="true" className="h-px flex-1 bg-border" />
-            </h3>
-            <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 2xl:columns-5">
-              {items.map((item) =>
-                // While the viewer holds this photo's transition name, the tile must not also
-                // carry it: a name has to be unique or the browser drops the transition.
-                open === item.id ? (
-                  <div key={item.id}>
-                    <Tile item={item} onOpen={() => show(item.id)} />
-                  </div>
-                ) : (
-                  <ViewTransition key={item.id} name={`foto-${item.id}`}>
-                    <div>
-                      <Tile item={item} onOpen={() => show(item.id)} />
-                    </div>
-                  </ViewTransition>
-                ),
-              )}
-            </div>
-          </section>
-        ))}
+      <CardContent>
+        <Masonry
+          renderTile={(item) =>
+            // While the viewer holds this photo's transition name, the tile must not also
+            // carry it: a name has to be unique or the browser drops the transition.
+            open === item.id ? (
+              <Tile item={item} onOpen={() => show(item.id)} />
+            ) : (
+              <ViewTransition name={`foto-${item.id}`}>
+                <Tile item={item} onOpen={() => show(item.id)} />
+              </ViewTransition>
+            )
+          }
+        />
       </CardContent>
 
       <Dialog open={Boolean(photo)} onOpenChange={(next) => !next && show(null)}>
@@ -331,14 +314,156 @@ function Gallery() {
   );
 }
 
+// ---------------------------------------------------------- 11b · masonry
+
+type Photo = (typeof PHOTOS)[number];
+
+const GAP = 12; // between photos
+const MONTH_GAP = 40; // the band a month rule and its name run through
+const GUESS = 1.5; // height / width until a photo has loaded and told its own
+
+// Columns follow the gallery's own width, so it fills whatever screen it is on.
+function columnsFor(width: number) {
+  if (width < 560) return 2;
+  if (width < 900) return 3;
+  if (width < 1300) return 4;
+  return 5;
+}
+
+type Placed = { item: Photo; x: number; y: number; h: number };
+type Rule = { month: string; ys: number[] };
+
+// Each photo goes into the column that is shortest so far, so the columns stay level. A new
+// month opens a band in every column right where that column has got to; the rule runs through
+// those bands, stepping between columns, so it never crosses a photo and leaves no hole.
+// Photos go in date order, so inside any column one month always ends before the next begins.
+function layoutMasonry(
+  photos: Photo[],
+  ratios: Record<string, number>,
+  width: number,
+  count: number,
+) {
+  const colWidth = (width - GAP * (count - 1)) / count;
+  const heights = Array<number>(count).fill(0);
+  const placed: Placed[] = [];
+  const rules: Rule[] = [];
+  let month = "";
+
+  for (const item of photos) {
+    const key = format(item.date, "LLLL yyyy", { locale: tr });
+    if (key !== month) {
+      month = key;
+      rules.push({ month: key, ys: heights.map((h) => h + MONTH_GAP / 2) });
+      for (let c = 0; c < count; c++) heights[c] = (heights[c] ?? 0) + MONTH_GAP;
+    }
+    const column = heights.indexOf(Math.min(...heights));
+    const h = colWidth * (ratios[item.id] ?? GUESS);
+    placed.push({ item, x: column * (colWidth + GAP), y: heights[column] ?? 0, h });
+    heights[column] = (heights[column] ?? 0) + h + GAP;
+  }
+
+  return { colWidth, placed, rules, height: Math.max(0, ...heights) };
+}
+
+// The rule as a stepped line: level across each column, a short drop or climb in the gutter.
+function rulePath(ys: number[], colWidth: number, width: number) {
+  let d = `M 0 ${ys[0]}`;
+  ys.forEach((y, c) => {
+    const right = c === ys.length - 1 ? width : (c + 1) * (colWidth + GAP) - GAP / 2;
+    d += ` V ${y} H ${right}`;
+  });
+  return d;
+}
+
+function Masonry({ renderTile }: { renderTile: (item: Photo) => ReactNode }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  const [ratios, setRatios] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const element = box.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => setWidth(entry?.contentRect.width ?? 0));
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const count = columnsFor(width);
+  const { colWidth, placed, rules, height } = layoutMasonry(PHOTOS, ratios, width, count);
+  const firstOfMonth = new Map(rules.map((rule, i) => [placedIndex(placed, rule.month), i]));
+
+  return (
+    <div ref={box} className="relative" style={{ height }} data-columns={count}>
+      {width > 0 && (
+        <>
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 text-border"
+            width={width}
+            height={height}
+          >
+            {rules.map((rule) => (
+              <path
+                key={rule.month}
+                d={rulePath(rule.ys, colWidth, width)}
+                fill="none"
+                stroke="currentColor"
+                strokeLinejoin="round"
+              />
+            ))}
+          </svg>
+          {placed.map(({ item, x, y, h }, i) => {
+            const rule = rules[firstOfMonth.get(i) ?? -1];
+            return (
+              <Fragment key={item.id}>
+                {/* In the DOM each month's name comes before its photos, so it reads in order. */}
+                {rule && (
+                  <h3
+                    className="absolute left-0 -translate-y-1/2 bg-card pr-3 font-heading text-sm tracking-wide text-muted-foreground uppercase"
+                    style={{ top: rule.ys[0] }}
+                  >
+                    {rule.month}
+                  </h3>
+                )}
+                <div
+                  className="absolute"
+                  style={{ left: x, top: y, width: colWidth, height: h }}
+                  data-column={Math.round(x / (colWidth + GAP))}
+                >
+                  <img
+                    src={item.src}
+                    alt=""
+                    hidden
+                    onLoad={(event) => {
+                      const { naturalWidth, naturalHeight } = event.currentTarget;
+                      if (naturalWidth > 0) {
+                        setRatios((all) => ({ ...all, [item.id]: naturalHeight / naturalWidth }));
+                      }
+                    }}
+                  />
+                  {renderTile(item)}
+                </div>
+              </Fragment>
+            );
+          })}
+        </>
+      )}
+    </div>
+  );
+}
+
+function placedIndex(placed: Placed[], month: string) {
+  return placed.findIndex(({ item }) => format(item.date, "LLLL yyyy", { locale: tr }) === month);
+}
+
 function Tile({ item, onOpen }: { item: (typeof PHOTOS)[number]; onOpen: () => void }) {
   return (
     <button
       type="button"
       onClick={onOpen}
-      className="mb-3 block w-full overflow-hidden rounded-md border bg-card shadow-card"
+      className="block size-full overflow-hidden rounded-md border bg-card shadow-card"
     >
-      <img src={item.src} alt={item.name} className="w-full" />
+      <img src={item.src} alt={item.name} className="size-full object-cover" />
     </button>
   );
 }

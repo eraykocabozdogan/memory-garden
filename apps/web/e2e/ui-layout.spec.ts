@@ -264,11 +264,50 @@ test("on a wide screen the pages fill the width but text stays readable", async 
 
   // The gallery gains columns instead of leaving the sides empty.
   await page.goto("/ui/bilesenler");
-  const gallery = page.locator('[data-testid="galeri"] [class*="columns-"]').first();
-  await expect(gallery).toHaveCSS("column-count", "4");
+  await expect(page.locator("[data-columns]")).toHaveAttribute("data-columns", "4");
 
   // The intro paragraph keeps a readable line length (max-w-prose is 65ch).
   const intro = page.locator("main header p").first();
   const introBox = await intro.boundingBox();
   expect(introBox?.width).toBeLessThan(760);
+});
+
+test("the gallery fills its columns without overlaps and the month rule steps between photos", async ({
+  page,
+}) => {
+  await page.goto("/ui/bilesenler");
+  const tiles = page.locator("[data-column]");
+  await expect(tiles.first()).toBeVisible();
+  // Let the photos load and report their own shape.
+  await page.waitForLoadState("networkidle");
+
+  const boxes = await tiles.evaluateAll((list) =>
+    list.map((el) => {
+      const r = el.getBoundingClientRect();
+      return {
+        x: r.x,
+        y: r.y,
+        w: r.width,
+        h: r.height,
+        col: Number(el.getAttribute("data-column")),
+      };
+    }),
+  );
+  // No two photos overlap.
+  for (const [i, a] of boxes.entries()) {
+    for (const b of boxes.slice(i + 1)) {
+      const apart =
+        a.x + a.w <= b.x + 1 ||
+        b.x + b.w <= a.x + 1 ||
+        a.y + a.h <= b.y + 1 ||
+        b.y + b.h <= a.y + 1;
+      expect(apart).toBe(true);
+    }
+  }
+  // Every column is used, so no column stands empty beside the others.
+  const columns = Number(await page.locator("[data-columns]").getAttribute("data-columns"));
+  expect(new Set(boxes.map((b) => b.col)).size).toBe(columns);
+  // One rule per month, each drawn as a line.
+  const months = await page.locator('[data-testid="galeri"] h3').count();
+  await expect(page.locator('[data-testid="galeri"] svg path')).toHaveCount(months);
 });
