@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
 
 import type { Route } from "./+types/maket";
@@ -80,48 +80,213 @@ function Btn({ children }: { children: ReactNode }) {
   );
 }
 
-function Initial({ letter }: { letter: string }) {
-  return (
-    <span className="inline-grid size-5 place-items-center rounded-full bg-neutral-400 text-[0.6rem] text-white">
-      {letter}
-    </span>
-  );
-}
-
 function Grid({ phone, children }: { phone: boolean; children: ReactNode }) {
   return <div className={`grid gap-3 ${phone ? "" : "md:grid-cols-[2fr_1fr]"}`}>{children}</div>;
 }
 
 // ---------------------------------------------------------------- screens
 
-function DayCard() {
+// Stand-in media: a year and a half with an empty April, plus items whose date is only partly
+// known (month+year, year) or not known at all, so every rule of the views is visible.
+type Precision = "day" | "month" | "year" | "none";
+type Media = { id: number; y?: number; m?: number; d?: number; precision: Precision; h: number };
+
+const MEDIA: Media[] = (() => {
+  const days: [number, number, number][] = [
+    [2026, 10, 26],
+    [2026, 10, 26],
+    [2026, 10, 12],
+    [2026, 9, 30],
+    [2026, 9, 30],
+    [2026, 9, 2],
+    [2026, 8, 14],
+    [2026, 8, 14],
+    [2026, 8, 14],
+    [2026, 8, 13],
+    [2026, 7, 21],
+    [2026, 6, 5],
+    [2026, 5, 18],
+    [2026, 5, 18],
+    [2026, 3, 9],
+    [2026, 3, 9],
+    [2026, 2, 14],
+    [2026, 1, 1],
+    [2025, 12, 31],
+    [2025, 11, 3],
+    [2025, 10, 31],
+    [2025, 10, 31],
+    [2025, 8, 20],
+    [2025, 6, 1],
+  ];
+  const list: Media[] = days.map(([y, m, d]) => ({ id: 0, y, m, d, precision: "day", h: 0 }));
+  list.push({ id: 0, y: 2026, m: 8, precision: "month", h: 0 });
+  list.push({ id: 0, y: 2025, m: 10, precision: "month", h: 0 });
+  list.push({ id: 0, y: 2026, precision: "year", h: 0 });
+  list.push({ id: 0, y: 2025, precision: "year", h: 0 });
+  list.push({ id: 0, precision: "none", h: 0 });
+  list.push({ id: 0, precision: "none", h: 0 });
+  return list.map((item, i) => ({ ...item, id: i, h: [1.5, 1.2, 0.8, 1.4, 1, 1.3][i % 6] ?? 1 }));
+})();
+
+type View = "Gün" | "Ay" | "Yıl";
+const MONTHS = [
+  "Ocak",
+  "Şubat",
+  "Mart",
+  "Nisan",
+  "Mayıs",
+  "Haziran",
+  "Temmuz",
+  "Ağustos",
+  "Eylül",
+  "Ekim",
+  "Kasım",
+  "Aralık",
+];
+const LEFT_OUT: Record<View, string> = {
+  Gün: "Günü bilinmeyenler",
+  Ay: "Ayı bilinmeyenler",
+  Yıl: "Yılı bilinmeyenler",
+};
+
+/** The period a media item falls in for a view, or null when its date is not that precise. */
+function periodOf(item: Media, view: View) {
+  const known = { Gün: ["day"], Ay: ["day", "month"], Yıl: ["day", "month", "year"] }[view];
+  if (!known.includes(item.precision) || item.y === undefined) return null;
+  if (view === "Yıl") return `${item.y}`;
+  if (view === "Ay") return `${MONTHS[(item.m ?? 1) - 1]} ${item.y}`;
+  return `${item.d} ${MONTHS[(item.m ?? 1) - 1]} ${item.y}`;
+}
+
+// Newest first by whatever is known; undated last.
+const sortKey = (item: Media) =>
+  item.y === undefined ? -1 : item.y * 10000 + (item.m ?? 0) * 100 + (item.d ?? 0);
+
+/** Periods in order with their media; empty periods simply never appear. */
+function groupsFor(view: View) {
+  const sorted = [...MEDIA].sort((a, b) => sortKey(b) - sortKey(a));
+  const groups: { label: string; items: Media[]; link: boolean }[] = [];
+  const leftOut: Media[] = [];
+  for (const item of sorted) {
+    const label = periodOf(item, view);
+    if (label === null) {
+      leftOut.push(item);
+      continue;
+    }
+    const last = groups.at(-1);
+    if (last?.label === label) last.items.push(item);
+    else groups.push({ label, items: [item], link: view === "Gün" });
+  }
+  if (leftOut.length > 0) groups.push({ label: LEFT_OUT[view], items: leftOut, link: false });
+  return groups;
+}
+
+const GAP = 10;
+const BAND = 26;
+
+/** The gallery from /ui/bilesenler in grey: shortest column first, a stepped rule per period. */
+function GreyMasonry({ view, columns }: { view: View; columns: number }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const element = box.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => setWidth(entry?.contentRect.width ?? 0));
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const colWidth = (width - GAP * (columns - 1)) / columns;
+  const left = (c: number) => c * (colWidth + GAP);
+  const heights = Array<number>(columns).fill(0);
+  const lastPeriod = Array<number>(columns).fill(-1);
+  const tiles: { item: Media; x: number; y: number; h: number }[] = [];
+  // Where each period starts in each column it reaches; its name sits above its first photo.
+  const starts: Map<number, number>[] = [];
+  const labels: { label: string; link: boolean; x: number; y: number }[] = [];
+  const groups = groupsFor(view);
+  groups.forEach((group, k) => {
+    starts.push(new Map());
+    group.items.forEach((item, i) => {
+      const column = heights.indexOf(Math.min(...heights));
+      // A band only opens in a column that this period actually reaches, so a column that
+      // skips a period never collects empty rules.
+      if (lastPeriod[column] !== k) {
+        starts[k]?.set(column, (heights[column] ?? 0) + BAND / 2);
+        heights[column] = (heights[column] ?? 0) + BAND;
+        lastPeriod[column] = k;
+      }
+      if (i === 0) labels.push({ ...group, x: left(column), y: starts[k]?.get(column) ?? 0 });
+      const h = colWidth * item.h;
+      tiles.push({ item, x: left(column), y: heights[column] ?? 0, h });
+      heights[column] = (heights[column] ?? 0) + h + GAP;
+    });
+  });
+  const height = Math.max(0, ...heights) + BAND / 2;
+  // In a column a period never reached, its rule runs where the next reached period starts
+  // (or under the column's last photo): the two rules share that gap and read as one line.
+  const ruleYs = (k: number) =>
+    Array.from({ length: columns }, (_, c) => {
+      for (let j = k; j < groups.length; j++) {
+        const y = starts[j]?.get(c);
+        if (y !== undefined) return y;
+      }
+      return (heights[c] ?? 0) - GAP / 2;
+    });
+  const path = (ys: number[]) =>
+    ys.reduce(
+      (d, y, c) => `${d} V ${y} H ${c === ys.length - 1 ? width : left(c + 1) - GAP / 2}`,
+      `M 0 ${ys[0]}`,
+    );
+
   return (
-    <Link to="/maket/gun" className="block">
-      <Box>
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-neutral-800">14 Ağustos 2026, Cuma</p>
-          <Initial letter="E" />
-        </div>
-        <p className="text-xs text-neutral-600">İzmir → Kuşadası → Selçuk</p>
-        <div className="flex gap-1 py-1">
-          <Chip>Ege tatili</Chip>
-        </div>
-        <div className="grid grid-cols-4 gap-1">
-          <Img className="h-16" />
-          <Img className="h-16" />
-          <Img className="h-16" />
-          <Box className="grid h-16 place-items-center p-0">
-            <p className="text-xs text-neutral-600">+5</p>
-          </Box>
-        </div>
-        <p className="pt-1 text-xs text-neutral-700">"Sabah denizin rengi daha uyanmamıştı…"</p>
-      </Box>
-    </Link>
+    <div ref={box} className="relative" style={{ height }}>
+      {width > 0 && (
+        <>
+          <svg aria-hidden="true" className="absolute inset-0" width={width} height={height}>
+            {groups.map((group, k) => (
+              <path
+                key={group.label}
+                d={path(ruleYs(k))}
+                fill="none"
+                stroke="#525252"
+                strokeWidth={2}
+              />
+            ))}
+          </svg>
+          {labels.map((rule) => {
+            const label = (
+              <span className="bg-white px-1 text-xs font-medium tracking-wide text-neutral-700 uppercase">
+                {rule.label}
+              </span>
+            );
+            return (
+              <div
+                key={rule.label}
+                className="absolute -translate-y-1/2"
+                style={{ top: rule.y, left: rule.x }}
+              >
+                {rule.link ? <Link to="/maket/gun">{label}</Link> : label}
+              </div>
+            );
+          })}
+          {tiles.map(({ item, x, y, h }) => (
+            <div
+              key={item.id}
+              className="absolute"
+              style={{ left: x, top: y, width: colWidth, height: h }}
+            >
+              <Img className="size-full" />
+            </div>
+          ))}
+        </>
+      )}
+    </div>
   );
 }
 
 function Memories({ phone }: { phone: boolean }) {
-  const [view, setView] = useState<"Gün" | "Ay" | "Yıl">("Gün");
+  const [view, setView] = useState<View>("Gün");
   return (
     <div className="grid gap-3">
       <div className="flex flex-wrap items-center gap-2">
@@ -145,64 +310,14 @@ function Memories({ phone }: { phone: boolean }) {
           <Img className="h-14 w-20" />
           <Img className="h-14 w-20" />
           <div className="text-xs text-neutral-700">
-            Ankara · 3 fotoğraf, 1 not
+            Ankara · 2 fotoğraf
             <br />
             <span className="text-neutral-500">Kapat ×</span>
           </div>
         </div>
       </Box>
 
-      {view === "Gün" && (
-        <div className={`grid gap-3 ${phone ? "" : "lg:grid-cols-2"}`}>
-          <DayCard />
-          <DayCard />
-          <DayCard />
-          <DayCard />
-        </div>
-      )}
-      {view === "Ay" && (
-        <Box label="Ağustos 2026 · takvim, anısı olan günde kapak görseli">
-          <div className="grid grid-cols-7 gap-1 pt-1">
-            {Array.from({ length: 35 }, (_, i) =>
-              [3, 9, 13, 14, 15, 22, 28].includes(i) ? (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static calendar cells
-                <Img key={i} className="h-10" />
-              ) : (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static calendar cells
-                <div key={i} className="h-10 rounded-sm border border-dashed border-neutral-300" />
-              ),
-            )}
-          </div>
-        </Box>
-      )}
-      {view === "Yıl" && (
-        <Box label="2026 · 12 ay, her ayın kapağı ve anı sayısı">
-          <div
-            className={`grid gap-2 pt-1 ${phone ? "grid-cols-3" : "grid-cols-4 lg:grid-cols-6"}`}
-          >
-            {[
-              "Oca",
-              "Şub",
-              "Mar",
-              "Nis",
-              "May",
-              "Haz",
-              "Tem",
-              "Ağu",
-              "Eyl",
-              "Eki",
-              "Kas",
-              "Ara",
-            ].map((m) => (
-              <div key={m}>
-                <Img className="h-14" />
-                <p className="text-xs text-neutral-600">{m} · 4 gün</p>
-              </div>
-            ))}
-          </div>
-        </Box>
-      )}
-      <Box label="Tarihsiz ve yalnızca ay/yıl bilinen anılar: nerede durur? (açık soru)" />
+      <GreyMasonry key={`${view}-${phone}`} view={view} columns={phone ? 2 : 4} />
     </div>
   );
 }
@@ -213,16 +328,13 @@ const SCREENS: Screen[] = [
     name: "Anılar",
     body: (phone) => <Memories phone={phone} />,
     why: [
-      "Açılış ekranı. Görünüm seçici ve filtreler üstte tek satır, liste altında akıyor.",
-      "Gün görünümünde bir kart = bir gün: tarih, rota, etiket, ilk birkaç görsel, notun başı, kim ekledi.",
-      '"Geçen yıl bugün" yalnızca o gün bir şey varsa çıkar, kapatılabilir.',
+      "Açılış ekranı. Gün, Ay ve Yıl görünümlerinin üçü de aynı masonry galeri; yalnızca ayırıcı çizgi güne, aya ya da yıla göre çekilir.",
+      "Boş dönem gösterilmez: Nisan 2026'da medya yok, Mart'tan sonra Mayıs geliyor. Üst üste iki çizgi olmaz.",
+      "Seçili görünümün dönemine yerleşemeyen her medya en altta tek grupta, kendi tarihine göre sıralı; tarihsizler en sonda. Gün görünümünde aşağı kaydırıp bak.",
+      'Filtreler üst satırda çip. "Geçen yıl bugün" şerit, kapatılabilir.',
+      "Gün görünümünde bir günün adına dokununca Gün ayrıntısı açılır.",
     ],
-    open: [
-      "Gün görünümü kart listesi mi, yoksa bugün yaptığımız masonry galeri gibi görsel ağırlıklı mı?",
-      'Filtreler üst satırda çip mi, yan panelde mi, ayrı bir "Filtrele" penceresinde mi?',
-      "Tarihsiz ve yalnızca ay/yıl bilinen anılar: ayrı bölüm, listenin sonu, ya da kendi ayının başı?",
-      '"Geçen yıl bugün" şerit mi, açılışta tam ekran bir an mı, yoksa bildirim gibi mi?',
-    ],
+    open: [],
   },
   {
     slug: "gun",
@@ -611,7 +723,9 @@ export default function Maket() {
                 className="rounded border border-neutral-400 p-3 hover:bg-neutral-50"
               >
                 <p className="font-medium">{s.name}</p>
-                <p className="text-xs text-neutral-600">{s.open.length} açık soru</p>
+                <p className="text-xs text-neutral-600">
+                  {s.open.length > 0 ? `${s.open.length} açık soru` : "Kararlar alındı"}
+                </p>
               </Link>
             ))}
           </div>

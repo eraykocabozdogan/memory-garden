@@ -153,6 +153,7 @@ erDiagram
 | Giriş limiti yalnızca IP başına; hesap başına limit yok | Çok IP'den dağıtık deneme tek hesaba karşı serbest | İki kişilik uygulamada kabul; gerekirse Aşama 8 |
 | `packages/shared` `login-identity` büyük/küçük harfi koruyor, Better Auth kullanıcı adını küçük harfe çeviriyor; modül kullanılmıyor | Çelişkili eski kural | Giriş ekranı bağlanırken silinir |
 | `backup.yml` yok; demo deploy'u `deploy.yml`'da yok | Haftalık yedek yok; demo henüz yok | Aşama 9 / 10 |
+| `/ui/bilesenler` galerisi her ay başında bütün sütunlara bant açıyor; seyrek dönemlerde üst üste boş çizgi çıkar. `/maket/anilar` doğru kuralı kullanıyor (bant yalnızca o dönemin fotoğrafını alan sütunda, ulaşılmayan sütunda çizgiler birleşir) | Taslak gerçeğe taşınırken düzeltilmeli | Anılar ekranı yazılırken |
 | GitHub Actions eylemleri etiketle (`@v5`) sabit, commit sha'sıyla değil | Secret'lı deploy işinde tedarik zinciri riski (düşük) | Aşama 10 |
 | G4 (demo gerçek D1'e erişemez) yalnızca yapılandırmaya dayanıyor: `env.demo` bağlamaları miras almıyor; otomatik test yok | Biri `env.demo`'ya DB eklerse yakalanmaz | Aşama 9 (demo kurulurken test) |
 | Endpoint ve veritabanı bölümleri koddan üretilmiyor | SYSTEM elle güncelleniyor | Şema ve API gelince (Aşama 1) |
