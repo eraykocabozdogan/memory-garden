@@ -318,8 +318,10 @@ function Gallery() {
 
 type Photo = (typeof PHOTOS)[number];
 
-const GAP = 12; // between photos
-const MONTH_GAP = 40; // the band a month rule and its name run through
+// Kept close to each other so the rule's level runs and its drops look alike; the month band is
+// only as much wider as the month's name needs.
+const GAP = 20; // between photos
+const MONTH_GAP = 28; // the band a month rule and its name run through
 const GUESS = 1.5; // height / width until a photo has loaded and told its own
 
 // Columns follow the gallery's own width, so it fills whatever screen it is on.
