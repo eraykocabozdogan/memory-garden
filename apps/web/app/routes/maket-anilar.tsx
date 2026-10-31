@@ -657,6 +657,21 @@ export function ZoomStage<L>({
         onMouseLeave={() => {
           pointer.current = null;
         }}
+        // Escape goes one level out, the keyboard's counterpart of the wheel and the pinch.
+        onKeyDown={(e) => {
+          if (e.key !== "Escape") return;
+          const parent = upRef.current(levelRef.current);
+          if (parent) zoom(parent);
+        }}
+        // Clicking a shape (a border, a calendar outline) goes one level in, like the wheel.
+        // Buttons handle their own clicks; the keyboard reaches every level through them.
+        onClick={(e) => {
+          const target = e.target as Element;
+          if (target.closest("button")) return;
+          const hit = target.closest<HTMLElement | SVGElement>("[data-zoom]")?.dataset.zoom;
+          const next = targetRef.current(levelRef.current, hit);
+          if (next) zoom(next);
+        }}
         onTouchStart={(e) => {
           touch.current = {
             x: e.touches[0]?.clientX ?? 0,

@@ -141,7 +141,7 @@ erDiagram
 | `/ui/yazi` | #9'un üç efekti, "Tekrar oynat" |
 | `/ui/gecis` | #10: anı kartından tam ekrana, listeye ekleme/silme |
 | `/ui/bilesenler` | #11'in taslakları: yükleme, galeri + görüntüleyici, geri sayım (herbaryum etiketi) |
-| `/maket`, `/maket/:ekran` | Ekran haritası: 8 uygulama ekranının gri kutulu taslağı, masaüstü/telefon, ekran başına açık sorular. Anılar: Zaman / Harita seçimli, 4 seviyeli yakınlaştırılan harita (`maket-anilar.tsx`, `maket-harita.tsx`). Mantık ve test yok; ekranlar seçilince silinir |
+| `/maket`, `/maket/:ekran` | Ekran haritası: 8 uygulama ekranının gri kutulu taslağı, masaüstü/telefon, ekran başına açık sorular. Anılar: Zaman / Harita seçimli, 4 seviyeli yakınlaştırılan harita (`maket-anilar.tsx`, `maket-harita.tsx`; Harita gerçek ülke/il sınırlarıyla). Mantık ve test yok; ekranlar seçilince silinir |
 
 ## 6. Eksik ve geçici
 
@@ -237,6 +237,7 @@ Kimlikler UUID, zamanlar UTC ms, gün hesabı `Europe/Istanbul`.
 
 ### Tuzaklar
 - D1'de etkileşimli transaction yok; Drizzle `.transaction()` hata verir. Çok adımlı yazma `batch()` ile.
+- **Sınırlar:** `apps/web/app/data/borders.json` (≈140 KB): 177 ülke + Türkiye'nin 81 ili, Natural Earth (kamu malı, atıf gerekmez; 110m ülkeler, 10m iller), Douglas–Peucker ile sadeleştirilmiş. Yeniden üretmek: zip'leri indir, `pnpm borders <admin0.zip> <admin1.zip>` (betiğin başında linkler). İl adları Türkçe karakterli değil; ekranda plaka koduyla `turkeyProvinces`'tan alınır.
 - **Şifre:** en az 8, en fazla 128 karakter; betik ve uygulamadaki "şifremi değiştir" aynı sabiti (`PASSWORD_LENGTH`) kullanır (kullanıcı kararı, 2026-10-31).
 - **Migration kuralı (genişlet, sonra daralt):** `deploy.yml` migration'ı yeni koddan önce uygular ve D1 migration'ı geri alınmaz. Bu yüzden bir migration yalnızca ekler (tablo, sütun, indeks); silme ya da yeniden adlandırma, eski kodun artık kullanmadığı bir sonraki sürümde ayrı migration olarak gelir. Migration'lar `drizzle-kit generate` ile `apps/web/migrations/`'a.
 - `@cloudflare/vite-plugin` React Router'ın `ssr: false` + `prerender` build'iyle çalışmıyor; Worker'ı Wrangler paketliyor.

@@ -1,3 +1,6 @@
+import { turkeyProvinces } from "@memory-garden/shared/locations/turkey-locations";
+import borders from "../data/borders.json";
+
 import {
   DayView,
   honeycomb,
@@ -11,8 +14,8 @@ import {
 // Harita, second round (owner, 2026-10-31): the same zoomable stage as Anılar, by place.
 // Four levels: the world → a country → a province's days → one day's media (the same day
 // view as in time). Only countries with memories can be entered; for now that is Türkiye,
-// as memories abroad are out of scope (SPEC §5). Outlines are rough hand-drawn shapes here;
-// the real screen would draw true borders.
+// as memories abroad are out of scope (SPEC §5). Like the calendar outline in time, real
+// borders frame everything here: Natural Earth (public domain), see app/data/borders.json.
 
 type Level =
   | { kind: "world" }
@@ -20,20 +23,50 @@ type Level =
   | { kind: "province"; p: string }
   | { kind: "day"; p: string; y: number; m: number; d: number };
 
-// Rough positions on a 1000×420 Türkiye outline.
-const PROVINCES: { id: string; name: string; x: number; y: number }[] = [
-  { id: "istanbul", name: "İstanbul", x: 175, y: 70 },
-  { id: "izmir", name: "İzmir", x: 95, y: 215 },
-  { id: "mugla", name: "Muğla", x: 140, y: 300 },
-  { id: "antalya", name: "Antalya", x: 300, y: 320 },
-  { id: "ankara", name: "Ankara", x: 400, y: 150 },
-  { id: "nevsehir", name: "Nevşehir", x: 520, y: 210 },
-  { id: "trabzon", name: "Trabzon", x: 760, y: 70 },
-  { id: "van", name: "Van", x: 900, y: 230 },
-];
+type Ring = [number, number][];
+type Borders = {
+  world: { id: string; name: string; rings: Ring[] }[];
+  provinces: { code: string; name: string; rings: Ring[] }[];
+};
+const BORDERS = borders as unknown as Borders;
 
-const TURKEY =
-  "M 30 120 L 120 60 L 230 40 L 330 70 L 480 60 L 620 50 L 760 40 L 880 70 L 970 120 L 960 230 L 930 300 L 820 320 L 700 330 L 560 360 L 430 350 L 330 380 L 220 360 L 120 340 L 60 290 L 40 210 Z";
+// Provinces the stand-in days are spread over, by plate code.
+const VISITED = ["34", "35", "48", "07", "06", "50", "61", "65"];
+
+const provinceName = (code: string) => turkeyProvinces.find((p) => p.code === code)?.name ?? code;
+
+/** A plain equirectangular projection, squeezed by the cosine of Türkiye's latitude. */
+const SQUEEZE = Math.cos((39 * Math.PI) / 180);
+const project = ([lon, lat]: [number, number]) => [lon * SQUEEZE, -lat] as const;
+
+function bounds(rings: Ring[]) {
+  const pts = rings.flat().map(project);
+  const xs = pts.map((p) => p[0]);
+  const ys = pts.map((p) => p[1]);
+  return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+}
+
+/** SVG path for rings, fitted so the box `b` becomes `width` wide, centred on the origin. */
+function pathFor(rings: Ring[], b: ReturnType<typeof bounds>, width: number) {
+  const k = width / (b.x1 - b.x0);
+  const cx = (b.x0 + b.x1) / 2;
+  const cy = (b.y0 + b.y1) / 2;
+  return rings
+    .map(
+      (ring) =>
+        `M ${ring
+          .map(project)
+          .map(([x, y]) => `${((x - cx) * k).toFixed(1)} ${((y - cy) * k).toFixed(1)}`)
+          .join(" L ")} Z`,
+    )
+    .join(" ");
+}
+
+const point = (lon: number, lat: number, b: ReturnType<typeof bounds>, width: number) => {
+  const k = width / (b.x1 - b.x0);
+  const [x, y] = project([lon, lat]);
+  return { x: (x - (b.x0 + b.x1) / 2) * k, y: (y - (b.y0 + b.y1) / 2) * k };
+};
 
 /** The days each province appears on: every full-date day falls in one or two provinces. */
 const VISITS = (() => {
@@ -49,34 +82,29 @@ const VISITS = (() => {
   const visits = new Map<string, { y: number; m: number; d: number; count: number }[]>();
   [...days.values()].forEach((day, i) => {
     // A day can cover a route through several provinces; it shows in each of them.
-    const stops =
-      i % 4 === 0 ? [i % PROVINCES.length, (i + 3) % PROVINCES.length] : [i % PROVINCES.length];
-    for (const s of stops) {
-      const id = PROVINCES[s]?.id ?? "";
-      visits.set(id, [...(visits.get(id) ?? []), day]);
+    const stops = i % 4 === 0 ? [i, i + 3] : [i];
+    for (const stop of stops) {
+      const code = VISITED[stop % VISITED.length] ?? "";
+      visits.set(code, [...(visits.get(code) ?? []), day]);
     }
   });
   for (const list of visits.values()) list.sort((a, b) => a.y - b.y || a.m - b.m || a.d - b.d);
   return visits;
 })();
 
-const provinceName = (id: string) => PROVINCES.find((p) => p.id === id)?.name ?? id;
 const mediaIn = (id: string) => (VISITS.get(id) ?? []).reduce((n, d) => n + d.count, 0);
 
 function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Placed[] {
   const scale = phone ? 0.7 : 1;
 
   if (level.kind === "world") {
-    // Continents as grey blobs; Türkiye, the only country with memories, is the one way in.
-    const blobs = [
-      { d: "M -420 -120 q 80 -60 160 -20 q 40 80 -20 160 q -90 40 -140 -40 z", label: "" },
-      { d: "M -300 60 q 60 -10 80 60 q -20 90 -70 100 q -40 -60 -10 -160 z", label: "" },
-      { d: "M -60 -130 q 70 -30 110 10 q -10 40 -60 50 q -40 -10 -50 -60 z", label: "" },
-      { d: "M -50 -20 q 70 0 90 70 q -10 100 -70 110 q -50 -80 -20 -180 z", label: "" },
-      { d: "M 80 -140 q 200 -40 300 30 q 20 90 -120 110 q -160 -20 -180 -140 z", label: "" },
-      { d: "M 300 100 q 60 0 80 40 q -30 40 -80 30 q -20 -40 0 -70 z", label: "" },
-    ];
-    const count = [...VISITS.keys()].reduce((n, id) => n + mediaIn(id), 0);
+    // Every country is drawn; only one with memories (Türkiye, for now) can be entered.
+    const width = 1000 * scale;
+    const all = BORDERS.world.flatMap((c) => c.rings);
+    const b = bounds(all);
+    const count = [...VISITS.keys()].reduce((n, code) => n + mediaIn(code), 0);
+    const tr = BORDERS.world.find((c) => c.id === "TUR");
+    const label = point(35, 44.5, b, width);
     return [
       {
         key: "world",
@@ -84,27 +112,44 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
         y: 0,
         node: (
           <svg
-            width={900 * scale}
-            height={420 * scale}
-            viewBox="-450 -210 900 420"
-            aria-hidden="true"
+            width={width}
+            height={((b.y1 - b.y0) / (b.x1 - b.x0)) * width}
+            viewBox={`${-width / 2} ${(-((b.y1 - b.y0) / (b.x1 - b.x0)) * width) / 2} ${width} ${((b.y1 - b.y0) / (b.x1 - b.x0)) * width}`}
           >
-            {blobs.map((b) => (
-              <path key={b.d} d={b.d} fill="#e5e5e5" stroke="#a3a3a3" />
-            ))}
+            <title>Dünya</title>
+            {BORDERS.world
+              .filter((c) => c.id !== "TUR")
+              .map((c) => (
+                <path
+                  key={c.id + c.name}
+                  d={pathFor(c.rings, b, width)}
+                  fill="#ececec"
+                  stroke="#bdbdbd"
+                  strokeWidth={0.6}
+                />
+              ))}
+            {tr && (
+              <path
+                d={pathFor(tr.rings, b, width)}
+                data-zoom="country:tr"
+                fill="#525252"
+                stroke="#262626"
+                className="cursor-pointer"
+              />
+            )}
           </svg>
         ),
       },
       {
-        key: "tr",
-        x: 75 * scale,
-        y: -85 * scale,
+        key: "tr-label",
+        x: label.x,
+        y: label.y,
         node: (
           <button
             type="button"
             data-zoom="country:tr"
             onClick={() => zoom({ kind: "country" })}
-            className="rounded border-2 border-neutral-800 bg-neutral-300 px-2 py-1 text-xs font-semibold"
+            className="rounded-full border border-neutral-800 bg-white px-2 text-xs font-semibold whitespace-nowrap"
           >
             Türkiye · {count}
           </button>
@@ -114,39 +159,66 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
   }
 
   if (level.kind === "country") {
-    const k = 0.9 * scale;
+    // All 81 provinces with their own borders; those with memories darken with their count.
+    const width = 1000 * scale;
+    const b = bounds(BORDERS.provinces.flatMap((p) => p.rings));
+    const height = ((b.y1 - b.y0) / (b.x1 - b.x0)) * width;
+    const most = Math.max(...VISITED.map(mediaIn));
+    const shade = (n: number) => {
+      const t = n / most;
+      const v = Math.round(220 - t * 120);
+      return `rgb(${v} ${v} ${v})`;
+    };
     const placed: Placed[] = [
       {
-        key: "outline",
+        key: "provinces",
         x: 0,
         y: 0,
         node: (
-          <svg width={1000 * k} height={420 * k} viewBox="0 0 1000 420" aria-hidden="true">
-            <path d={TURKEY} fill="#f5f5f5" stroke="#404040" strokeWidth={2} />
+          <svg
+            width={width}
+            height={height}
+            viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
+          >
+            <title>Türkiye illeri</title>
+            {BORDERS.provinces.map((p) => {
+              const n = mediaIn(p.code);
+              const d = pathFor(p.rings, b, width);
+              return n === 0 ? (
+                <path key={p.code} d={d} fill="#fafafa" stroke="#a3a3a3" strokeWidth={0.7} />
+              ) : (
+                <path
+                  key={p.code}
+                  d={d}
+                  data-zoom={`province:${p.code}`}
+                  fill={shade(n)}
+                  stroke="#404040"
+                  strokeWidth={1}
+                  className="cursor-pointer"
+                />
+              );
+            })}
           </svg>
         ),
       },
     ];
-    // Only provinces with memories are drawn; the bigger the circle, the more media.
-    for (const p of PROVINCES) {
-      const n = mediaIn(p.id);
-      if (n === 0) continue;
-      const r = Math.min(46, 14 + Math.sqrt(n) * 3.2) * scale;
+    for (const code of VISITED) {
+      const n = mediaIn(code);
+      const centre = turkeyProvinces.find((p) => p.code === code);
+      if (n === 0 || !centre) continue;
+      const at = point(centre.longitude, centre.latitude, b, width);
       placed.push({
-        key: p.id,
-        x: (p.x - 500) * k,
-        y: (p.y - 210) * k,
+        key: `label-${code}`,
+        x: at.x,
+        y: at.y,
         node: (
           <button
             type="button"
-            data-zoom={`province:${p.id}`}
-            onClick={() => zoom({ kind: "province", p: p.id })}
-            className="grid place-items-center rounded-full border-2 border-neutral-700 bg-neutral-300 text-center text-[0.65rem] leading-tight"
-            style={{ width: r * 2, height: r * 2 }}
+            data-zoom={`province:${code}`}
+            onClick={() => zoom({ kind: "province", p: code })}
+            className="rounded bg-white/85 px-1 text-[0.65rem] leading-tight whitespace-nowrap text-neutral-900"
           >
-            {p.name}
-            <br />
-            {n}
+            {provinceName(code)} · {n}
           </button>
         ),
       });
@@ -161,8 +233,13 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
     const spots = honeycomb(days.length, cardW, cardH, 12);
     const span = Math.max(...spots.map((s) => Math.abs(s.x)), 0) * 2 + cardW * 2;
     const tall = Math.max(...spots.map((s) => Math.abs(s.y)), 0) * 2 + cardH * 2;
-    // A rough province outline drawn around its day cards.
-    const outline = `M ${-span / 2} ${-tall / 4} Q ${-span / 2.2} ${-tall / 2} 0 ${-tall / 2} Q ${span / 2.4} ${-tall / 1.9} ${span / 2} ${-tall / 6} Q ${span / 1.9} ${tall / 3} ${span / 4} ${tall / 2} Q ${-span / 3} ${tall / 1.8} ${-span / 2} ${tall / 5} Z`;
+    // The province's own border, sized so its cards sit inside it.
+    const rings = BORDERS.provinces.find((p) => p.code === level.p)?.rings ?? [];
+    const b = bounds(rings);
+    const aspect = (b.y1 - b.y0) / (b.x1 - b.x0);
+    // Big enough to hold the cards' block, small enough that the whole province stays in view.
+    const width = Math.max(span, tall / aspect) * 1.05;
+    const height = width * aspect;
     return [
       {
         key: "outline",
@@ -170,13 +247,13 @@ function layout(level: Level, zoom: (next: Level) => void, phone: boolean): Plac
         y: 0,
         node: (
           <svg
-            width={span * 1.1}
-            height={tall * 1.15}
-            viewBox={`${-span * 0.55} ${-tall * 0.575} ${span * 1.1} ${tall * 1.15}`}
+            width={width}
+            height={height}
+            viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
             aria-hidden="true"
             className="pointer-events-none"
           >
-            <path d={outline} fill="#fafafa" stroke="#404040" strokeWidth={2} />
+            <path d={pathFor(rings, b, width)} fill="#fafafa" stroke="#404040" strokeWidth={2} />
           </svg>
         ),
       },
